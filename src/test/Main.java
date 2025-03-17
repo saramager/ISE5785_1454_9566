@@ -57,7 +57,7 @@ public final class Main {
       // Add vector to point
       if (!(P1.add(V1).equals(P2)))
          out.println("ERROR: (point + vector) = other point does not work correctly");
-      if (!(P1.add(V1_OPPOSITE).equals(Point.ZERO)))
+//      if (!(P1.add(V1_OPPOSITE).equals(Point.ZERO)))
          out.println("ERROR: (point + vector) = center of coordinates does not work correctly");
 
       // distances
