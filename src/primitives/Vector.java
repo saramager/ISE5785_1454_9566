@@ -14,6 +14,15 @@ public class Vector extends Point {
 		if(this.xyz.equals(Double3.ZERO))
 			  throw new IllegalArgumentException("the vector is ZERO");	
 	}
+	 @Override
+	 public boolean equals(Object obj) {
+	 if (this == obj) return true;
+	 return (obj instanceof Vector other) && super.equals(obj);
+	 }
+	 @Override
+	 public String toString() {
+		 return this.xyz.toString();
+	 }
 	public Vector add(Vector vec) {
 		return new Vector(this.xyz.add(vec.xyz));
 	}

@@ -18,7 +18,7 @@ final protected Double3 xyz ;
 	 }
 	 @Override
 	 public String toString() {
-		 return this.xyz.toString();
+		 return "Point:"+this.xyz.toString();
 	 }
 	 public Point add(Vector vec) {
 		return new Point( xyz.add(vec.xyz));
