@@ -5,6 +5,7 @@ public class Vector extends Point {
 		super(x, y, z);
 	}
 
+	
 	public Vector(Double3 d3) {
 		super(d3);
 	}
