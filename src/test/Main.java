@@ -1,4 +1,9 @@
+/**
+ * @author Sara Mager 326301454 sarahaya454@gmail.com 
+ * @author Malka Haupt 326209566 nkfv00@gamil.com
+ *  */
 package test;
+
 
 import static java.lang.System.out;
 
