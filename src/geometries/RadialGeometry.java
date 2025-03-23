@@ -30,9 +30,5 @@ public abstract class RadialGeometry extends Geometry {
      * @param p the point at which to calculate the normal
      * @return the normal vector (returns {@code null} by default)
      */
-    @Override
-    public Vector getNormal(Point p) {
-        // TODO: Implement in subclasses
-        return null;
-    }
+  
 }
