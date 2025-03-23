@@ -32,13 +32,7 @@ public class Point {
 		xyz = d3;
 	}
 
-	/**
-	 * Checks if this point is equal to another object.
-	 *
-	 * @param obj the object to compare
-	 * @return {@code true} if the object is a {@link Point} with the same
-	 *         coordinates, otherwise {@code false}
-	 */
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -46,11 +40,7 @@ public class Point {
 		return (obj instanceof Point other) && this.xyz.equals(other.xyz);
 	}
 
-	/**
-	 * Returns a string representation of the point.
-	 *
-	 * @return a string in the format "Point:x,y,z"
-	 */
+	
 	@Override
 	public String toString() {
 		return "Point:" + this.xyz.toString();

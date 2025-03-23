@@ -24,13 +24,7 @@ public class Ray {
 		this.head = point;
 	}
 
-	/**
-	 * Checks if this ray is equal to another object.
-	 *
-	 * @param obj the object to compare
-	 * @return {@code true} if the object is a {@link Ray} with the same head and
-	 *         direction, otherwise {@code false}
-	 */
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -38,11 +32,7 @@ public class Ray {
 		return (obj instanceof Ray other) && this.head.equals(other.head) && this.direction.equals(other.direction);
 	}
 
-	/**
-	 * Returns a string representation of the ray.
-	 *
-	 * @return a string containing the ray's head and direction
-	 */
+	
 	@Override
 	public String toString() {
 		return this.head.toString() + this.direction.toString();

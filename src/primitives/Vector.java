@@ -35,13 +35,7 @@ public class Vector extends Point {
 			throw new IllegalArgumentException("the vector is ZERO");
 	}
 
-	/**
-	 * Checks if this vector is equal to another object.
-	 *
-	 * @param obj the object to compare
-	 * @return {@code true} if the object is a {@link Vector} with the same
-	 *         coordinates, otherwise {@code false}
-	 */
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -49,11 +43,7 @@ public class Vector extends Point {
 		return (obj instanceof Vector other) && super.equals(obj);
 	}
 
-	/**
-	 * Returns a string representation of the vector.
-	 *
-	 * @return a string representing the vector, including its coordinates
-	 */
+	
 	@Override
 	public String toString() {
 		return "vector" + super.toString();
