@@ -41,7 +41,16 @@ class VectorTests {
 	 */
 	@Test
 	void testScale() {
-		fail("Not yet implemented");
+		  // ============ Equivalence Partitions Tests ==============
+        // TC01: Scaling a vector by a positive scalar
+        assertEquals(new Vector(4, 6, 8), v1.scale(2), "ERROR: Vector scaling does not work correctly");
+
+        // TC02: Scaling a vector by a negative scalar
+        assertEquals(new Vector(-4, -6, -8), v1.scale(-2), "ERROR: Vector scaling by negative scalar is incorrect");
+
+        // =============== Boundary Values Tests ==================
+        // TC11: Scaling by zero should throw an exception
+        assertThrows(IllegalArgumentException.class, () -> v1.scale(0), "ERROR: Scaling by zero should throw an exception");
 	}
 
 	/**
@@ -49,7 +58,12 @@ class VectorTests {
 	 */
 	@Test
 	void testDotProduct() {
-		fail("Not yet implemented");
+		  // ============ Equivalence Partitions Tests ==============
+        // TC01: Checking the dot product of two non-orthogonal vectors
+        assertEquals(20, v1.dotProduct(v2), "ERROR: Dot product calculation is incorrect");
+
+        // TC02: Checking the dot product of orthogonal vectors
+        assertEquals(0, new Vector(1, 0, 0).dotProduct(new Vector(0, 1, 0)), "ERROR: Dot product of orthogonal vectors should be zero");
 	}
 
 	/**
@@ -57,7 +71,14 @@ class VectorTests {
 	 */
 	@Test
 	void testCrossProduct() {
-		fail("Not yet implemented");
+		 // ============ Equivalence Partitions Tests ==============
+        // TC01: Checking the cross product of two non-parallel vectors
+        Vector cross = v1.crossProduct(v2);
+        assertEquals(new Vector(-1, 2, -1), cross, "ERROR: Cross product calculation is incorrect");
+
+        // =============== Boundary Values Tests ==================
+        // TC11: Cross product of parallel vectors should throw an exception
+        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v1.scale(2)), "ERROR: Cross product of parallel vectors should throw an exception");
 	}
 
 	/**
@@ -65,15 +86,20 @@ class VectorTests {
 	 */
 	@Test
 	void testLengthSquared() {
-		fail("Not yet implemented");
+		  // ============ Equivalence Partitions Tests ==============
+        // TC01: Checking the squared length of a vector
+        assertEquals(29, v1.lengthSquared(), "ERROR: Length squared calculation is incorrect");
+        // =============== Boundary Values Tests ==================
+       
 	}
-
 	/**
 	 * Test method for {@link primitives.Vector#length()}.
 	 */
 	@Test
 	void testLength() {
-		fail("Not yet implemented");
+		  // ============ Equivalence Partitions Tests ==============
+        // TC01: Checking the length of a vector
+        assertEquals(Math.sqrt(29), v1.length(), "ERROR: Length calculation is incorrect");
 	}
 
 	/**
@@ -81,7 +107,13 @@ class VectorTests {
 	 */
 	@Test
 	void testNormalize() {
-		fail("Not yet implemented");
+		   // ============ Equivalence Partitions Tests ==============
+        // TC01: Normalizing a vector should result in a unit vector
+        Vector normalized = v1.normalize();
+        assertEquals(1, normalized.length(), "ERROR: Normalized vector is not of length 1");
+
+        // TC02: Normalized vector should be in the same direction
+        assertTrue(v1.crossProduct(normalized).lengthSquared() == 0, "ERROR: Normalized vector is not in the same direction");
 	}
 
 }
