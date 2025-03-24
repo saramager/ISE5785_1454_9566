@@ -33,6 +33,7 @@ public class Plane extends Geometry {
 		Vector v2= p3.subtract(p1);
 		normal = v1.crossProduct(v2).normalize();
 	}
+	
 
 	/**
 	 * Constructs a plane using a point and a normal vector.

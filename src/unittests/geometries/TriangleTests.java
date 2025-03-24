@@ -28,7 +28,9 @@ class TriangleTests {
 
     // ============ TC01: Test that the normal vector is calculated correctly ==============
     Vector expectedNormal = new Vector(6, 3, 2);
-    assertEquals(0, triangle.getNormal(new Point(0, 1, 1)).crossProduct(expectedNormal), "The normal vector is not in the right direction");
+
+    assertThrows(IllegalArgumentException.class,()-> triangle.getNormal(new Point(0, 1, 1)).crossProduct(expectedNormal), "The normal vector is not in the right direction");
+    
     assertEquals(1, triangle.getNormal(new Point(1,0,0)).length(), "The normal vector  isn't normalize  ");
 
 }
