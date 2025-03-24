@@ -9,7 +9,7 @@ import primitives.Vector;
 public abstract class Geometry {
 
 	/**
-	 * Calculates and returns the normal vector to the geometry at a given point.
+	 * Calculates and returns the normal vector to the geometry at a given point on the geomtery surfes .
 	 *
 	 * @param p the point at which to calculate the normal
 	 * @return the normal vector to the geometry at the given point

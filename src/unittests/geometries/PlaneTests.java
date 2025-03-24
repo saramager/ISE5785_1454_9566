@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import primitives.Point;
 import primitives.Vector;
 import geometries.Plane;
+import geometries.Triangle;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -65,6 +67,25 @@ class PlaneTests {
         assertThrows(IllegalArgumentException.class, () -> new Plane(p1,pCol2 ,pCol3 ), 
             "Constructor does not throw exception when all three points are collinear");
     }
-}
+    /**
+	 * Test method for {@link geometries.Plane#getNormal(primitives.Point)}.
+	 */
+	@Test
+	void testGetNormal() {
+		   // ============ Equivalence Partitions Tests ==============
+    Point p1 = new Point(1, 0, 0);
+    Point p2 = new Point(0, 2, 0);
+    Point p3 = new Point(0, 0, 3);
+    
+   Plane plane = new Plane(p1,p2,p3);
+
+    // ============ TC01: Test that the normal vector is calculated correctly ==============
+    Vector expectedNormal = new Vector(6, 3, 2);
+    assertThrows(IllegalArgumentException.class,()->plane.getNormal(new Point(1,0,0)).crossProduct(expectedNormal), "The normal vector is not in the right direction");
+    assertEquals(1, plane.getNormal(new Point(1,0,0)).length(), "The normal vector  isn't normalize  ");
 
 }
+    
+}
+
+
