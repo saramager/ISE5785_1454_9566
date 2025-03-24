@@ -44,7 +44,7 @@ public class Vector extends Point {
 
 	@Override
 	public String toString() {
-		return "vector" + super.toString();
+		return "vec:" + super.toString();
 	}
 
 	/**
