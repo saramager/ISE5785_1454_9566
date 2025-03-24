@@ -24,7 +24,6 @@ public class Ray {
 		this.head = point;
 	}
 
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -32,9 +31,8 @@ public class Ray {
 		return (obj instanceof Ray other) && this.head.equals(other.head) && this.direction.equals(other.direction);
 	}
 
-	
 	@Override
 	public String toString() {
-		return this.head.toString() + this.direction.toString();
+		return "" + this.head + this.direction;
 	}
 }

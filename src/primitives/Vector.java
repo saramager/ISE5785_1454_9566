@@ -35,15 +35,13 @@ public class Vector extends Point {
 			throw new IllegalArgumentException("the vector is ZERO");
 	}
 
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		return (obj instanceof Vector other) && super.equals(obj);
+		return (obj instanceof Vector) && super.equals(obj);
 	}
 
-	
 	@Override
 	public String toString() {
 		return "vector" + super.toString();
@@ -76,7 +74,9 @@ public class Vector extends Point {
 	 * @return the result of the dot product
 	 */
 	public double dotProduct(Vector vec) {
-		return this.xyz.d1() * vec.xyz.d1() + this.xyz.d2() * vec.xyz.d2() + this.xyz.d3() * vec.xyz.d3();
+		return this.xyz.d1() * vec.xyz.d1()//
+				+ this.xyz.d2() * vec.xyz.d2()//
+				+ this.xyz.d3() * vec.xyz.d3();
 	}
 
 	/**

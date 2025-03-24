@@ -1,8 +1,5 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Vector;
-
 /**
  * Represents a radial geometric shape in 3D space, characterized by a radius.
  * This is an abstract class that serves as a base for shapes like spheres,

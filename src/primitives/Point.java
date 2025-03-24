@@ -32,7 +32,6 @@ public class Point {
 		xyz = d3;
 	}
 
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -40,7 +39,6 @@ public class Point {
 		return (obj instanceof Point other) && this.xyz.equals(other.xyz);
 	}
 
-	
 	@Override
 	public String toString() {
 		return "Point:" + this.xyz.toString();
