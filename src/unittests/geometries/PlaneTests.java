@@ -6,6 +6,7 @@ package unittests.geometries;
 import static org.junit.jupiter.api.Assertions.*;
 import primitives.Point;
 import primitives.Vector;
+import geometries.Plane;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -21,9 +22,9 @@ class PlaneTests {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Correct plane creation from three valid points
-        Point p1 = new Point(1, 0, 0);
-        Point p2 = new Point(0, 1, 0);
-        Point p3 = new Point(0, 0, 1);
+    	 Point p1 = new Point(1, 2, 3);
+         Point p2 = new Point(2, 3, 5);
+         Point p3 = new Point(4, 0, 6);
 
         Plane plane = new Plane(p1, p2, p3);
         Vector normal = plane.getNormal(p1);
@@ -57,8 +58,11 @@ class PlaneTests {
             "Constructor does not throw exception when all three points coincide");
 
         // TC15: All three points are collinear
-        Point p4 = new Point(2, 0, 0);
-        assertThrows(IllegalArgumentException.class, () -> new Plane(p1, p4, new Point(3, 0, 0)), 
+        Point pCol2 = new Point(2, 4, 6);  // collinear to P1
+        Point pCol3 = new Point(3, 6, 9);  // collinear to P1
+
+        
+        assertThrows(IllegalArgumentException.class, () -> new Plane(p1,pCol2 ,pCol3 ), 
             "Constructor does not throw exception when all three points are collinear");
     }
 }
