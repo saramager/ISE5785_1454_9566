@@ -74,7 +74,7 @@ class VectorTests {
 		 // ============ Equivalence Partitions Tests ==============
         // TC01: Checking the cross product of two non-parallel vectors
         Vector cross = v1.crossProduct(v2);
-        assertEquals(new Vector(-1, 2, -1), cross, "ERROR: Cross product calculation is incorrect");
+        assertEquals(new Vector(1, -2, 1), cross, "ERROR: Cross product calculation is incorrect");
 
         // =============== Boundary Values Tests ==================
         // TC11: Cross product of parallel vectors should throw an exception
@@ -113,7 +113,9 @@ class VectorTests {
         assertEquals(1, normalized.length(), "ERROR: Normalized vector is not of length 1");
 
         // TC02: Normalized vector should be in the same direction
-        assertTrue(v1.crossProduct(normalized).lengthSquared() == 0, "ERROR: Normalized vector is not in the same direction");
+        assertThrows(IllegalArgumentException.class,()->v1.crossProduct(normalized).lengthSquared(), "ERROR: Normalized vector is not in the same direction");
+      
+
 	}
 
 }
