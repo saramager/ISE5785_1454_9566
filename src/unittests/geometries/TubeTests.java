@@ -23,9 +23,8 @@ class TubeTests {
 	    // TC01: Computing the normal at a general point on the tube's surface
 	    Ray axis = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
 	    Tube tube = new Tube(1, axis);
-	    Point p1 = new Point(1, 1, 0);
-
-	    assertEquals(new Vector(1, 1, 0).normalize(), tube.getNormal(p1),"ERROR: The computed normal is incorrect for a general point on the tube");
+	    Point p1 = new Point(1,1,1);
+	    assertEquals(new Vector(1, 1, 0).normalize(),tube.getNormal(p1),"ERROR: The computed normal is incorrect for a general point on the tube");
 
 	    // =============== Boundary Values Tests ==================
 
@@ -33,6 +32,7 @@ class TubeTests {
 	    Point p2 = new Point(0, 1, 0);
 	    Vector normal = tube.getNormal(p2);
 
+	 
 	    assertEquals(new Vector(0, 1, 0), normal,"ERROR: The computed normal is incorrect for a point directly perpendicular to the tube's axis");
 	}
 

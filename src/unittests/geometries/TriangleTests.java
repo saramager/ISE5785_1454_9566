@@ -31,7 +31,7 @@ class TriangleTests {
 
     assertThrows(IllegalArgumentException.class,()-> triangle.getNormal(new Point(0, 1, 1)).crossProduct(expectedNormal), "The normal vector is not in the right direction");
     
-    assertEquals(1, triangle.getNormal(new Point(1,0,0)).length(), "The normal vector  isn't normalize  ");
+    assertEquals(1, triangle.getNormal(new Point(1,0,0)).length(),1e-10, "The normal vector  isn't normalize  ");
 
 }
 

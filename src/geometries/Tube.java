@@ -3,6 +3,7 @@ package geometries;
 import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
+import primitives.Util;
 
 /**
  * Represents an infinite tube in 3D space, defined by a central axis (a ray)
@@ -28,7 +29,12 @@ public class Tube extends RadialGeometry {
 
 	@Override
 	public Vector getNormal(Point p) {
-		// TODO: Implement the correct normal calculation
-		return null;
+
+		double t= axis.getDir().dotProduct(p.subtract(axis.getHead()));
+		if(t==0)
+			return  p.subtract(axis.getHead()).normalize();
+		Point O = axis.getHead().add(axis.getDir().scale(t));
+		return p.subtract(O).normalize();
+
 	}
 }
