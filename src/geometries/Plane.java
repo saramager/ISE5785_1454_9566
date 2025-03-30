@@ -29,11 +29,10 @@ public class Plane extends Geometry {
 	 */
 	public Plane(Point p1, Point p2, Point p3) {
 		p = p1;
-		Vector v1= p2.subtract(p1);
-		Vector v2= p3.subtract(p1);
+		Vector v1 = p2.subtract(p1);
+		Vector v2 = p3.subtract(p1);
 		normal = v1.crossProduct(v2).normalize();
 	}
-	
 
 	/**
 	 * Constructs a plane using a point and a normal vector.

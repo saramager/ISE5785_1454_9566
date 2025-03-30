@@ -26,18 +26,20 @@ public class Ray {
 
 	/**
 	 * Returns the head of the object (typically the leading point).
+	 * 
 	 * @return The head of the object as a Point.
 	 */
 	public Point getHead() {
-	    return this.head;
+		return this.head;
 	}
 
 	/**
 	 * Returns the direction of the object as a vector.
+	 * 
 	 * @return The direction of the object as a Vector.
 	 */
 	public Vector getDir() {
-	    return this.direction;
+		return this.direction;
 	}
 
 	@Override

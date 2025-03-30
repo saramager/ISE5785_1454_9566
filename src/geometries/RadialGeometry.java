@@ -12,7 +12,6 @@ public abstract class RadialGeometry extends Geometry {
 	 */
 	protected final double radius;
 	protected final double radiusPow2;
-	
 
 	/**
 	 * Constructs a radial geometry object with a given radius.
@@ -21,7 +20,7 @@ public abstract class RadialGeometry extends Geometry {
 	 */
 	public RadialGeometry(double radius) {
 		this.radius = radius;
-		radiusPow2=radius*radius;
+		radiusPow2 = radius * radius;
 	}
 
 }

@@ -35,7 +35,6 @@ public class Vector extends Point {
 			throw new IllegalArgumentException("the vector is ZERO");
 	}
 
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -43,8 +42,6 @@ public class Vector extends Point {
 		return (obj instanceof Vector) && super.equals(obj);
 	}
 
-
-	
 	@Override
 	public String toString() {
 		return "vec:" + super.toString();

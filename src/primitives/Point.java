@@ -82,13 +82,11 @@ public class Point {
 	 * @return the squared distance between the two points
 	 */
 	public double distanceSquared(Point p) {
-		
-		double d1=this.xyz.d1() - p.xyz.d1();
-		double d2=this.xyz.d2() - p.xyz.d2();
-		double d3=this.xyz.d3() - p.xyz.d3();
-		
-		return (d1 * d1)
-				+ (d2 * d2)
-				+ (d3 * d3);
+
+		double d1 = this.xyz.d1() - p.xyz.d1();
+		double d2 = this.xyz.d2() - p.xyz.d2();
+		double d3 = this.xyz.d3() - p.xyz.d3();
+
+		return (d1 * d1) + (d2 * d2) + (d3 * d3);
 	}
 }
