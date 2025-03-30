@@ -11,6 +11,9 @@ public abstract class RadialGeometry extends Geometry {
 	 * The radius of the geometric shape.
 	 */
 	protected final double radius;
+	/**
+	 * the radius by the power of 2
+	 */
 	protected final double radiusPow2;
 
 	/**
