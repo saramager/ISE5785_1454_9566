@@ -27,7 +27,6 @@ class TriangleTests {
 		Triangle triangle = new Triangle(p1, p2, p3);
 
 		// ============ TC01: Test that the normal vector is calculated correctly
-		// ==============
 		Vector expectedNormal = new Vector(6, 3, 2);
 
 		assertThrows(IllegalArgumentException.class,

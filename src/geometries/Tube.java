@@ -3,7 +3,6 @@ package geometries;
 import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
-import primitives.Util;
 
 /**
  * Represents an infinite tube in 3D space, defined by a central axis (a ray)

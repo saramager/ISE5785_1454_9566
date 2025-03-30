@@ -31,10 +31,10 @@ class TubeTests {
 
 		// TC02: Computing the normal at a point where the normal is aligned with one of
 		// the axes
-		Point p2 = new Point(0, 1, 0);
+		Point p2 = new Point(1, 0, 0);
 		Vector normal = tube.getNormal(p2);
 
-		assertEquals(new Vector(0, 1, 0), normal,
+		assertEquals(new Vector(1, 0, 0), normal,
 				"ERROR: The computed normal is incorrect for a point directly perpendicular to the tube's axis");
 	}
 

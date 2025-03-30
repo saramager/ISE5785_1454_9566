@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import geometries.Sphere;
 import primitives.Point;
 import primitives.Vector;
-import geometries.Plane;
 import org.junit.jupiter.api.Test;
 
 /**
