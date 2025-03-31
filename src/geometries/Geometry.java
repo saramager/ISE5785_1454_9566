@@ -1,12 +1,15 @@
 package geometries;
 
+import java.util.List;
+
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
  * Abstract class representing a geometric shape in 3D space.
  */
-public abstract class Geometry {
+public abstract class Geometry implements Intersectable {
 
 	/**
 	 * Calculates and returns the normal vector to the geometry at a given point on
@@ -16,4 +19,10 @@ public abstract class Geometry {
 	 * @return the normal vector to the geometry at the given point
 	 */
 	public abstract Vector getNormal(Point p);
+
+	@Override
+	public List<Point> findIntsersections(Ray ray) {
+		return null;
+	}
+
 }

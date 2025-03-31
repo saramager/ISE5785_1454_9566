@@ -1,7 +1,12 @@
 package geometries;
 
+import java.util.List;
+
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+import java.util.List;
+
 
 /**
  * Represents a plane in 3D space, defined by either three points or a point and
@@ -48,5 +53,9 @@ public class Plane extends Geometry {
 	@Override
 	public Vector getNormal(Point p) {
 		return this.normal;
+	}
+	@Override
+	public List<Point> findIntsersections(Ray ray){
+		return null;
 	}
 }
