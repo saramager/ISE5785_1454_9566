@@ -28,7 +28,7 @@ class CylinderTest {
 		assertEquals(new Vector(1, 0, 0), cylinder.getNormal(p1),
 				"ERROR: The normal is incorrect for a point on the lateral surface");
 
-		// TC02: Normal at a point inside the bottom base
+		// TC02: Normal at a point inside the bottom base.
 		Point p2 = new Point(0.5, 0.5, 0); // Inside the base
 		assertEquals(new Vector(0, 0, -1), cylinder.getNormal(p2),
 				"ERROR: The normal is incorrect for a point inside the bottom base");
