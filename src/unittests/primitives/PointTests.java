@@ -10,11 +10,21 @@ import primitives.Vector;
  * Test Junit for primitives.Point
  */
 class PointTests {
-
+	/**
+	 * p1 - point for testing
+	 */
 	Point p1 = new Point(5, 6, 7);
+	/**
+	 * p2 - point for testing
+	 */
 	Point p2 = new Point(2, 3, 4);
-
+	/**
+	 * v - Vector for testing
+	 */
 	Vector v = new Vector(2, 3, 4);
+	/**
+	 * vOpposite the opposite vector to p1
+	 */
 	Vector vOpposite = new Vector(-5, -6, -7);
 
 	/**

@@ -13,12 +13,33 @@ import primitives.*;
  */
 class VectorTests {
 
+	/**
+	 * v1- vector for testing
+	 */
 	Vector v1 = new Vector(2, 3, 4);
+	/**
+	 * v2- vector for testing
+	 */
 	Vector v2 = new Vector(1, 2, 3);
+	/**
+	 * v1Opposite- vector for testing v1*-1
+	 */
 	Vector v1Opposite = new Vector(-2, -3, -4);
+	/**
+	 * v3- vector for testing
+	 */
 	Vector v3 = new Vector(-1, -1, -1);
+	/**
+	 * p1 - point for testing-same Coordinates like v1
+	 */
 	Point p1 = new Point(2, 3, 4);
+	/**
+	 * p1 - point for testing-same Coordinates like v2
+	 */
 	Point P2 = new Point(1, 2, 3);
+	/**
+	 * p1 - point for testing-same Coordinates like 2*v1
+	 */
 	Point P3 = new Point(4, 6, 8);
 
 	/**
