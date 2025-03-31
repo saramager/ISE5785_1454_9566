@@ -2,9 +2,9 @@
  * 
  */
 package geometries;
+
 import primitives.*;
 import java.util.List;
-
 
 /**
  * 
@@ -12,10 +12,9 @@ import java.util.List;
 public interface Intersectable {
 	/**
 	 * 
-	 * @param ray -check intsersectuion for ray 
+	 * @param ray -check intsersectuion for ray
 	 * @return list of Points that intsersectuion
 	 */
-	List<Point> findIntsersections(Ray ray);
-
+	List<Point> findIntersections(Ray ray);
 
 }

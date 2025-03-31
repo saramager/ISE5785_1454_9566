@@ -1,5 +1,7 @@
 package geometries;
 
+import java.util.List;
+
 import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
@@ -35,5 +37,10 @@ public class Tube extends RadialGeometry {
 		Point O = axis.getHead().add(axis.getDir().scale(t));
 		return p.subtract(O).normalize();
 
+	}
+
+	@Override
+	public List<Point> findIntersections(Ray ray) {
+		return null;
 	}
 }

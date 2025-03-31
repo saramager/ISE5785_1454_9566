@@ -21,7 +21,7 @@ public abstract class Geometry implements Intersectable {
 	public abstract Vector getNormal(Point p);
 
 	@Override
-	public List<Point> findIntsersections(Ray ray) {
+	public List<Point> findIntersections(Ray ray) {
 		return null;
 	}
 

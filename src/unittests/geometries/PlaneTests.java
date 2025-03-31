@@ -88,7 +88,7 @@ class PlaneTests {
 	}
 
 	/**
-	 * Test method for {@link geometries.Plane#findIntsersections(primitives.Ray)}.
+	 * Test method for {@link geometries.Plane#findIntersections(primitives.Ray)}.
 	 */
 	@Test
 	public void testFindIntsersections() {
@@ -98,46 +98,47 @@ class PlaneTests {
 		// ============ Equivalence Partitions Tests ==============
 
 		// TC01: Ray's line is outside the plane (0 points)
-		assertNull(plane.findIntsersections(new Ray(new Point(1, 1, -1), new Vector(0, 0, -1))),
+		assertNull(plane.findIntersections(new Ray(new Point(1, 1, -1), new Vector(0, 0, -1))),
 				"Ray should not intersect the plane");
 
 		// TC02: Ray starts before and crosses the plane (1 point)
 		final Ray ray1 = new Ray(new Point(1, 1, -1), new Vector(0, 0, 1));
-		final var result1 = plane.findIntsersections(ray1);
+		final var result1 = plane.findIntersections(ray1);
 		assertEquals(1, result1.size(), "Wrong number of points");
 		assertEquals(new Point(1, 1, 0), result1.get(0), "Ray crosses the plane at wrong point");
 
 		// =============== Boundary Values Tests ================
 
 		// TC03: Ray is parallel to the plane (no intersection, 0 points)
-		assertNull(plane.findIntsersections(new Ray(new Point(0, 0, 1), new Vector(1, 1, 0))),
+		assertNull(plane.findIntersections(new Ray(new Point(0, 0, 1), new Vector(1, 1, 0))),
 				"Parallel ray should not intersect the plane");
 
 		// TC04: Ray coincides with the plane (should return null or empty list)
-		assertNull(plane.findIntsersections(new Ray(new Point(0, 0, 0), new Vector(1, 1, 0))),
+		assertNull(plane.findIntersections(new Ray(new Point(0, 0, 0), new Vector(1, 1, 0))),
 				"Ray lying in the plane should return null");
 
 		// TC05: Ray is perpendicular to the plane and starts before it (1 point)
 		final Ray ray5 = new Ray(new Point(1, 1, -1), new Vector(0, 0, 1));
-		final var result5 = plane.findIntsersections(ray5);
+		final var result5 = plane.findIntersections(ray5);
 		assertEquals(1, result5.size(), "Wrong number of points");
 		assertEquals(new Point(1, 1, 0), result5.get(0), "Perpendicular ray intersects at wrong point");
 
 		// TC06: Ray is perpendicular to the plane and starts on it (0 points)
-		assertNull(plane.findIntsersections(new Ray(new Point(1, 1, 0), new Vector(0, 0, 1))),
+		assertNull(plane.findIntersections(new Ray(new Point(1, 1, 0), new Vector(0, 0, 1))),
 				"Perpendicular ray starting from the plane should return null");
 
 		// TC07: Ray is perpendicular to the plane and starts after it (0 points)
-		assertNull(plane.findIntsersections(new Ray(new Point(1, 1, 1), new Vector(0, 0, 1))),
+		assertNull(plane.findIntersections(new Ray(new Point(1, 1, 1), new Vector(0, 0, 1))),
 				"Perpendicular ray starting after the plane should not intersect");
 
 		// TC08: Ray starts in the plane but is not perpendicular (0 points)
-		assertNull(plane.findIntsersections(new Ray(new Point(1, 1, 0), new Vector(1, 1, 1))),
+		assertNull(plane.findIntersections(new Ray(new Point(1, 1, 0), new Vector(1, 1, 1))),
 				"Ray starting in the plane but not perpendicular should return null");
 
-		// TC09: Ray starts from a reference point on the plane and moves in any direction
+		// TC09: Ray starts from a reference point on the plane and moves in any
+		// direction
 		final Ray ray9 = new Ray(new Point(0, 0, 0), new Vector(1, 1, -1)); // Starts from the plane
-		assertNull(plane.findIntsersections(ray9), "Ray starting from the plane should return null");
+		assertNull(plane.findIntersections(ray9), "Ray starting from the plane should return null");
 
 	}
 }

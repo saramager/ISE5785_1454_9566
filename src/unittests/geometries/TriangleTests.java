@@ -8,8 +8,6 @@ import primitives.*;
 import geometries.Triangle;
 import java.util.List;
 
-
-
 import org.junit.jupiter.api.Test;
 
 /**
@@ -39,47 +37,45 @@ class TriangleTests {
 		assertEquals(1, triangle.getNormal(new Point(1, 0, 0)).length(), 1e-10, "The normal vector  isn't normalize  ");
 
 	}
-	
-	   public void testFindIntsersections() {
 
-	        // Create a triangle that is not aligned with any axis
-	        Triangle triangle = new Triangle(new Point(1, 1, 1), new Point(3, 2, 0), new Point(2, 3, 2));
-	        
-	        // Expected intersection point inside the triangle
-	        final Point p1 = new Point(2, 2, 1);
-	        final List<Point> expectedIntersection = List.of(p1);
-	        
-	        // ============ Equivalence Partitions Tests ==============
+	public void testFindIntsersections() {
 
-	        // TC01: Ray intersects inside the triangle (1 point)
-	        final Ray ray1 = new Ray(new Point(2, 2, -1), new Vector(0, 0, 1));
-	        final var result1 = triangle.findIntsersections(ray1);
-	        assertNotNull(result1, "Ray should intersect inside the triangle");
-	        assertEquals(1, result1, "Wrong number of intersection points");
-	        assertEquals(expectedIntersection, result1, "Incorrect intersection point");
+		// Create a triangle that is not aligned with any axis
+		Triangle triangle = new Triangle(new Point(1, 1, 1), new Point(3, 2, 0), new Point(2, 3, 2));
 
-	        // TC02: Ray misses the triangle - in front of an edge (0 points)
-	        assertNull(triangle.findIntsersections(new Ray(new Point(3, 0, -1), new Vector(0, 1, 1))),
-	                   "Ray should miss the triangle when facing an edge");
+		// Expected intersection point inside the triangle
+		final Point p1 = new Point(2, 2, 1);
+		final List<Point> expectedIntersection = List.of(p1);
 
-	        // TC03: Ray misses the triangle - in front of a vertex (0 points)
-	        assertNull(triangle.findIntsersections(new Ray(new Point(4, 2, -1), new Vector(0, 1, 1))),
-	                   "Ray should miss the triangle when facing a vertex");
+		// ============ Equivalence Partitions Tests ==============
 
-	        // =============== Boundary Values Tests ================
+		// TC01: Ray intersects inside the triangle (1 point)
+		final Ray ray1 = new Ray(new Point(2, 2, -1), new Vector(0, 0, 1));
+		final var result1 = triangle.findIntersections(ray1);
+		assertEquals(1, result1, "Wrong number of intersection points");
+		assertEquals(expectedIntersection, result1, "Incorrect intersection point");
 
-	        // TC04: Ray intersects exactly on an edge (0 or 1 point depending on definition)
-	        final Ray ray4 = new Ray(new Point(2.5, 1.5, -1), new Vector(0, 0, 1));
-	        assertNull(triangle.findIntsersections(ray4), "Ray hitting an edge should not be considered an intersection");
+		// TC02: Ray misses the triangle - in front of an edge (0 points)
+		assertNull(triangle.findIntersections(new Ray(new Point(3, 0, -1), new Vector(0, 1, 1))),
+				"Ray should miss the triangle when facing an edge");
 
-	        // TC05: Ray intersects exactly on a vertex (0 points)
-	        assertNull(triangle.findIntsersections(new Ray(new Point(3, 2, -1), new Vector(0, 0, 1))),
-	                   "Ray hitting a vertex should not be considered an intersection");
+		// TC03: Ray misses the triangle - in front of a vertex (0 points)
+		assertNull(triangle.findIntersections(new Ray(new Point(4, 2, -1), new Vector(0, 1, 1))),
+				"Ray should miss the triangle when facing a vertex");
 
-	        // TC06: Ray intersects on the extension of an edge (0 points)
-	        assertNull(triangle.findIntsersections(new Ray(new Point(0, 0, -1), new Vector(1, 1, 1))),
-	                   "Ray hitting an edge extension should not be considered an intersection");
-	    }
+		// =============== Boundary Values Tests ================
+
+		// TC04: Ray intersects exactly on an edge (0 or 1 point depending on
+		// definition)
+		final Ray ray4 = new Ray(new Point(2.5, 1.5, -1), new Vector(0, 0, 1));
+		assertNull(triangle.findIntersections(ray4), "Ray hitting an edge should not be considered an intersection");
+
+		// TC05: Ray intersects exactly on a vertex (0 points)
+		assertNull(triangle.findIntersections(new Ray(new Point(3, 2, -1), new Vector(0, 0, 1))),
+				"Ray hitting a vertex should not be considered an intersection");
+
+		// TC06: Ray intersects on the extension of an edge (0 points)
+		assertNull(triangle.findIntersections(new Ray(new Point(4, 3, -1), new Vector(-1, -1, 1))),
+				"Ray hitting the extension of an edge should not be considered an intersection");
 	}
-	
-
+}
