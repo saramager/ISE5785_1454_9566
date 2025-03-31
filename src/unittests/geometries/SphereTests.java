@@ -63,10 +63,11 @@ class SphereTests {
 
 		// TC03: Ray starts inside the sphere (1 point)
 		final Point pInside = new Point(0.5, 0, 0); // Inside the sphere
-		final Vector vInside = new Vector(0, 1, 0); // Moving outwards
+		final Vector vInside = new Vector(1, 1, 0); // Moving outwards
 		result = sphere.findIntersections(new Ray(pInside, vInside));
 		assertEquals(1, result.size(), "Wrong number of points");
-		assertEquals(new Point(0.5, 1, 0), result.getFirst(), "Ray starts inside and goes out");
+		assertEquals(new Point(1.4114378277661475, 0.9114378277661476, 0), result.getFirst(),
+				"Ray starts inside and goes out");
 
 		// TC04: Ray starts after the sphere (0 points)
 		final Point pAfter = new Point(3, 0, 0); // Ray starts far from the sphere
@@ -80,7 +81,7 @@ class SphereTests {
 		final Vector vInward = new Vector(-1, 1, 0); // Going inside
 		result = sphere.findIntersections(new Ray(pOnSphere, vInward));
 		assertEquals(1, result.size(), "Wrong number of points");
-		assertEquals(List.of(new Point(1, 1, 0)), result.size(), "Wrong number of points");
+		assertEquals(List.of(new Point(1, 1, 0)), result, "Wrong number of points");
 
 		// TC12: Ray starts at sphere and goes outside (0 points)
 		final Vector vOutward = new Vector(1, -1, 0); // Going outside the sphere
@@ -148,11 +149,10 @@ class SphereTests {
 
 		// TC42: Ray starts inside, ray is orthogonal to ray start to sphere's center
 		// line
-		final Point pInside2 = new Point(0.5, 0, 0); // Inside the sphere
 		final Vector vOrthogonalInside = new Vector(0, 1, 0); // Moving orthogonal to center line
-		result = sphere.findIntersections(new Ray(pInside2, vOrthogonalInside));
+		result = sphere.findIntersections(new Ray(pInside, vOrthogonalInside));
 		assertEquals(1, result.size(), "Wrong number of points");
-		assertEquals(List.of(new Point(0.5, 0.87, 0)), result, "Ray crosses sphere");
+		assertEquals(List.of(new Point(0.5, 0.8660254037844386, 0)), result, "Ray crosses sphere");
 
 	}
 

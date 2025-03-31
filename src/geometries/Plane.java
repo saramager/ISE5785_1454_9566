@@ -4,6 +4,7 @@ import java.util.List;
 
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
 import java.util.List;
 
@@ -54,8 +55,34 @@ public class Plane extends Geometry {
 		return this.normal;
 	}
 
+	/*
+	 * @Override public List<Point> findIntersections(Ray ray) { Point p0 =
+	 * ray.getHead(); Vector vec = ray.getDir(); if (p.equals(p0)) return null;
+	 * Vector vecP0P = p.subtract(p0); double denominator = normal.dotProduct(vec);
+	 * if (Util.isZero(denominator) || denominator < 0) //
+	 * (Util.isZero(denominator)) return null; double t = (normal.dotProduct(vecP0P)
+	 * / denominator); System.out.println(t); if (!Util.isZero(t) && t < 0) {
+	 * 
+	 * return List.of(p0.add(vec.scale(t)));// ray.getPoint(t1);
+	 * 
+	 * } return null;
+	 * 
+	 * }
+	 */
 	@Override
 	public List<Point> findIntersections(Ray ray) {
+		Point p0 = ray.getHead();
+		Vector vec = ray.getDir();
+		if (p.equals(p0))
+			return null;
+		Vector vecP0P = p.subtract(p0);
+		double denominator = normal.dotProduct(vec);
+		if (Util.isZero(denominator) || denominator < 0) // (Util.isZero(denominator))
+			return null;
+		double t = (normal.dotProduct(vecP0P) / denominator);
+		System.out.println(t);
+		if (!Util.isZero(t) && t > 0)
+			return List.of(p0.add(vec.scale(t)));// ray.getPoint(t1);
 		return null;
 	}
 }
