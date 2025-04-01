@@ -132,7 +132,7 @@ class PlaneTests {
 				"Perpendicular ray starting after the plane should not intersect");
 
 		// TC08: Ray starts in the plane but is not perpendicular (0 points)
-		assertNull(plane.findIntersections(new Ray(new Point(1, 1, 0), new Vector(1, 1, 1))),
+		assertNull(plane.findIntersections(new Ray(new Point(1, 1, 1), new Vector(1, 1, 0))),
 				"Ray starting in the plane but not perpendicular should return null");
 
 		// TC09: Ray starts from a reference point on the plane and moves in any
