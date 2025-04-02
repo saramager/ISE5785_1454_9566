@@ -45,7 +45,7 @@ public class Sphere extends RadialGeometry {
 		}
 
 		Vector u = center.subtract(p0);
-		double tm = vec.dotProduct(u);
+		double tm = Util.alignZero(vec.dotProduct(u));
 		double d = Util.alignZero(Math.sqrt(u.lengthSquared() - tm * tm));
 		if (d >= radius) {
 			return null;
