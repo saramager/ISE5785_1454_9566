@@ -1,11 +1,8 @@
 package geometries;
 
 import java.util.List;
-
-import primitives.Point;
-import primitives.Ray;
-import primitives.Util;
-import primitives.Vector;
+import static primitives.Util.*;
+import primitives.*;
 
 /**
  * Represents a sphere in 3D space, defined by a center point and a radius.
@@ -45,12 +42,12 @@ public class Sphere extends RadialGeometry {
 		}
 
 		Vector u = center.subtract(p0);
-		double tm = Util.alignZero(vec.dotProduct(u));
-		double d = Util.alignZero(Math.sqrt(u.lengthSquared() - tm * tm));
+		double tm = alignZero(vec.dotProduct(u));
+		double d = alignZero(Math.sqrt(u.lengthSquared() - tm * tm));
 		if (d >= radius) {
 			return null;
 		}
-		double th = Util.alignZero(Math.sqrt(radius * radius - d * d));
+		double th = alignZero(Math.sqrt(radius * radius - d * d));
 		double t1 = tm - th;
 		double t2 = tm + th;
 

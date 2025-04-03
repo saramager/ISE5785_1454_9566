@@ -1,11 +1,8 @@
 package geometries;
 
-import java.util.*;
-
-import primitives.Point;
-import primitives.Ray;
-import primitives.Util;
-import primitives.Vector;
+import java.util.List;
+import primitives.*;
+import static primitives.Util.*;
 
 /**
  * Represents a plane in 3D space, defined by either three points or a point and
@@ -61,10 +58,10 @@ public class Plane extends Geometry {
 		if (p.equals(p0))
 			return null;
 		Vector vecP0P = p.subtract(p0);
-		double denominator = Util.alignZero(normal.dotProduct(vec));
-		if (Util.isZero(denominator) || denominator < 0) // (Util.isZero(denominator))
+		double denominator = alignZero(normal.dotProduct(vec));
+		if (isZero(denominator) || denominator < 0) // (Util.isZero(denominator))
 			return null;
-		double t = Util.alignZero(normal.dotProduct(vecP0P) / denominator);
+		double t = alignZero(normal.dotProduct(vecP0P) / denominator);
 
 		if (!Util.isZero(t) && t > 0)
 			return List.of(ray.getPoint(t));// ray.getPoint(t1);

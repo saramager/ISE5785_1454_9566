@@ -1,10 +1,7 @@
 package geometries;
 
 import java.util.List;
-
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 /**
  * Abstract class representing a geometric shape in 3D space.

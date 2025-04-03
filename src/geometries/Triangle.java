@@ -1,7 +1,7 @@
 package geometries;
 
 import java.util.List;
-
+import static primitives.Util.*;
 import primitives.*;
 
 /**
@@ -48,12 +48,12 @@ public class Triangle extends Polygon {
 			return null;
 		}
 		// Direction of the ray
-		double dot1 = Util.alignZero(n1.dotProduct(rayDir));
-		double dot2 = Util.alignZero(n2.dotProduct(rayDir));
-		double dot3 = Util.alignZero(n3.dotProduct(rayDir));
+		double dot1 = alignZero(n1.dotProduct(rayDir));
+		double dot2 = alignZero(n2.dotProduct(rayDir));
+		double dot3 = alignZero(n3.dotProduct(rayDir));
 
 		// If any dot product is zero, the point is on an edge or vertex
-		if (Util.isZero(dot1) || Util.isZero(dot2) || Util.isZero(dot3))
+		if (isZero(dot1) || isZero(dot2) || isZero(dot3))
 			return null;
 
 		// Check if all dot products have the same sign (positive or negative)

@@ -1,11 +1,8 @@
 package geometries;
 
+import primitives.*;
 import java.util.List;
-
-import primitives.Point;
-import primitives.Vector;
-import primitives.Ray;
-import primitives.Util;
+import static primitives.Util.*;
 
 /**
  * Represents an infinite tube in 3D space, defined by a central axis (a ray)
@@ -34,7 +31,7 @@ public class Tube extends RadialGeometry {
 
 		Vector dir = axis.getDir();
 		Point head = axis.getHead();
-		double t = dir.dotProduct(p.subtract(head));
+		double t = alignZero(dir.dotProduct(p.subtract(head)));
 		Point o = axis.getPoint(t);
 		return p.subtract(o).normalize();
 
