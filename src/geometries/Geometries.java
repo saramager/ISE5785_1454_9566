@@ -56,18 +56,17 @@ public class Geometries implements Intersectable {
 	@Override
 	public List<Point> findIntersections(Ray ray) {
 		if (this.geometries == null)
-			return null; 
+			return null;
 		List<Point> intersectablePoint = null;
 		for (Intersectable geo : geometries) {
-			List<Point> points=geo.findIntersections(ray);
-			if(points!=null)
-			{
-				if (intersectablePoint==null)
-					intersectablePoint= new LinkedList<Point>();
-			intersectablePoint.addAll(points);
+			List<Point> points = geo.findIntersections(ray);
+			if (points != null) {
+				if (intersectablePoint == null)
+					intersectablePoint = new LinkedList<Point>();
+				intersectablePoint.addAll(points);
 			}
 		}
-		
-			return intersectablePoint;
+
+		return intersectablePoint;
 	}
 }

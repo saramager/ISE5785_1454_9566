@@ -15,8 +15,8 @@ import java.util.List;
 class GeometriesTests {
 
 	/**
-	 * Initialize geometries for testing
-	 * Triangle is placed at (1,1,1), (2,1,1), (1,2,1)
+	 * Initialize geometries for testing Triangle is placed at (1,1,1), (2,1,1),
+	 * (1,2,1)
 	 */
 	Triangle triangle = new Triangle(new Point(1, 1, 1), new Point(2, 1, 1), new Point(1, 2, 1));
 	/**
@@ -24,25 +24,22 @@ class GeometriesTests {
 	 */
 	Plane plane = new Plane(new Point(1, 1, 0), new Vector(0, 0, 1));
 	/**
-	 *  Sphere is centered at (3,3,3) with radius 1
+	 * Sphere is centered at (3,3,3) with radius 1
 	 */
 	Sphere sphere = new Sphere(new Point(3, 3, 3), 1.0);
 	/**
-	 * the gematry of all shaps 
+	 * the gematry of all shaps
 	 */
 
 	Geometries geometries = new Geometries(triangle, plane, sphere);
 
-	/*/**
-	 * S Test method for
-	 * {@link geometries.Geometries#add(geometries.Intersectable[])}.
+	/*
+	 * /** S Test method for {@link
+	 * geometries.Geometries#add(geometries.Intersectable[])}.
 	 */
 	/*
-	@Test
-	void testAdd() {
-		fail("Not yet implemented");
-	}
-	*/
+	 * @Test void testAdd() { fail("Not yet implemented"); }
+	 */
 
 	/**
 	 * Test method for
@@ -83,12 +80,13 @@ class GeometriesTests {
 		// TC14: Ray intersects all
 		// TODO:
 
-		//.geometries = new Geometries(triangle, plane, sphere);
-		/*assertEquals(4, geometries.findIntersections(new Ray(new Point(0.6, 0.6, -2), new Vector(0, 0, 1))).size(),
-				"all geometries are intersected");*/
+		// .geometries = new Geometries(triangle, plane, sphere);
+		/*
+		 * assertEquals(4, geometries.findIntersections(new Ray(new Point(0.6, 0.6, -2),
+		 * new Vector(0, 0, 1))).size(), "all geometries are intersected");
+		 */
 		var result = geometries.findIntersections(new Ray(new Point(0.06, -0.38, -1), new Vector(1, 1.13, 1.39)));
-		assertEquals(4, result.size(),
-					"all geometries are intersected");
+		assertEquals(4, result.size(), "all geometries are intersected");
 	}
 
 }

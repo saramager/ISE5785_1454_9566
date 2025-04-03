@@ -1,4 +1,5 @@
 package primitives;
+
 import primitives.*;
 
 /**
@@ -42,22 +43,20 @@ public class Ray {
 	public Vector getDir() {
 		return this.direction;
 	}
+
 	/**
-	 * refrecser help claclution 
-	 * @param t the number to help calclution 
+	 * refrecser help claclution
+	 * 
+	 * @param t the number to help calclution
 	 * @return The point of the ray + t*ray direction
 	 */
-	public Point  getPoint(double t) 
-	{
+	public Point getPoint(double t) {
 		Point toReturn = this.head;
 		if (!Util.isZero(t))
-			toReturn= toReturn.add(direction.scale(t));
+			toReturn = toReturn.add(direction.scale(t));
 		return toReturn;
-			
-			
-			
+
 	}
-	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -70,5 +69,5 @@ public class Ray {
 	public String toString() {
 		return "" + this.head + this.direction;
 	}
-	
+
 }

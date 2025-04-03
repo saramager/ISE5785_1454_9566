@@ -37,6 +37,7 @@ class TriangleTests {
 		assertEquals(1, triangle.getNormal(new Point(1, 0, 0)).length(), 1e-10, "The normal vector  isn't normalize  ");
 
 	}
+
 	/**
 	 * Test method for {@link geometries.Triangle#findIntersections(Ray)}
 	 */
@@ -80,7 +81,6 @@ class TriangleTests {
 		// TC06: Ray intersects on the extension of an edge (0 points)
 		assertNull(triangle.findIntersections(new Ray(new Point(4, 3, -1), new Vector(-1, -1, 1))),
 				"Ray hitting the extension of an edge should not be considered an intersection");
-	
-	
+
 	}
 }
