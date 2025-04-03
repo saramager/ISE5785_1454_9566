@@ -67,7 +67,7 @@ public class Plane extends Geometry {
 		double t = Util.alignZero(normal.dotProduct(vecP0P) / denominator);
 
 		if (!Util.isZero(t) && t > 0)
-			return List.of(p0.add(vec.scale(t)));// ray.getPoint(t1);
+			return List.of(ray.getPoint(t));// ray.getPoint(t1);
 		return null;
 	}
 }

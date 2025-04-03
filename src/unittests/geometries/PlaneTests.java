@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import primitives.*;
 
 import geometries.Plane;
+import geometries.Triangle;
 
 import org.junit.jupiter.api.Test;
 
@@ -139,6 +140,8 @@ class PlaneTests {
 		// direction
 		final Ray ray9 = new Ray(new Point(0, 0, 0), new Vector(1, 1, -1)); // Starts from the plane
 		assertNull(plane.findIntersections(ray9), "Ray starting from the plane should return null");
+	
+
 
 	}
 }

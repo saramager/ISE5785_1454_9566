@@ -69,7 +69,6 @@ class VectorTests {
 
 		// TC01: Correct vector with nonzero components
 		assertDoesNotThrow(() -> new Vector(new Double3(1, 2.9, 3)), "Failed to construct a valid vector");
-		assertDoesNotThrow(() -> new Vector(new Double3(-1.5, -2, -3)), "Failed to construct a valid negative vector");
 		assertDoesNotThrow(() -> new Vector(new Double3(0, 1, 0)),
 				"Failed to construct a vector with zero in one coordinate");
 

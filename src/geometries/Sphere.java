@@ -40,7 +40,7 @@ public class Sphere extends RadialGeometry {
 		Vector vec = ray.getDir();
 		// "the v vector" from the presentation
 		if (center.equals(p0)) {
-			Point newPoint = p0.add(ray.getDir().scale(radius));
+			Point newPoint = ray.getPoint(radius);
 			return List.of(newPoint);
 		}
 
@@ -55,18 +55,18 @@ public class Sphere extends RadialGeometry {
 		double t2 = tm + th;
 
 		if (t1 > 0 && t2 > 0) {
-			Point p1 = p0.add(vec.scale(t1));// ray.getPoint(t1);
-			Point p2 = p0.add(vec.scale(t2));// ray.getPoint(t2);
+			Point p1 =  ray.getPoint(t1);
+			Point p2 =  ray.getPoint(t2);
 			return List.of(p1, p2);
 		}
 
 		if (t1 > 0) {
-			Point p1 = p0.add(vec.scale(t1));// ray.getPoint(t1);
+			Point p1 =ray.getPoint(t1);
 			return List.of(p1);
 		}
 
 		if (t2 > 0) {
-			Point p2 = p0.add(vec.scale(t2));// ray.getPoint(t2);
+			Point p2 = ray.getPoint(t2);
 			return List.of(p2);
 		}
 		return null;

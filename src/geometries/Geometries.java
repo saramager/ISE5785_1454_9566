@@ -57,14 +57,17 @@ public class Geometries implements Intersectable {
 	public List<Point> findIntersections(Ray ray) {
 		if (this.geometries == null)
 			return null; 
-		List<Point> intersectablePoint=new LinkedList<>();
+		List<Point> intersectablePoint = null;
 		for (Intersectable geo : geometries) {
 			List<Point> points=geo.findIntersections(ray);
 			if(points!=null)
+			{
+				if (intersectablePoint==null)
+					intersectablePoint= new LinkedList<Point>();
 			intersectablePoint.addAll(points);
+			}
 		}
-		if(intersectablePoint.size()!=0)
+		
 			return intersectablePoint;
-		return null;
 	}
 }

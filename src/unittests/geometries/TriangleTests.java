@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 class TriangleTests {
 
 	/**
-	 * Test method for {@link geometries.Polygon#getNormal(primitives.Point)}.
+	 * Test method for {@link geometries.Triangle#getNormal(Point)}.
 	 */
 	@Test
 	void testGetNormal() {
@@ -37,8 +37,11 @@ class TriangleTests {
 		assertEquals(1, triangle.getNormal(new Point(1, 0, 0)).length(), 1e-10, "The normal vector  isn't normalize  ");
 
 	}
-
-	public void testFindIntsersections() {
+	/**
+	 * Test method for {@link geometries.Triangle#findIntersections(Ray)}
+	 */
+	@Test
+	public void testfindIntersections() {
 
 		// Create a triangle that is not aligned with any axis
 		Triangle triangle = new Triangle(new Point(1, 1, 1), new Point(3, 2, 0), new Point(2, 3, 2));
@@ -52,7 +55,7 @@ class TriangleTests {
 		// TC01: Ray intersects inside the triangle (1 point)
 		final Ray ray1 = new Ray(new Point(2, 2, -1), new Vector(0, 0, 1));
 		final var result1 = triangle.findIntersections(ray1);
-		assertEquals(1, result1, "Wrong number of intersection points");
+		assertEquals(1, result1.size(), "Wrong number of intersection points");
 		assertEquals(expectedIntersection, result1, "Incorrect intersection point");
 
 		// TC02: Ray misses the triangle - in front of an edge (0 points)
@@ -77,5 +80,7 @@ class TriangleTests {
 		// TC06: Ray intersects on the extension of an edge (0 points)
 		assertNull(triangle.findIntersections(new Ray(new Point(4, 3, -1), new Vector(-1, -1, 1))),
 				"Ray hitting the extension of an edge should not be considered an intersection");
+	
+	
 	}
 }

@@ -24,24 +24,43 @@ public class Triangle extends Polygon {
 	@Override
 	public List<Point> findIntersections(Ray ray) {
 
-		List lPoints = super.findIntersections(ray);
-		if (lPoints == null)
+		List<Point> intersections = super.findIntersections(ray);
+		if (intersections == null)
 			return null;
-		Vector v1 = this.vertices.get(0).subtract(ray.getHead());
-		Vector v2 = this.vertices.get(1).subtract(ray.getHead());
-		Vector v3 = this.vertices.get(2).subtract(ray.getHead());
+		Vector n1;
+		Vector n2;
+		Vector n3;
+		Point rayHead = ray.getHead();
+		Vector rayDir = ray.getDir();
 
-		Vector normal12 = v1.crossProduct(v2).normalize();
-		Vector normal13 = v1.crossProduct(v3).normalize();
-		Vector normal23 = v2.crossProduct(v3).normalize();
+		try {
+			// Create vectors from the triangle vertices to the intersection point
+			Vector v1 = vertices.get(0).subtract(rayHead);
+			Vector v2 = vertices.get(1).subtract(rayHead);
+			Vector v3 = vertices.get(2).subtract(rayHead);
 
-		Vector rdir = ray.getDir();
-		double nv12 = Util.alignZero(normal12.dotProduct(rdir));
-		double nv13 = Util.alignZero(normal13.dotProduct(rdir));
-		double nv23 = Util.alignZero(normal23.dotProduct(rdir));
+			// Calculate the normals of the triangle's faces
+			n1 = v1.crossProduct(v2).normalize();
+			n2 = v2.crossProduct(v3).normalize();
+			n3 = v3.crossProduct(v1).normalize();
 
-		if (nv12 > 0 && nv13 > 0 && nv23 > 0)
-			return lPoints;
-		return null;
+		} catch (IllegalArgumentException ex) {
+			return null;
+		}
+		// Direction of the ray
+		double dot1 = Util.alignZero(n1.dotProduct(rayDir));
+		double dot2 = Util.alignZero(n2.dotProduct(rayDir));
+		double dot3 = Util.alignZero(n3.dotProduct(rayDir));
+
+		// If any dot product is zero, the point is on an edge or vertex
+		if (Util.isZero(dot1) || Util.isZero(dot2) || Util.isZero(dot3))
+			return null;
+
+		// Check if all dot products have the same sign (positive or negative)
+		if ((dot1 > 0 && dot2 > 0 && dot3 > 0) || (dot1 < 0 && dot2 < 0 && dot3 < 0))
+			return intersections;
+
+		return null; // No intersection inside the triangle
 	}
+
 }

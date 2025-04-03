@@ -90,7 +90,4 @@ public class Point {
 		return (dX * dX) + (dY * dY) + (dZ * dZ);
 	}
 
-	public double getX() {
-		return this.xyz.d1();
-	}
 }

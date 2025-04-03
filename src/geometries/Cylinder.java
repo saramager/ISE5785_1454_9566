@@ -42,9 +42,9 @@ public class Cylinder extends Tube {
 
 		// Check if the point is on one of the bases
 		try {
-			onBase1 = p.subtract(base1).dotProduct(axisDir) == 0;
+			onBase1 =Util.isZero(p.subtract(base1).dotProduct(axisDir));
 
-			onBase2 = p.subtract(base2).dotProduct(axisDir) == 0;
+			onBase2 = Util.isZero(p.subtract(base2).dotProduct(axisDir));
 		} catch (IllegalArgumentException e) {
 			return axis.getDir().normalize();
 		}
@@ -57,7 +57,7 @@ public class Cylinder extends Tube {
 				return axisDir;
 
 			// If on the edge, treat it as a lateral point
-			if (p.subtract(onBase1 ? base1 : base2).lengthSquared() == radius * radius)
+			if (p.subtract(onBase1 ? base1 : base2).lengthSquared() == this.radiusPow2)
 				return super.getNormal(p);
 
 			// Otherwise, return the base normal
