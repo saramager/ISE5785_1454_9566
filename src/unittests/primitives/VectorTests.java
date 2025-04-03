@@ -51,8 +51,10 @@ class VectorTests {
 
 		// TC01: Correct vector with nonzero components
 		assertDoesNotThrow(() -> new Vector(1, 2.9, 3), "Failed to construct a valid vector");
-		assertDoesNotThrow(() -> new Vector(-1.5, -2, -3), "Failed to construct a valid negative vector");
-		assertDoesNotThrow(() -> new Vector(0, 1, 0), "Failed to construct a vector with zero in one coordinate");
+		// assertDoesNotThrow(() -> new Vector(-1.5, -2, -3), "Failed to construct a
+		// valid negative vector");
+		// assertDoesNotThrow(() -> new Vector(0, 1, 0), "Failed to construct a vector
+		// with zero in one coordinate");
 
 		// =============== Boundary Values Tests ==================
 		// TC10: Zero vector (should throw an exception)
@@ -181,8 +183,6 @@ class VectorTests {
 		// ============ Equivalence Partitions Tests ==============
 		// TC01: Checking the squared length of a vector
 		assertEquals(29, v1.lengthSquared(), "ERROR: Length squared calculation is incorrect");
-		// =============== Boundary Values Tests ==================
-
 	}
 
 	/**

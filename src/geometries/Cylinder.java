@@ -1,6 +1,7 @@
 package geometries;
 
 import primitives.*;
+import  static primitives.Util.*;
 
 /**
  * Represents a cylinder, which extends the {@link Tube} class.
@@ -42,9 +43,9 @@ public class Cylinder extends Tube {
 
 		// Check if the point is on one of the bases
 		try {
-			onBase1 = Util.isZero(p.subtract(base1).dotProduct(axisDir));
+			onBase1 = isZero(p.subtract(base1).dotProduct(axisDir));
 
-			onBase2 = Util.isZero(p.subtract(base2).dotProduct(axisDir));
+			onBase2 = isZero(p.subtract(base2).dotProduct(axisDir));
 		} catch (IllegalArgumentException e) {
 			return axis.getDir().normalize();
 		}
