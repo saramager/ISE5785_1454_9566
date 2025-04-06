@@ -59,7 +59,7 @@ public class Plane extends Geometry {
 			return null;
 		Vector vecP0P = p.subtract(p0);
 		double denominator = alignZero(normal.dotProduct(vec));
-		if (isZero(denominator) || denominator < 0) // (Util.isZero(denominator))
+		if (isZero(denominator))
 			return null;
 		double t = alignZero(normal.dotProduct(vecP0P) / denominator);
 

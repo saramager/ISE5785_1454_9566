@@ -13,7 +13,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 /**
- * 
+ * test for the Ray methodes
  */
 class RayTests {
 

@@ -1,7 +1,7 @@
 package geometries;
 
 import primitives.*;
-import  static primitives.Util.*;
+import static primitives.Util.*;
 
 /**
  * Represents a cylinder, which extends the {@link Tube} class.
