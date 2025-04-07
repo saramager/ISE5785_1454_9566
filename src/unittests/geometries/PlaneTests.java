@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import primitives.*;
 
 import geometries.Plane;
-import geometries.Triangle;
 
 import org.junit.jupiter.api.Test;
 

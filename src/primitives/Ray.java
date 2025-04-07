@@ -1,7 +1,5 @@
 package primitives;
 
-import primitives.*;
-
 /**
  * Represents a ray in 3D space, defined by a starting point (head) and a
  * direction vector. The direction vector is always normalized upon creation.

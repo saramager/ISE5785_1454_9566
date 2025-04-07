@@ -36,37 +36,25 @@ public class Sphere extends RadialGeometry {
 		Point center = this.center; // the sphere's center point
 		Vector vec = ray.getDir();
 		// "the v vector" from the presentation
-		if (center.equals(p0)) {
-			Point newPoint = ray.getPoint(radius);
-			return List.of(newPoint);
-		}
+		if (center.equals(p0))
+			return List.of(ray.getPoint(radius));
 
 		Vector u = center.subtract(p0);
-		double tm = alignZero(vec.dotProduct(u));
-		double d = alignZero(Math.sqrt(u.lengthSquared() - tm * tm));
-		if (d >= radius) {
+		double tm = (vec.dotProduct(u));
+		double d2 = (u.lengthSquared() - tm * tm);
+		double th2 = alignZero(radiusPow2 - d2);
+		if (th2 <= 0)
 			return null;
-		}
-		double th = alignZero(Math.sqrt(radius * radius - d * d));
-		double t1 = tm - th;
+
+		double th = Math.sqrt(th2);
+
 		double t2 = tm + th;
+		if (alignZero(t2) <= 0)
+			return null;
 
-		if (t1 > 0 && t2 > 0) {
-			Point p1 = ray.getPoint(t1);
-			Point p2 = ray.getPoint(t2);
-			return List.of(p1, p2);
-		}
-
-		if (t1 > 0) {
-			Point p1 = ray.getPoint(t1);
-			return List.of(p1);
-		}
-
-		if (t2 > 0) {
-			Point p2 = ray.getPoint(t2);
-			return List.of(p2);
-		}
-		return null;
+		double t1 = tm - th;
+		return alignZero(t2) <= 0 ? List.of(ray.getPoint(t2))//
+				: List.of(ray.getPoint(t1), ray.getPoint(t2));
 
 	}
 }

@@ -28,10 +28,7 @@ public class Tube extends RadialGeometry {
 
 	@Override
 	public Vector getNormal(Point p) {
-
-		Vector dir = axis.getDir();
-		Point head = axis.getHead();
-		double t = alignZero(dir.dotProduct(p.subtract(head)));
+		double t = alignZero(axis.getDir().dotProduct(p.subtract(axis.getHead())));
 		Point o = axis.getPoint(t);
 		return p.subtract(o).normalize();
 

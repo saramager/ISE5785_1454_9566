@@ -23,44 +23,35 @@ public class Triangle extends Polygon {
 
 	@Override
 	public List<Point> findIntersections(Ray ray) {
-
 		List<Point> intersections = super.plane.findIntersections(ray);
 		if (intersections == null)
 			return null;
-		Vector n1;
-		Vector n2;
-		Vector n3;
+	
 		Point rayHead = ray.getHead();
 		Vector rayDir = ray.getDir();
 
-		try {
-			// Create vectors from the triangle vertices to the intersection point
-			Vector v1 = vertices.get(0).subtract(rayHead);
-			Vector v2 = vertices.get(1).subtract(rayHead);
-			Vector v3 = vertices.get(2).subtract(rayHead);
-
-			// Calculate the normals of the triangle's faces
-			n1 = v1.crossProduct(v2).normalize();
-			n2 = v2.crossProduct(v3).normalize();
-			n3 = v3.crossProduct(v1).normalize();
-
-		} catch (IllegalArgumentException ex) {
-			return null;
-		}
+		// Create vectors from the triangle vertices to the intersection point
+		Vector v1 = vertices.get(0).subtract(rayHead);
+		Vector v2 = vertices.get(1).subtract(rayHead);
+		// Calculate the normals of the triangle's faces
+		Vector n1 = v1.crossProduct(v2).normalize();
 		// Direction of the ray
 		double dot1 = alignZero(n1.dotProduct(rayDir));
-		double dot2 = alignZero(n2.dotProduct(rayDir));
-		double dot3 = alignZero(n3.dotProduct(rayDir));
-
-		// If any dot product is zero, the point is on an edge or vertex
-		if (isZero(dot1) || isZero(dot2) || isZero(dot3))
+		if (dot1 == 0)
 			return null;
 
-		// Check if all dot products have the same sign (positive or negative)
-		if ((dot1 > 0 && dot2 > 0 && dot3 > 0) || (dot1 < 0 && dot2 < 0 && dot3 < 0))
-			return intersections;
+		Vector v3 = vertices.get(2).subtract(rayHead);
+		Vector n2 = v2.crossProduct(v3).normalize();
+		double dot2 = alignZero(n2.dotProduct(rayDir));
+		if (dot1 * dot2 <= 0)
+			return null;
 
-		return null; // No intersection inside the triangle
+		Vector n3 = v3.crossProduct(v1).normalize();
+		double dot3 = alignZero(n3.dotProduct(rayDir));
+		if (dot1 * dot3 <= 0)
+			return null;
+
+		return intersections;
 	}
 
 }

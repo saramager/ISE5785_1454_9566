@@ -114,11 +114,11 @@ public class Polygon extends Geometry {
 
 			if (isZero(sign))
 				return null;
-			if (i == 0) {
-				positive = sign > 0;
-			}
+			
 			if (i != 0 && (sign > 0) != positive)
 				return null;
+			
+			positive = sign > 0;
 		}
 
 		return List.of(p);
