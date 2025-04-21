@@ -26,7 +26,7 @@ public class Triangle extends Polygon {
 		List<Point> intersections = super.plane.findIntersections(ray);
 		if (intersections == null)
 			return null;
-	
+
 		Point rayHead = ray.getHead();
 		Vector rayDir = ray.getDir();
 

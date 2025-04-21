@@ -53,7 +53,7 @@ public class Sphere extends RadialGeometry {
 			return null;
 
 		double t1 = tm - th;
-		return alignZero(t2) <= 0 ? List.of(ray.getPoint(t2))//
+		return alignZero(t1) <= 0 ? List.of(ray.getPoint(t2))//
 				: List.of(ray.getPoint(t1), ray.getPoint(t2));
 
 	}

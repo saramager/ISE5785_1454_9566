@@ -11,12 +11,13 @@ import java.util.List;
 import geometries.*;
 
 /**
+ * Testing Camera Class Integration with geometries
  * 
  */
 class CameraIntersectionsIntegrationTests {
 
 	private final Camera.Builder cameraBuilder = Camera.getBuilder()
-			.setDirection(new Vector(0, -1, 0), new Vector(0, 0, -1)).setVpDistance(1).setVpSize(3, 3);
+			.setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0)).setVpDistance(1).setVpSize(3, 3);
 
 	private final Camera camera = cameraBuilder.setLocation(new Point(0, 0, 0.5)).build();
 
@@ -27,7 +28,8 @@ class CameraIntersectionsIntegrationTests {
 		int intersections = 0;
 		for (int j = 0; j < 3; j++)
 			for (int i = 0; i < 3; i++) {
-				List<Point> intersectionsList = geometry.findIntersections(camera.constructRay(3, 3, j, i));
+				Ray ray = camera.constructRay(3, 3, j, i);
+				List<Point> intersectionsList = geometry.findIntersections(ray);
 				intersections += intersectionsList != null ? intersectionsList.size() : 0;
 			}
 
