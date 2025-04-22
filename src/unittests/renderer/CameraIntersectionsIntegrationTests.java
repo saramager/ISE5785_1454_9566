@@ -16,13 +16,26 @@ import geometries.*;
  */
 class CameraIntersectionsIntegrationTests {
 
+	/**
+	 * The camera builder object used for testing.
+	 */
 	private final Camera.Builder cameraBuilder = Camera.getBuilder()
 			.setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0)).setVpDistance(1).setVpSize(3, 3);
+	/**
+	 * The camera object used for testing.  based on the  cameraBuilder It is initialized with a location at (0, 0,
+	 * 0.5) 
+	 */
 
 	private final Camera camera = cameraBuilder.setLocation(new Point(0, 0, 0.5)).build();
 
 	/**
-	 * helper function to test the amount of intersections
+	 * Helper method to check the amount of intersections between a ray and a
+	 * geometry.
+	 * 
+	 * @param camera         the camera
+	 * @param geometry       the geometry
+	 * @param expectedAmount the expected amount of intersections
+	 * @throws IllegalArgumentException if the expected amount is negative
 	 */
 	private void amountOfIntersections(Camera camera, Geometry geometry, int expectedAmount) {
 		int intersections = 0;
@@ -36,6 +49,9 @@ class CameraIntersectionsIntegrationTests {
 		assertEquals(expectedAmount, intersections, "Wrong amount of intersections");
 	}
 
+	/**
+	 * Test method for {@link renderer.Camera#constructRay(int, int, int, int)}. with sphere 
+	 */
 	@Test
 	void testSphereIntersection() {
 		// TC01: 2 intersections
