@@ -3,10 +3,14 @@
  */
 package renderer;
 
-import static primitives.Util.*;
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 import java.util.MissingResourceException;
 
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 /**
  * The Camera class represents a camera in a 3D rendering system. It defines the
@@ -150,6 +154,11 @@ public class Camera implements Cloneable {
 				throw new IllegalArgumentException("Target point cannot be the same as camera location");
 
 			Vector to = target.subtract(camera.location).normalize();
+			// If up and to are almost parallel, choose a different up vector (Z axis)
+			if (alignZero(to.dotProduct(up)) == 1 || alignZero(to.dotProduct(up)) == -1) {
+				up = new Vector(0, 0, 1);
+			}
+
 			Vector right = to.crossProduct(up).normalize();
 			Vector correctedUp = right.crossProduct(to).normalize();
 
@@ -180,9 +189,8 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if width or height is not positive
 		 */
 		public Builder setVpSize(double width, double height) {
-			if (width <= 0 || height <= 0)
+			if (width < 0 || isZero(width) || height < 0 || isZero(height))
 				throw new IllegalArgumentException("View plane size must be positive");
-
 			camera.length = width;
 			camera.height = height;
 			return this;
@@ -196,21 +204,21 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if distance is not positive
 		 */
 		public Builder setVpDistance(double distance) {
-			if (distance <= 0)
+			if (distance < 0 || isZero(distance))
 				throw new IllegalArgumentException("View plane distance must be positive");
 
-			camera.distance = distance;
+			camera.distance = alignZero(distance);
 			return this;
 		}
 
 		/**
 		 * set Resolution
 		 * 
-		 * @param _nX the new nX
-		 * @param _nY the new nY
+		 * @param nX the new nX
+		 * @param nY the new nY
 		 * @return TODO:
 		 */
-		public Builder setResolution(int _nX, int _nY) {
+		public Builder setResolution(int nX, int nY) {
 			return null;
 		}
 
@@ -236,11 +244,11 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, VTO_FIELD);
 			if (camera.vUp == null)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, VUP_FIELD);
-			if (camera.distance == 0)
+			if (isZero(camera.distance))
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, DISTANCE_FIELD);
-			if (camera.height == 0)
+			if (isZero(camera.height))
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, HEIGHT_FIELD);
-			if (camera.length == 0)
+			if (isZero(camera.length))
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, LENGTH_FIELD);
 
 			if (camera.vTo.length() != 1)

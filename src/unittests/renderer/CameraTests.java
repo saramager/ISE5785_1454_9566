@@ -52,6 +52,7 @@ class CameraTests {
 		assertEquals(new Ray(Point.ZERO, new Vector(2, -2, -10)), camera2.constructRay(3, 3, 0, 0), BAD_RAY);
 
 	}
+
 	/**
 	 * Test method for {@link renderer.Camera#constructRay(int, int, int, int)}.
 	 * with a different camera direction

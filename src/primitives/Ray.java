@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 /**
  * Represents a ray in 3D space, defined by a starting point (head) and a
  * direction vector. The direction vector is always normalized upon creation.
@@ -68,4 +70,28 @@ public class Ray {
 		return "" + this.head + this.direction;
 	}
 
+	/**
+	 * Finds the closest point to the ray's head from a list of points.
+	 *
+	 * @param points the list of points to search
+	 * @return the closest point to the ray's head, or null if the list is empty
+	 */
+	public Point findClosestPoint(List<Point> points) {
+		if (points == null || points.isEmpty()) {
+			return null;
+		}
+
+		Point closestPoint = null;
+		double minDistance = Double.MAX_VALUE;
+
+		for (Point point : points) {
+			double distance = head.distance(point);
+			if (distance < minDistance) {
+				minDistance = distance;
+				closestPoint = point;
+			}
+		}
+
+		return closestPoint;
+	}
 }

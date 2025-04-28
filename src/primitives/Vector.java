@@ -8,7 +8,7 @@ package primitives;
 public class Vector extends Point {
 
 	/**
-	 * A constant representing the X  Axis (1, 0, 0).
+	 * A constant representing the X Axis (1, 0, 0).
 	 */
 	public static final Vector AXIS_X = new Vector(1, 0, 0);
 	/**

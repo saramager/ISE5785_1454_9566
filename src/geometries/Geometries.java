@@ -7,7 +7,6 @@ import primitives.*;
 import java.util.*;
 import java.util.List;
 
-
 /**
  * The Geometries class implements the Intersectable interface using the
  * Composite design pattern. It represents a collection of geometric objects

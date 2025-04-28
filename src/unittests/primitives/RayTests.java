@@ -3,7 +3,10 @@
  */
 package unittests.primitives;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,4 +41,29 @@ class RayTests {
 
 	}
 
+	/**
+	 * Test method for {@link primitives.Ray#findClosestPoint(List)}.
+	 */
+	@Test
+	public void testFindClosestPoint() {
+		Ray ray = new Ray(new Point(0, 0, 0), new Vector(1, 0, 0));
+
+		// Case 1: Multiple points
+		List<Point> points = List.of(new Point(1, 0, 0), new Point(2, 0, 0), new Point(-1, 0, 0), new Point(0.5, 0, 0));
+		assertEquals(new Point(0.5, 0, 0), ray.findClosestPoint(points));
+
+		// Case 2: Empty list
+		assertNull(ray.findClosestPoint(List.of()));
+
+		// Case 3: Null list
+		assertNull(ray.findClosestPoint(null));
+
+		// Case 4: Single point
+		List<Point> singlePoint = List.of(new Point(1, 1, 1));
+		assertEquals(new Point(1, 1, 1), ray.findClosestPoint(singlePoint));
+
+		// Case 5: Equidistant points
+		List<Point> equidistantPoints = List.of(new Point(1, 1, 0), new Point(-1, -1, 0));
+		assertEquals(new Point(1, 1, 0), ray.findClosestPoint(equidistantPoints));
+	}
 }
