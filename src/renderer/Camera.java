@@ -8,9 +8,11 @@ import static primitives.Util.isZero;
 
 import java.util.MissingResourceException;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+import scene.Scene;
 
 /**
  * The Camera class represents a camera in a 3D rendering system. It defines the
@@ -53,12 +55,45 @@ public class Camera implements Cloneable {
 	 * The width (length) of the view plane.
 	 */
 	private double length = 0.0;
+	/**
+	 * TODO:
+	 */
+	private ImageWriter imageWriter;
+	/**
+	 * TODO:
+	 */
+	private RayTracerBase rayTracer;
+	/**
+	 * TODO:
+	 */
+	private int nX;
+	/**
+	 * TODO:
+	 */
+	private int nY;
 
 	/**
 	 * Empty constructor
 	 */
 	private Camera() {
 
+	}
+
+	public Camera renderImage() {
+
+		for (int i = 0; i < this.nX; i++)
+			for (int j = 0; j < this.nY; j++)
+				this.castRay(i, j);
+		return this;
+	}
+
+	public Camera printGrid(int interval, Color color) {
+		for (int i = 0; i < this.nX; i++)
+			for (int j = 0; j < this.nY; j++)
+				if (i % interval == 0 || j % interval == 0)
+					this.imageWriter.writePixel(i, j, color);
+
+		return this;
 	}
 
 	/**
@@ -68,6 +103,17 @@ public class Camera implements Cloneable {
 	 */
 	public static Builder getBuilder() {
 		return new Builder();
+	}
+
+	/**
+	 * 
+	 * @param imageName
+	 * @return
+	 */
+	public Camera writeToImage(String imageName) {
+		this.imageWriter.writeToImage(imageName);
+		return this;
+
 	}
 
 	/**
@@ -91,6 +137,19 @@ public class Camera implements Cloneable {
 		if (yI != 0)
 			pIJ = pIJ.add(vUp.scale(yI));
 		return new Ray(this.location, pIJ.subtract(this.location).normalize());
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @param i
+	 * @param j
+	 */
+	private void castRay(int i, int j) {
+		Ray rayPixel = this.constructRay(nX, nY, i, j);
+		Color colorPixel = this.rayTracer.traceRay(rayPixel);
+		this.imageWriter.writePixel(i, j, colorPixel);
+
 	}
 
 	/**
@@ -211,15 +270,28 @@ public class Camera implements Cloneable {
 			return this;
 		}
 
+		public Builder setRayTracer(Scene scene, RayTracerType type) {
+			if (type == RayTracerType.SIMPLE)
+				camera.rayTracer = new SimpleRayTracer(scene);
+			return this;
+		}
+
 		/**
 		 * set Resolution
 		 * 
 		 * @param nX the new nX
 		 * @param nY the new nY
-		 * @return TODO:
+		 * @return the new builder with updaet resolution
 		 */
 		public Builder setResolution(int nX, int nY) {
-			return null;
+			if (nX <= 0)
+				throw new IllegalArgumentException("View plane distance must be positive");
+			camera.nX = nX;
+			if (nY <= 0)
+				throw new IllegalArgumentException("View plane distance must be positive");
+			camera.nY = nY;
+			return this;
+
 		}
 
 		/**
@@ -236,6 +308,8 @@ public class Camera implements Cloneable {
 			final String DISTANCE_FIELD = "distance";
 			final String HEIGHT_FIELD = "height";
 			final String LENGTH_FIELD = "length";
+			final String RESOLUTIONX_FIELD = "nX";
+			final String RESOLUTIONY_FIELD = "nY";
 
 			// Check required fields
 			if (camera.location == null)
@@ -250,6 +324,14 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, HEIGHT_FIELD);
 			if (isZero(camera.length))
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, LENGTH_FIELD);
+			if (camera.nX <= 0)
+				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, RESOLUTIONX_FIELD);
+			if (camera.nY <= 0)
+				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, RESOLUTIONY_FIELD);
+
+			camera.imageWriter = new ImageWriter(camera.nX, camera.nY);
+			if (camera.rayTracer == null)
+				this.setRayTracer(null, RayTracerType.SIMPLE);
 
 			if (camera.vTo.length() != 1)
 				camera.vTo = camera.vTo.normalize();

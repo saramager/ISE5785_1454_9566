@@ -42,28 +42,31 @@ class RayTests {
 	}
 
 	/**
-	 * Test method for {@link primitives.Ray#findClosestPoint(List)}.
+	 * Test method for {@link primitives.Ray#findClosestPoint(List)}. This test
+	 * includes one equivalence partition (EP) case and three boundary value
+	 * analysis (BVA) cases.
 	 */
 	@Test
 	public void testFindClosestPoint() {
 		Ray ray = new Ray(new Point(0, 0, 0), new Vector(1, 0, 0));
+		Point result = new Point(0.5, 0, 0);
 
-		// Case 1: Multiple points
-		List<Point> points = List.of(new Point(1, 0, 0), new Point(2, 0, 0), new Point(-1, 0, 0), new Point(0.5, 0, 0));
-		assertEquals(new Point(0.5, 0, 0), ray.findClosestPoint(points));
+		// ============ EP: Equivalence Partition ==============
+		// TC01: The closest point is in the middle of the list
+		List<Point> pointsEP = List.of(new Point(2, 0, 0), new Point(0.5, 0, 0), new Point(3, 0, 0));
+		assertEquals(result, ray.findClosestPoint(pointsEP), "EP case - closest point in the middle");
 
-		// Case 2: Empty list
-		assertNull(ray.findClosestPoint(List.of()));
+		// ============ BVA: Boundary Value Analysis ==============
 
-		// Case 3: Null list
-		assertNull(ray.findClosestPoint(null));
+		// TC02: Null list -> expect null
+		assertNull(ray.findClosestPoint(null), "BVA case - null list");
 
-		// Case 4: Single point
-		List<Point> singlePoint = List.of(new Point(1, 1, 1));
-		assertEquals(new Point(1, 1, 1), ray.findClosestPoint(singlePoint));
+		// TC03: Closest point is the first in the list
+		List<Point> pointsFirstClosest = List.of(new Point(0.5, 0, 0), new Point(2, 0, 0), new Point(3, 0, 0));
+		assertEquals(result, ray.findClosestPoint(pointsFirstClosest), "BVA case - closest point is first");
 
-		// Case 5: Equidistant points
-		List<Point> equidistantPoints = List.of(new Point(1, 1, 0), new Point(-1, -1, 0));
-		assertEquals(new Point(1, 1, 0), ray.findClosestPoint(equidistantPoints));
+		// TC04: Closest point is the last in the list
+		List<Point> pointsLastClosest = List.of(new Point(3, 0, 0), new Point(4, 0, 0), new Point(0.5, 0, 0));
+		assertEquals(result, ray.findClosestPoint(pointsLastClosest), "BVA case - closest point is last");
 	}
 }
