@@ -3,12 +3,18 @@
  */
 package unittests.renderer;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-import primitives.*;
-import renderer.Camera;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
-import geometries.*;
+
+import org.junit.jupiter.api.Test;
+
+import geometries.Geometry;
+import geometries.Sphere;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
+import renderer.Camera;
 
 /**
  * Testing Camera Class Integration with geometries
@@ -20,7 +26,8 @@ class CameraIntersectionsIntegrationTests {
 	 * The camera builder object used for testing.
 	 */
 	private final Camera.Builder cameraBuilder = Camera.getBuilder()
-			.setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0)).setVpDistance(1).setVpSize(3, 3);
+			.setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0)).setVpDistance(1).setVpSize(3, 3)
+			.setResolution(10, 10);
 	/**
 	 * The camera object used for testing. based on the cameraBuilder It is
 	 * initialized with a location at (0, 0, 0.5)
