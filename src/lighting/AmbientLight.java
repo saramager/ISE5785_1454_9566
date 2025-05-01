@@ -2,6 +2,9 @@ package lighting;
 
 import primitives.Color;
 
+/**
+ * class represent Ambient Light
+ */
 public class AmbientLight {
 	/**
 	 * The intensity of the ambient light (immutable).

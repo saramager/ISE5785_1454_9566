@@ -56,19 +56,19 @@ public class Camera implements Cloneable {
 	 */
 	private double length = 0.0;
 	/**
-	 * TODO:
+	 * the image writer for the camera
 	 */
 	private ImageWriter imageWriter;
 	/**
-	 * TODO:
+	 * the ray tracer for camera
 	 */
 	private RayTracerBase rayTracer;
 	/**
-	 * TODO:
+	 * the number of pixels in the width - resultion
 	 */
 	private int nX;
 	/**
-	 * TODO:
+	 * the number of pixels in the height - resultion
 	 */
 	private int nY;
 
@@ -79,6 +79,11 @@ public class Camera implements Cloneable {
 
 	}
 
+	/**
+	 * send every pixel in camera for cast - creat rendering
+	 * 
+	 * @return the camera after rendering
+	 */
 	public Camera renderImage() {
 
 		for (int i = 0; i < this.nX; i++)
@@ -86,6 +91,14 @@ public class Camera implements Cloneable {
 				this.castRay(i, j);
 		return this;
 	}
+
+	/**
+	 * Prints a grid on the image with the specified interval and color.
+	 * 
+	 * @param interval the interval between grid lines
+	 * @param color    the color of the grid lines
+	 * @return the camera instance after printing the grid
+	 */
 
 	public Camera printGrid(int interval, Color color) {
 		for (int i = 0; i < this.nX; i++)
@@ -106,9 +119,10 @@ public class Camera implements Cloneable {
 	}
 
 	/**
+	 * Writes the rendered image to a file.
 	 * 
-	 * @param imageName
-	 * @return
+	 * @param imageName the name of the output image file
+	 * @return the camera instance after writing the image
 	 */
 	public Camera writeToImage(String imageName) {
 		this.imageWriter.writeToImage(imageName);
@@ -140,10 +154,10 @@ public class Camera implements Cloneable {
 	}
 
 	/**
-	 * TODO
+	 * Casts a ray for a specific pixel and writes the resulting color to the image.
 	 * 
-	 * @param i
-	 * @param j
+	 * @param i the horizontal index of the pixel
+	 * @param j the vertical index of the pixel
 	 */
 	private void castRay(int i, int j) {
 		Ray rayPixel = this.constructRay(nX, nY, i, j);
@@ -270,6 +284,14 @@ public class Camera implements Cloneable {
 			return this;
 		}
 
+		/**
+		 * set the ray trycer for camera
+		 * 
+		 * @param scene- the sence object for the ray tracer
+		 * @param type   - type for ray tracer from emum RayTracerType
+		 * @return the camera builder after apdute
+		 */
+
 		public Builder setRayTracer(Scene scene, RayTracerType type) {
 			if (type == RayTracerType.SIMPLE)
 				camera.rayTracer = new SimpleRayTracer(scene);
@@ -277,7 +299,7 @@ public class Camera implements Cloneable {
 		}
 
 		/**
-		 * set Resolution
+		 * set the resolution of the view plane.
 		 * 
 		 * @param nX the new nX
 		 * @param nY the new nY

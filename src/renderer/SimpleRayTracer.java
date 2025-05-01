@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package renderer;
 
 import java.util.List;
@@ -11,14 +9,14 @@ import primitives.Ray;
 import scene.Scene;
 
 /**
- * 
+ * A simple ray tracer implementation that extends the RayTracerBase class.
  */
 public class SimpleRayTracer extends RayTracerBase {
 
 	/**
-	 * constrctor - call the father constrctor
+	 * Constructor - initializes the ray tracer with a given scene.
 	 * 
-	 * @param scene
+	 * @param scene the scene to be used for ray tracing
 	 */
 	public SimpleRayTracer(Scene scene) {
 		super(scene);
@@ -35,8 +33,13 @@ public class SimpleRayTracer extends RayTracerBase {
 
 	}
 
+	/**
+	 * Calculates the color at a given point.
+	 * 
+	 * @param p the point at which to calculate the color
+	 * @return the color at the given point
+	 */
 	public Color calcColor(Point p) {
-		// TODO לא בטוחה שזה הצבעים הנכונים באמת - לבדוק
 		return this.scene.ambientLight.getIntensity();
 	}
 

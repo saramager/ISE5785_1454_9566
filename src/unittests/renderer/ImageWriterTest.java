@@ -1,5 +1,5 @@
 /**
- * 
+ * test of image writer basic picture 
  */
 package unittests.renderer;
 
@@ -9,7 +9,7 @@ import primitives.Color;
 import renderer.ImageWriter;
 
 /**
- * 
+ * test of image writer basic picture
  */
 class ImageWriterTest {
 
