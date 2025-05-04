@@ -60,9 +60,12 @@ public class LoaderXml {
 		Double3 ambientRgb = parseDouble3(ambientLightColor);
 		scene.setAmbientLight(new AmbientLight(new Color(ambientRgb.d1(), ambientRgb.d2(), ambientRgb.d3())));
 
-		// Parse geometries
-		NodeList geometriesNodes = document.getElementsByTagName("geometries").item(0).getChildNodes();
+		// parse the geometries
+		Element geometriesElement = (Element) document.getElementsByTagName("geometries").item(0);
+		NodeList geometriesNodes = geometriesElement.getChildNodes();
+
 		Geometries geometries = new Geometries();
+
 		for (int i = 0; i < geometriesNodes.getLength(); i++) {
 			Node node = geometriesNodes.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -80,9 +83,10 @@ public class LoaderXml {
 				}
 			}
 		}
-		scene.setGeometries(geometries);
 
+		scene.setGeometries(geometries);
 		return scene;
+
 	}
 
 	/**
@@ -111,9 +115,9 @@ public class LoaderXml {
 	 */
 	private static Triangle parseTriangle(Element element) {
 		// Parse the coordinates of the three points
-		String p1Coords = element.getAttribute("p1");
-		String p2Coords = element.getAttribute("p2");
-		String p3Coords = element.getAttribute("p3");
+		String p1Coords = element.getAttribute("p0");
+		String p2Coords = element.getAttribute("p1");
+		String p3Coords = element.getAttribute("p2");
 		Point p1 = new Point(parseDouble3(p1Coords));
 		Point p2 = new Point(parseDouble3(p2Coords));
 		Point p3 = new Point(parseDouble3(p3Coords));
@@ -157,7 +161,7 @@ public class LoaderXml {
 	 * @return a Double3 object representing the color
 	 */
 	private static Double3 parseDouble3(String str) {
-		Pattern p = Pattern.compile("\\d+(\\.\\d+)?");
+		Pattern p = Pattern.compile("-?\\d+(\\.\\d+)?");
 		Matcher m = p.matcher(str);
 		double[] numbers = new double[3];
 		int i = 0;
