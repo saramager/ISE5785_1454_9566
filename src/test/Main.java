@@ -5,16 +5,18 @@
 package test;
 
 import static java.lang.System.out;
-
 import static primitives.Util.isZero;
 
-import primitives.*;
+import primitives.Double3;
+import primitives.Point;
+import primitives.Vector;
 
 /**
- * Test program for the 1st stage
+ * Main class for the 1st stage of the project Test program for the 1st stage
  * 
  * @author Dan Zilberstein
  */
+
 public final class Main {
 	/** A point for tests at (1,2,3) */
 	private static final Point P1 = new Point(1, 2, 3);

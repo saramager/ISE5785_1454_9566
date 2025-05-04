@@ -1,6 +1,5 @@
 package unittests.renderer;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
@@ -83,7 +82,15 @@ class CameraTests {
 		assertEquals(new Ray(Point.ZERO, direction2), camera2.constructRay(2, 2, 0, 0));
 
 		// =============== Boundary Values Tests ==================
-		// BV01: set to a target on Y-axis without up
-		assertThrows(IllegalArgumentException.class, () -> cameraBuilder.setDirection(new Point(0, 10, 0)).build());
+		// BV01: set to a target on Y-axis without up vector
+
+		Point target3 = new Point(0, 1, 0);
+		Camera camera3 = cameraBuilder.setDirection(new Point(0, 1, 0)).build();
+		Point center3 = new Point(0, 10, 0);
+		Vector right3 = new Vector(1, 0, 0);
+		Vector up3 = new Vector(0, 0, 1);
+		Vector direction3 = center3.add(up3.normalize()).subtract(right3).subtract(Point.ZERO);
+		assertEquals(new Ray(Point.ZERO, direction3), camera3.constructRay(2, 2, 0, 0));
+
 	}
 }
