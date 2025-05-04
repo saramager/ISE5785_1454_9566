@@ -87,7 +87,7 @@ public class RenderTests {
 		try {
 			scene = LoaderXml.loadFromXml("renderTestTwoColors.xml");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		// enter XML file name and parse from XML file into scene object instead of the
