@@ -1,11 +1,18 @@
 package geometries;
 
-import primitives.*;
+import primitives.Color;
+import primitives.Point;
+import primitives.Vector;
 
 /**
  * Abstract class representing a geometric shape in 3D space.
  */
 public abstract class Geometry implements Intersectable {
+	/**
+	 * The emission color of the geometry, which is the color emitted by the
+	 * geometry itself.
+	 */
+	Color emission = Color.BLACK;
 
 	/**
 	 * Calculates and returns the normal vector to the geometry at a given point on
@@ -15,5 +22,16 @@ public abstract class Geometry implements Intersectable {
 	 * @return the normal vector to the geometry at the given point
 	 */
 	public abstract Vector getNormal(Point p);
+
+	/**
+	 * Sets the emission color of the geometry.
+	 *
+	 * @param emission the new emission color
+	 * @return the current geometry object with the updated emission color
+	 */
+	public Geometry setEmission(Color emission) {
+		this.emission = emission;
+		return this;
+	}
 
 }
