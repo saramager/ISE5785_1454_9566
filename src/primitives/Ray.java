@@ -2,6 +2,8 @@ package primitives;
 
 import java.util.List;
 
+import geometries.Intersectable.Intersection;
+
 /**
  * Represents a ray in 3D space, defined by a starting point (head) and a
  * direction vector. The direction vector is always normalized upon creation.
@@ -93,5 +95,15 @@ public class Ray {
 		}
 
 		return closestPoint;
+	}
+
+	/**
+	 * Finds the closest intersection point from a list of intersections.
+	 *
+	 * @param points the list of intersections to search
+	 * @return the closest intersection point to the ray's head, or null if the list
+	 *         is empty
+	 */
+	public Point findClosestIntersection(List<Intersection> points) {
 	}
 }

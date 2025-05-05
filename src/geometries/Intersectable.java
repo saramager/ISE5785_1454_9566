@@ -11,7 +11,7 @@ import primitives.Ray;
 /**
  * interface help with all the intersction
  */
-public interface Intersectable {
+public abstract class Intersectable {
 	public static class Intersection {
 		public final Geometry geometry;
 		public final Point point;
@@ -44,7 +44,9 @@ public interface Intersectable {
 	 * @param ray -check intsersectuion for ray
 	 * @return list of Points that intsersectuion
 	 */
-	List<Point> findIntersections(Ray ray);
+	public final List<Point> findIntersections(Ray ray) {
+		return calculateIntersections(ray);
+	}
 
 	/**
 	 * TODO protected find the intersections point between an gematry and ray
@@ -52,6 +54,11 @@ public interface Intersectable {
 	 * @param ray -check intsersectuion for ray
 	 * @return list of Intersections that intsersectuion
 	 */
-//	List<Intersection> calculateIntersectionsHelper(Ray ray);
+	protected List<Intersection> calculateIntersectionsHelper(Ray ray);
+
+	public final List<Intersection> calculateIntersections(Ray ray) {
+		return calculateIntersectionsHelper(ray);
+
+	}
 
 }

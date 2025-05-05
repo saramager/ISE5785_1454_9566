@@ -7,7 +7,7 @@ import primitives.Vector;
 /**
  * Abstract class representing a geometric shape in 3D space.
  */
-public abstract class Geometry implements Intersectable {
+public abstract class Geometry extends Intersectable {
 	/**
 	 * The emission color of the geometry, which is the color emitted by the
 	 * geometry itself.

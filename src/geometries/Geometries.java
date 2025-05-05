@@ -3,16 +3,18 @@
  */
 package geometries;
 
-import primitives.*;
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
+
+import primitives.Point;
+import primitives.Ray;
 
 /**
  * The Geometries class implements the Intersectable interface using the
  * Composite design pattern. It represents a collection of geometric objects
  * that can be intersected by a ray.
  */
-public class Geometries implements Intersectable {
+public class Geometries extends Intersectable {
 	/**
 	 * A private, immutable list of intersectable geometries. The list is
 	 * initialized as an empty LinkedList at declaration.
@@ -66,5 +68,21 @@ public class Geometries implements Intersectable {
 		}
 
 		return intersectablePoint;
+	}
+
+	@Override
+	protected List<Intersection> calculateIntersectionsHelper(Ray ray) {
+		List<Intersection> intersections = null;
+		for (Intersectable geo : geometries) {
+			var geometryIntersections = geo.calculateIntersections(ray);
+			if (geometryIntersections != null) {
+				if (intersections == null)
+					intersections = new LinkedList<>(geometryIntersections);
+				else
+					intersections.addAll(geometryIntersections);
+			}
+
+		}
+		return intersections;
 	}
 }

@@ -21,6 +21,11 @@ import scene.Scene;
  * @author Dan
  */
 public class RenderTests {
+	private static final java.awt.Color WHITE = new java.awt.Color(255, 255, 255);
+	private static final java.awt.Color BLUE = new java.awt.Color(0, 0, 255);
+	private static final java.awt.Color RED = new java.awt.Color(255, 0, 0);
+	private static final java.awt.Color GREEN = new java.awt.Color(0, 255, 0);
+
 	/** Default constructor to satisfy JavaDoc generator */
 	public RenderTests() {
 		/* to satisfy JavaDoc generator */ }
@@ -117,20 +122,29 @@ public class RenderTests {
 	 * Produce a scene with basic 3D model - including individual lights of the
 	 * bodies and render it into a png image with a grid
 	 */
+	@Test
+	void renderMultiColorTest() {
+		Scene scene = new Scene("Multi color").setAmbientLight(new AmbientLight(new Color(51, 51, 51)));
+		scene.geometries //
+				.add(// center
+						new Sphere(new Point(0, 0, -100), 50.0),
+						// up left
+						new Triangle(new Point(-100, 0, -100), new Point(0, 100, -100), new Point(-100, 100, -100)) //
+								.setEmission(new Color(GREEN)),
+						// down left
+						new Triangle(new Point(-100, 0, -100), new Point(0, -100, -100), new Point(-100, -100, -100)) //
+								.setEmission(new Color(RED)),
+						// down right
+						new Triangle(new Point(100, 0, -100), new Point(0, -100, -100), new Point(100, -100, -100)) //
+								.setEmission(new Color(BLUE)));
 
-	/*
-	 * @Test void renderMultiColorTest() { Scene scene = new
-	 * Scene("Multi color").setAmbientLight(new AmbientLight(new Color(51, 51,
-	 * 51))); scene.geometries // .add(// center new Sphere(new Point(0, 0, -100),
-	 * 50.0), // up left new Triangle(new Point(-100, 0, -100), new Point(0, 100,
-	 * -100), new Point(-100, 100, -100)) // .setEmission(new Color(GREEN)), // down
-	 * left new Triangle(new Point(-100, 0, -100), new Point(0, -100, -100), new
-	 * Point(-100, -100, -100)) // .setEmission(new Color(RED)), // down right new
-	 * Triangle(new Point(100, 0, -100), new Point(0, -100, -100), new Point(100,
-	 * -100, -100)) // .setEmission(new Color(BLUE)));
-	 * 
-	 * camera // .setRayTracer(scene, RayTracerType.SIMPLE) // .setResolution(1000,
-	 * 1000) // .build() // .renderImage() // .printGrid(100, new Color(WHITE)) //
-	 * .writeToImage("color render test"); }
-	 */
+		camera //
+				.setRayTracer(scene, RayTracerType.SIMPLE) //
+				.setResolution(1000, 1000) //
+				.build() //
+				.renderImage() //
+				.printGrid(100, new Color(WHITE)) //
+				.writeToImage("color render test");
+
+	}
 }

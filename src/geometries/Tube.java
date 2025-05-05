@@ -1,8 +1,12 @@
 package geometries;
 
-import primitives.*;
+import static primitives.Util.alignZero;
+
 import java.util.List;
-import static primitives.Util.*;
+
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 /**
  * Represents an infinite tube in 3D space, defined by a central axis (a ray)
@@ -34,8 +38,15 @@ public class Tube extends RadialGeometry {
 
 	}
 
+//	@Override
+//	public List<Point> findIntersections(Ray ray) {
+//		return null;
+//	}
+
 	@Override
-	public List<Point> findIntersections(Ray ray) {
+	protected List<Intersection> calculateIntersectionsHelper(Ray ray) {
+
 		return null;
 	}
+
 }

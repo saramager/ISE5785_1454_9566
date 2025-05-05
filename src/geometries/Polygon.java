@@ -1,8 +1,13 @@
 package geometries;
 
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 import java.util.List;
-import static primitives.Util.*;
-import primitives.*;
+
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 /**
  * Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
@@ -83,9 +88,49 @@ public class Polygon extends Geometry {
 		return plane.getNormal(point);
 	}
 
-	@Override
-	public List<Point> findIntersections(Ray ray) {
+//	@Override
+//	public List<Point> findIntersections(Ray ray) {
 
+//		List<Point> planeIntersections = plane.findIntersections(ray);
+//		// check intersections with the plane
+//		if (planeIntersections == null)
+//			return null;
+//
+//		Point p0 = ray.getHead();
+//		Point p = planeIntersections.get(0);
+//
+//		Vector n = plane.getNormal(p0);
+//
+//		boolean positive = true;
+//
+//		for (int i = 0; i < vertices.size(); ++i) {
+//			Point currentVertex = vertices.get(i);
+//			Point nextVertex = vertices.get((i + 1) % vertices.size()); // זה יתחבר בצורה מחזורית
+//			Vector cross;
+//			try {
+//				Vector v1 = currentVertex.subtract(p);
+//				Vector v2 = nextVertex.subtract(p);
+//
+//				cross = v1.crossProduct(v2);
+//			} catch (IllegalArgumentException ex) {
+//				return null;
+//			}
+//			double sign = alignZero(cross.dotProduct(n));
+//
+//			if (isZero(sign))
+//				return null;
+//
+//			if (i != 0 && (sign > 0) != positive)
+//				return null;
+//
+//			positive = sign > 0;
+//		}
+//
+//		return List.of(p);
+//	}
+
+	@Override
+	protected List<Intersection> calculateIntersectionsHelper(Ray ray) {
 		List<Point> planeIntersections = plane.findIntersections(ray);
 		// check intersections with the plane
 		if (planeIntersections == null)
@@ -121,7 +166,8 @@ public class Polygon extends Geometry {
 			positive = sign > 0;
 		}
 
-		return List.of(p);
+		return List.of(new Intersection(this, p));
+
 	}
 
 }
