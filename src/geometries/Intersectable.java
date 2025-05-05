@@ -52,6 +52,6 @@ public interface Intersectable {
 	 * @param ray -check intsersectuion for ray
 	 * @return list of Intersections that intsersectuion
 	 */
-	List<Intersection> calculateIntersectionsHelper(Ray ray);
+//	List<Intersection> calculateIntersectionsHelper(Ray ray);
 
 }

@@ -64,13 +64,13 @@ public class Camera implements Cloneable {
 	 */
 	private RayTracerBase rayTracer;
 	/**
-	 * the number of pixels in the width - resultion
+	 * the number of pixels in the width - resolution
 	 */
-	private int nX;
+	private int nX = 1;
 	/**
-	 * the number of pixels in the height - resultion
+	 * the number of pixels in the height - resolution
 	 */
-	private int nY;
+	private int nY = 1;
 
 	/**
 	 * Empty constructor
