@@ -8,7 +8,7 @@ import primitives.Color;
 /**
  * 
  */
-public class Light {
+class Light {
 	protected final Color intensity;
 
 	/**
@@ -16,7 +16,7 @@ public class Light {
 	 *
 	 * @param intensity The intensity of the light.
 	 */
-	public Light(Color intensity) {
+	protected Light(Color intensity) {
 		this.intensity = intensity;
 	}
 

@@ -79,23 +79,27 @@ public class Ray {
 	 * @return the closest point to the ray's head, or null if the list is empty
 	 */
 	public Point findClosestPoint(List<Point> points) {
-		if (points == null || points.isEmpty()) {
-			return null;
-		}
-
-		Point closestPoint = null;
-		double minDistance = Double.MAX_VALUE;
-
-		for (Point point : points) {
-			double distance = head.distance(point);
-			if (distance < minDistance) {
-				minDistance = distance;
-				closestPoint = point;
-			}
-		}
-
-		return closestPoint;
+		return points == null ? null
+				: findClosestIntersection(points.stream().map(p -> new Intersection(null, p)).toList()).point;
 	}
+//	public Point findClosestPoint(List<Point> points) {
+//		if (points == null || points.isEmpty()) {
+//			return null;
+//		}
+//
+//		Point closestPoint = null;
+//		double minDistance = Double.MAX_VALUE;
+//
+//		for (Point point : points) {
+//			double distance = head.distance(point);
+//			if (distance < minDistance) {
+//				minDistance = distance;
+//				closestPoint = point;
+//			}
+//		}
+//
+//		return closestPoint;
+//	}
 
 	/**
 	 * Finds the closest intersection point from a list of intersections.

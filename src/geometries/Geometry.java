@@ -12,7 +12,7 @@ public abstract class Geometry extends Intersectable {
 	 * The emission color of the geometry, which is the color emitted by the
 	 * geometry itself.
 	 */
-	public Color emission = Color.BLACK;
+	Color emission = Color.BLACK;
 
 	/**
 	 * Calculates and returns the normal vector to the geometry at a given point on
@@ -32,6 +32,18 @@ public abstract class Geometry extends Intersectable {
 	public Geometry setEmission(Color emission) {
 		this.emission = emission;
 		return this;
+	}
+
+	/**
+	 * Gets the emission color of the geometry.
+	 * 
+	 * @return the emission color
+	 */
+	public Color getEmission()
+
+	{
+		return emission;
+
 	}
 
 }

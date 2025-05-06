@@ -50,13 +50,19 @@ public abstract class Intersectable {
 	}
 
 	/**
-	 * TODO protected find the intersections point between an gematry and ray
+	 * help mothode to find the intersections point between an gematry and ray
 	 * 
 	 * @param ray -check intsersectuion for ray
 	 * @return list of Intersections that intsersectuion
 	 */
 	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray);
 
+	/**
+	 * find the intersections point between an gematry and ray
+	 * 
+	 * @param ray - check intsersectuion for ray
+	 * @return list of Intersections that intsersectuion
+	 */
 	public final List<Intersection> calculateIntersections(Ray ray) {
 		return calculateIntersectionsHelper(ray);
 

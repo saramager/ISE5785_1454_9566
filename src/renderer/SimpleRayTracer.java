@@ -42,7 +42,7 @@ public class SimpleRayTracer extends RayTracerBase {
 //		return this.scene.ambientLight.getIntensity();
 
 	private Color calcColor(Intersection gp) {
-		return scene.ambientLight.getIntensity().add(gp.geometry.emission);
+		return scene.ambientLight.getIntensity().add(gp.geometry.getEmission());
 	}
 
 }
