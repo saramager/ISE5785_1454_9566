@@ -104,6 +104,22 @@ public class Ray {
 	 * @return the closest intersection point to the ray's head, or null if the list
 	 *         is empty
 	 */
-	public Point findClosestIntersection(List<Intersection> points) {
+	public Intersection findClosestIntersection(List<Intersection> points) {
+		if (points == null || points.isEmpty()) {
+			return null;
+		}
+
+		Intersection closestIntersection = null;
+		double minDistance = Double.MAX_VALUE;
+
+		for (Intersection intersection : points) {
+			double distance = head.distance(intersection.point);
+			if (distance < minDistance) {
+				minDistance = distance;
+				closestIntersection = intersection;
+			}
+		}
+
+		return closestIntersection;
 	}
 }

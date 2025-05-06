@@ -1,10 +1,8 @@
 
 package renderer;
 
-import java.util.List;
-
+import geometries.Intersectable.Intersection;
 import primitives.Color;
-import primitives.Point;
 import primitives.Ray;
 import scene.Scene;
 
@@ -25,12 +23,13 @@ public class SimpleRayTracer extends RayTracerBase {
 
 	@Override
 	public Color traceRay(Ray ray) {
-		List<Point> intersections = this.scene.geometries.findIntersections(ray);
-		if (intersections == null)
-			return this.scene.background;
-		Point closestP = ray.findClosestPoint(intersections);
-		return calcColor(closestP);
-
+//		List<Point> intersections = this.scene.geometries.findIntersections(ray);
+//		if (intersections == null)
+//			return scene.background;
+//		Point closestP = ray.findClosestPoint(intersections);
+//		return calcColor(closestP);
+		var intersections = scene.geometries.calculateIntersections(ray);
+		return intersections == null ? scene.background : calcColor(ray.findClosestIntersection(intersections));
 	}
 
 	/**
@@ -39,8 +38,11 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param p the point at which to calculate the color
 	 * @return the color at the given point
 	 */
-	public Color calcColor(Point p) {
-		return this.scene.ambientLight.getIntensity();
+//	public Color calcColor(Point p) {
+//		return this.scene.ambientLight.getIntensity();
+
+	private Color calcColor(Intersection gp) {
+		return scene.ambientLight.getIntensity().add(gp.geometry.emission);
 	}
 
 }

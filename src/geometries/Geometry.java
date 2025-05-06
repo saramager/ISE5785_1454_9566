@@ -12,7 +12,7 @@ public abstract class Geometry extends Intersectable {
 	 * The emission color of the geometry, which is the color emitted by the
 	 * geometry itself.
 	 */
-	Color emission = Color.BLACK;
+	public Color emission = Color.BLACK;
 
 	/**
 	 * Calculates and returns the normal vector to the geometry at a given point on

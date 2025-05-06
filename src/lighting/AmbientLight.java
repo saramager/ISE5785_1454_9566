@@ -5,11 +5,11 @@ import primitives.Color;
 /**
  * class represent Ambient Light
  */
-public class AmbientLight {
-	/**
-	 * The intensity of the ambient light (immutable).
-	 */
-	private final Color intensity;
+public class AmbientLight extends Light {
+//	/**
+//	 * The intensity of the ambient light (immutable).
+//	 */
+//	private final Color intensity;
 
 	/**
 	 * A constant representing no ambient light (black color).
@@ -22,7 +22,7 @@ public class AmbientLight {
 	 * @param intensity the color representing the ambient light intensity
 	 */
 	public AmbientLight(Color intensity) {
-		this.intensity = intensity;
+		super(intensity);
 	}
 
 	/**

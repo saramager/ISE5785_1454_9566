@@ -45,7 +45,8 @@ public abstract class Intersectable {
 	 * @return list of Points that intsersectuion
 	 */
 	public final List<Point> findIntersections(Ray ray) {
-		return calculateIntersections(ray);
+		var intersections = calculateIntersections(ray);
+		return intersections == null ? null : intersections.stream().map(intersection -> intersection.point).toList();
 	}
 
 	/**
@@ -54,7 +55,7 @@ public abstract class Intersectable {
 	 * @param ray -check intsersectuion for ray
 	 * @return list of Intersections that intsersectuion
 	 */
-	protected List<Intersection> calculateIntersectionsHelper(Ray ray);
+	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray);
 
 	public final List<Intersection> calculateIntersections(Ray ray) {
 		return calculateIntersectionsHelper(ray);
