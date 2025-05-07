@@ -21,9 +21,10 @@ class ImageWriterTest {
 		ImageWriter image = new ImageWriter(800, 500);
 		Color backgroundColor = new Color(200, 200, 255); // Light Purple background
 		Color gridColor = Color.BLACK; // Black grid lines
+		int lenght = 500, width = 800;
 
-		for (int i = 0; i < 800; i++) {
-			for (int j = 0; j < 500; j++)
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < lenght; j++)
 				if (i % 50 == 0 || j % 50 == 0)
 					image.writePixel(i, j, gridColor);
 				else

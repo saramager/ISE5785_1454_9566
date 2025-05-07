@@ -1,6 +1,7 @@
 package geometries;
 
 import primitives.Color;
+import primitives.Material;
 import primitives.Point;
 import primitives.Vector;
 
@@ -8,6 +9,12 @@ import primitives.Vector;
  * Abstract class representing a geometric shape in 3D space.
  */
 public abstract class Geometry extends Intersectable {
+
+	/**
+	 * The material of the geometry, which defines its surface properties.
+	 */
+	private Material material = new Material();
+
 	/**
 	 * The emission color of the geometry, which is the color emitted by the
 	 * geometry itself.
@@ -30,7 +37,18 @@ public abstract class Geometry extends Intersectable {
 	 * @return the current geometry object with the updated emission color
 	 */
 	public Geometry setEmission(Color emission) {
+		// TODO: check if can be earier
 		this.emission = emission;
+		return this;
+	}
+
+	/**
+	 * Set the material of the geometry.
+	 * 
+	 * @return the material
+	 */
+	public Geometry setMaterial(Material material) {
+		this.material = material;
 		return this;
 	}
 
@@ -43,6 +61,16 @@ public abstract class Geometry extends Intersectable {
 
 	{
 		return emission;
+
+	}
+
+	/**
+	 * Gets the material of the geometry.
+	 * 
+	 * @return the material
+	 */
+	public Material getMaterial() {
+		return material;
 
 	}
 

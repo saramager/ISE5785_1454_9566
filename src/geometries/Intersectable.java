@@ -5,20 +5,32 @@ package geometries;
 
 import java.util.List;
 
+import lighting.LightSource;
+import primitives.Material;
 import primitives.Point;
 import primitives.Ray;
+import primitives.Vector;
 
 /**
  * interface help with all the intersction
  */
 public abstract class Intersectable {
+
 	public static class Intersection {
 		public final Geometry geometry;
 		public final Point point;
+		public final Material material;
+		public Vector normal;
+		public Vector v;
+		public double vNormal;
+		public LightSource light;
+		public Vector l;
+		public double lNormal;
 
-		public Intersection(Geometry geometry, Point point) {
+		public Intersection(Geometry geometry, Point point, Material material) {
 			this.geometry = geometry;
 			this.point = point;
+			this.material = material;
 		}
 
 		@Override

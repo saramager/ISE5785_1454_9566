@@ -90,7 +90,7 @@ public class RenderTests {
 	public void basicRenderXml() {
 		Scene scene = new Scene("Using XML");
 		try {
-			scene = LoaderXml.loadFromXml("renderTestTwoColors.xml");
+			scene = LoaderXml.loadFromXml("xml//renderTestTwoColors.xml");
 		} catch (Exception e) {
 
 			e.printStackTrace();

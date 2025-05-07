@@ -1,7 +1,11 @@
 package scene;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import geometries.Geometries;
 import lighting.AmbientLight;
+import lighting.LightSource;
 import primitives.Color;
 
 /**
@@ -9,6 +13,10 @@ import primitives.Color;
  * geometrical objects. This is a plain data structure (PDS) with public fields.
  */
 public class Scene {
+	/**
+	 * The list of light sources in the scene. Defaults to an empty collection.
+	 */
+	public List<LightSource> lights = new LinkedList<>();
 
 	/**
 	 * The name of the scene (cannot be changed after construction).
@@ -69,6 +77,17 @@ public class Scene {
 	 */
 	public Scene setGeometries(Geometries geometries) {
 		this.geometries = geometries;
+		return this;
+	}
+
+	/**
+	 * Adds a geometrical object to the scene.
+	 *
+	 * @param geometry the geometrical object to add
+	 * @return the scene object itself (for method chaining)
+	 */
+	public Scene setLights(List<LightSource> lights) {
+		this.lights = lights;
 		return this;
 	}
 }
