@@ -1,4 +1,4 @@
-package unittests.lighting;
+package unittests.renderer;
 
 import static java.awt.Color.BLUE;
 
