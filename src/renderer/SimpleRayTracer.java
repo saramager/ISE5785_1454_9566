@@ -34,7 +34,7 @@ public class SimpleRayTracer extends RayTracerBase {
 //		return calcColor(closestP);
 
 		var intersections = scene.geometries.calculateIntersections(ray);
-		return intersections == null ? scene.background : calcColor(ray.findClosestIntersection(intersections), ray);
+		return intersections == null ? scene.background : calcColor(ray.findClosestIntersection(intersections));
 	}
 
 	/**
@@ -55,11 +55,16 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param ray          the ray that intersects with the geometry
 	 * @return the color at the intersection point
 	 */
-	private Color calcColor(Intersection intersection, Ray ray) {
-		if (preprocessIntersection(intersection, ray.getDir()))
-			return Color.BLACK;
+//	private Color calcColor(Intersection intersection, Ray ray) {
+//		if (preprocessIntersection(intersection, ray.getDir()))
+//			return Color.BLACK;
+//		return scene.ambientLight.getIntensity().scale(intersection.material.kA)
+//				.add(calcLocalEffects(intersection, ray));
+//	}
+
+	private Color calcColor(Intersection intersection) {
 		return scene.ambientLight.getIntensity().scale(intersection.material.kA)
-				.add(calcLocalEffects(intersection, ray));
+				.add(intersection.geometry.getEmission());
 	}
 
 	/**

@@ -166,7 +166,7 @@ public class Polygon extends Geometry {
 			positive = sign > 0;
 		}
 
-		return List.of(new Intersection(this, p));
+		return List.of(new Intersection(this, p, this.getMaterial()));
 
 	}
 

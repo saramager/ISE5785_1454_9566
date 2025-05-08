@@ -87,7 +87,7 @@ public class Plane extends Geometry {
 		double t = alignZero(normal.dotProduct(vecP0P) / denominator);
 
 		if (!Util.isZero(t) && t > 0)
-			return List.of(new Intersection(this, ray.getPoint(t)));// ray.getPoint(t1);
+			return List.of(new Intersection(this, ray.getPoint(t), this.getMaterial()));// ray.getPoint(t1);
 		return null;
 
 	}

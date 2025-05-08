@@ -22,7 +22,7 @@ public class Material {
 	/**
 	 * The ambient coefficient.
 	 */
-	public Double3 kA = Double3.ZERO;
+	public Double3 kA = Double3.ONE;
 
 	/**
 	 * 
@@ -84,7 +84,7 @@ public class Material {
 	 * @param kA= the ambient coefficient
 	 * @return the material after setting the ambient coefficient
 	 */
-	public Material SetKA(Double3 kA) {
+	public Material setKA(Double3 kA) {
 		this.kA = kA;
 		return this;
 	}
