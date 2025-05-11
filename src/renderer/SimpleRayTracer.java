@@ -105,7 +105,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the diffusive color component
 	 */
 	private Double3 calcDiffusive(Intersection intersection) {
-		return intersection.material.kD.scale(Math.abs(intersection.l.dotProduct(intersection.normal)));
+		return intersection.material.kD.scale(Math.abs(intersection.lNormal));
 
 	}
 
