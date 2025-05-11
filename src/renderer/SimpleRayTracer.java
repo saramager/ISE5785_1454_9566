@@ -29,26 +29,9 @@ public class SimpleRayTracer extends RayTracerBase {
 
 	@Override
 	public Color traceRay(Ray ray) {
-//		List<Point> intersections = this.scene.geometries.findIntersections(ray);
-//		if (intersections == null)
-//			return scene.background;
-//		Point closestP = ray.findClosestPoint(intersections);
-//		return calcColor(closestP);
-
 		var intersections = scene.geometries.calculateIntersections(ray);
 		return intersections == null ? scene.background : calcColor(ray.findClosestIntersection(intersections), ray);
 	}
-
-	/**
-	 * Calculates the color at a given point.
-	 * 
-	 * @param p the point at which to calculate the color
-	 * @return the color at the given point
-	 */
-//	public Color calcColor(Point p) {
-//		return this.scene.ambientLight.getIntensity();
-
-	// return scene.ambientLight.getIntensity().add(gp.geometry.getEmission());
 
 	/**
 	 * Calculates the color at a given intersection point.
@@ -93,11 +76,19 @@ public class SimpleRayTracer extends RayTracerBase {
 
 	}
 
+	/**
+	 * Calculates the local effects (diffusion and specular reflection) at a given
+	 * intersection point.
+	 * 
+	 * @param intersection the intersection point
+	 * @return the color resulting from local effects
+	 */
 	private Color calcLocalEffects(Intersection intersection) {
 		Color color = intersection.geometry.getEmission();
 		for (LightSource lightSource : scene.lights) {
 			if (setLightSource(intersection, lightSource) && intersection.lNormal * intersection.vNormal > 0) { // sign(nl)
-																												// ==
+																												// // =
+																												// //
 																												// sign(nv)
 				Color iL = lightSource.getIntensity(intersection.point);
 				color = color.add(iL.scale(calcDiffusive(intersection)), iL.scale(calcSpecular(intersection)));
