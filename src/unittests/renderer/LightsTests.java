@@ -181,13 +181,42 @@ class LightsTests {
 				.writeToImage("lightTrianglesSpot");
 	}
 
+	/** Produce a picture of a sphere lighted by a spotlight */
+	@Test
+	public void sphereLights() {
+		scene1.geometries.add(sphere);
+		scene1.lights.add(new SpotLight(sphereLightColor, sphereLightPosition, new Vector(1, 1, -0.5)).setKl(0.001)
+				.setKq(0.0001));
+		scene1.lights.add(new PointLight(new Color(290, 90, 100), new Point(100, 100, 0)).setKl(0.0003).setKq(0.00003));
+		scene1.lights.add(new DirectionalLight(new Color(52, 232, 235), new Vector(0, 1, 0)));
+
+		camera1.setResolution(500, 500) //
+				.build() //
+				.renderImage() //
+				.writeToImage("Sphere lights");
+	}
+
+	/** Produce a picture of two triangles lit by a spotlight */
+	@Test
+	public void trianglesLights() {
+		scene2.geometries.add(triangle1, triangle2);
+		scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
+				.setKl(0.001).setKq(0.0001));
+		scene2.lights.add(new PointLight(new Color(250, 2, 250), new Point(80, 80, 60)).setKl(0.0003).setKq(0.00003));
+		scene2.lights.add(new DirectionalLight(new Color(50, 100, 200), new Vector(0, 1, 0)));
+
+		camera2.setResolution(500, 500) //
+				.build() //
+				.renderImage() //
+				.writeToImage("Triangles lights");
+	}
+
 	/** Produce a picture of a sphere lighted by a narrow spotlight */
 	@Test
 	void sphereSpotSharp() {
 		scene1.geometries.add(sphere);
 		scene1.lights.add(new SpotLight(sphereLightColor, sphereLightPosition, new Vector(1, 1, -0.5)) //
-				.setKl(0.001).setKq(0.00004));
-		// .setNarrowBeam(10));
+				.setKl(0.001).setKq(0.00004).setNarrowBeam(10));
 
 		camera1.setResolution(500, 500) //
 				.build() //
@@ -200,8 +229,7 @@ class LightsTests {
 	void trianglesSpotSharp() {
 		scene2.geometries.add(triangle1, triangle2);
 		scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection) //
-				.setKl(0.001).setKq(0.00004));
-		// .setNarrowBeam(10));
+				.setKl(0.001).setKq(0.00004).setNarrowBeam(10));
 
 		camera2.setResolution(500, 500) //
 				.build() //

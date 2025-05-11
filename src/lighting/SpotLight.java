@@ -18,6 +18,10 @@ public class SpotLight extends PointLight {
 	 * The direction of the light source.
 	 */
 	private Vector direction;
+	/**
+	 * The narrow beam angle of the light source.
+	 */
+	private double narrowBeam = 1;
 
 	/**
 	 * Constructs a SpotLight with the specified intensity, position, and direction.
@@ -34,6 +38,7 @@ public class SpotLight extends PointLight {
 	@Override
 	public Color getIntensity(Point p) {
 		double spotIntensity = Math.max(0, direction.dotProduct(getL(p)));
+		spotIntensity = Math.pow(spotIntensity, narrowBeam);
 		return super.getIntensity(p).scale(spotIntensity);
 	}
 
@@ -53,6 +58,18 @@ public class SpotLight extends PointLight {
 	@Override
 	public SpotLight setKq(double kQ) {
 		super.setKq(kQ);
+		return this;
+	}
+
+	/**
+	 * Sets the direction of the light source.
+	 * 
+	 * @param direction= the new direction of the light
+	 * @return this SpotLight object
+	 */
+	public SpotLight setNarrowBeam(double narrowBeam) {
+		if (narrowBeam > 0)
+			this.narrowBeam = narrowBeam;
 		return this;
 	}
 
