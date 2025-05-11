@@ -81,7 +81,7 @@ public abstract class Intersectable {
 				return true;
 			if (obj instanceof Intersection) {
 				Intersection other = (Intersection) obj;
-				return this.geometry == other.geometry && this.point.equals(other.point);
+				return geometry == other.geometry && point.equals(other.point);
 			}
 			return false;
 		}

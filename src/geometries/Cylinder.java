@@ -1,7 +1,10 @@
 package geometries;
 
-import primitives.*;
-import static primitives.Util.*;
+import static primitives.Util.isZero;
+
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 /**
  * Represents a cylinder, which extends the {@link Tube} class.
@@ -58,7 +61,7 @@ public class Cylinder extends Tube {
 				return axisDir;
 
 			// If on the edge, treat it as a lateral point
-			if (p.subtract(onBase1 ? base1 : base2).lengthSquared() == this.radiusPow2)
+			if (p.subtract(onBase1 ? base1 : base2).lengthSquared() == radiusPow2)
 				return super.getNormal(p);
 
 			// Otherwise, return the base normal

@@ -86,9 +86,9 @@ public class Camera implements Cloneable {
 	 */
 	public Camera renderImage() {
 
-		for (int i = 0; i < this.nX; i++)
-			for (int j = 0; j < this.nY; j++)
-				this.castRay(i, j);
+		for (int i = 0; i < nX; i++)
+			for (int j = 0; j < nY; j++)
+				castRay(i, j);
 		return this;
 	}
 
@@ -101,10 +101,10 @@ public class Camera implements Cloneable {
 	 */
 
 	public Camera printGrid(int interval, Color color) {
-		for (int i = 0; i < this.nX; i++)
-			for (int j = 0; j < this.nY; j++)
+		for (int i = 0; i < nX; i++)
+			for (int j = 0; j < nY; j++)
 				if (i % interval == 0 || j % interval == 0)
-					this.imageWriter.writePixel(i, j, color);
+					imageWriter.writePixel(i, j, color);
 
 		return this;
 	}
@@ -125,7 +125,7 @@ public class Camera implements Cloneable {
 	 * @return the camera instance after writing the image
 	 */
 	public Camera writeToImage(String imageName) {
-		this.imageWriter.writeToImage(imageName);
+		imageWriter.writeToImage(imageName);
 		return this;
 
 	}
@@ -140,7 +140,7 @@ public class Camera implements Cloneable {
 	 * @return the ray from the camera to pixel
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		Point pCenter = this.location.add(vTo.scale(distance));
+		Point pCenter = location.add(vTo.scale(distance));
 		double rY = height / nY;
 		double rX = length / nX;
 		double xJ = (j - (nX - 1) / 2.0) * rX;
@@ -150,7 +150,7 @@ public class Camera implements Cloneable {
 			pIJ = pIJ.add(vRight.scale(xJ));
 		if (yI != 0)
 			pIJ = pIJ.add(vUp.scale(yI));
-		return new Ray(this.location, pIJ.subtract(this.location).normalize());
+		return new Ray(location, pIJ.subtract(location).normalize());
 	}
 
 	/**
@@ -160,9 +160,9 @@ public class Camera implements Cloneable {
 	 * @param j the vertical index of the pixel
 	 */
 	private void castRay(int i, int j) {
-		Ray rayPixel = this.constructRay(nX, nY, i, j);
-		Color colorPixel = this.rayTracer.traceRay(rayPixel);
-		this.imageWriter.writePixel(i, j, colorPixel);
+		Ray rayPixel = constructRay(nX, nY, i, j);
+		Color colorPixel = rayTracer.traceRay(rayPixel);
+		imageWriter.writePixel(i, j, colorPixel);
 
 	}
 
@@ -353,7 +353,7 @@ public class Camera implements Cloneable {
 
 			camera.imageWriter = new ImageWriter(camera.nX, camera.nY);
 			if (camera.rayTracer == null)
-				this.setRayTracer(null, RayTracerType.SIMPLE);
+				setRayTracer(null, RayTracerType.SIMPLE);
 
 			if (camera.vTo.length() != 1)
 				camera.vTo = camera.vTo.normalize();

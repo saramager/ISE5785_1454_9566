@@ -36,12 +36,12 @@ public class Point {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		return (obj instanceof Point other) && this.xyz.equals(other.xyz);
+		return (obj instanceof Point other) && xyz.equals(other.xyz);
 	}
 
 	@Override
 	public String toString() {
-		return "Point:" + this.xyz.toString();
+		return "Point:" + xyz.toString();
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class Point {
 	 * @return the distance between the two points
 	 */
 	public double distance(Point p) {
-		return Math.sqrt(this.distanceSquared(p));
+		return Math.sqrt(distanceSquared(p));
 	}
 
 	/**
@@ -83,9 +83,9 @@ public class Point {
 	 */
 	public double distanceSquared(Point p) {
 
-		double dX = this.xyz.d1() - p.xyz.d1();
-		double dY = this.xyz.d2() - p.xyz.d2();
-		double dZ = this.xyz.d3() - p.xyz.d3();
+		double dX = xyz.d1() - p.xyz.d1();
+		double dY = xyz.d2() - p.xyz.d2();
+		double dZ = xyz.d3() - p.xyz.d3();
 
 		return (dX * dX) + (dY * dY) + (dZ * dZ);
 	}

@@ -24,8 +24,8 @@ public class Ray {
 	 * @param vector the direction vector of the ray (will be normalized)
 	 */
 	public Ray(Point point, Vector vector) {
-		this.direction = vector.normalize();
-		this.head = point;
+		direction = vector.normalize();
+		head = point;
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class Ray {
 	 * @return The head of the object as a Point.
 	 */
 	public Point getHead() {
-		return this.head;
+		return head;
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class Ray {
 	 * @return The direction of the object as a Vector.
 	 */
 	public Vector getDir() {
-		return this.direction;
+		return direction;
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class Ray {
 	 * @return The point of the ray + t*ray direction
 	 */
 	public Point getPoint(double t) {
-		Point toReturn = this.head;
+		Point toReturn = head;
 		if (!Util.isZero(t))
 			toReturn = toReturn.add(direction.scale(t));
 		return toReturn;
@@ -64,12 +64,12 @@ public class Ray {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		return (obj instanceof Ray other) && this.head.equals(other.head) && this.direction.equals(other.direction);
+		return (obj instanceof Ray other) && head.equals(other.head) && direction.equals(other.direction);
 	}
 
 	@Override
 	public String toString() {
-		return "" + this.head + this.direction;
+		return "" + head + direction;
 	}
 
 	/**
@@ -82,24 +82,6 @@ public class Ray {
 		return points == null ? null
 				: findClosestIntersection(points.stream().map(p -> new Intersection(null, p, null)).toList()).point;
 	}
-//	public Point findClosestPoint(List<Point> points) {
-//		if (points == null || points.isEmpty()) {
-//			return null;
-//		}
-//
-//		Point closestPoint = null;
-//		double minDistance = Double.MAX_VALUE;
-//
-//		for (Point point : points) {
-//			double distance = head.distance(point);
-//			if (distance < minDistance) {
-//				minDistance = distance;
-//				closestPoint = point;
-//			}
-//		}
-//
-//		return closestPoint;
-//	}
 
 	/**
 	 * Finds the closest intersection point from a list of intersections.

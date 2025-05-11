@@ -54,7 +54,7 @@ public class Plane extends Geometry {
 
 	@Override
 	public Vector getNormal(Point p) {
-		return this.normal;
+		return normal;
 	}
 
 	@Override
