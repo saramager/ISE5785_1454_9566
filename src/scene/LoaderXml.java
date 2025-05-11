@@ -2,6 +2,8 @@
 package scene;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,11 +16,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import geometries.Geometries;
+import geometries.Geometry;
 import geometries.Intersectable;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.Triangle;
 import lighting.AmbientLight;
+import lighting.DirectionalLight;
+import lighting.LightSource;
+import lighting.PointLight;
+import lighting.SpotLight;
 import primitives.Color;
 import primitives.Double3;
 import primitives.Point;
@@ -85,8 +92,116 @@ public class LoaderXml {
 		}
 
 		scene.setGeometries(geometries);
+
+		Element lightsElement = (Element) document.getElementsByTagName("lights").item(0);
+		NodeList lightsNodes = geometriesElement.getChildNodes();
+
+		List<LightSource> lights = new LinkedList<>();
+
+		for (int i = 0; i < lightsNodes.getLength(); i++) {
+			Node node = lightsNodes.item(i);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				Element element = (Element) node;
+				switch (element.getTagName()) {
+				case "directionalLight":
+					lights.add(parseDirectionalLight(element));
+					break;
+				case "pointLight":
+					lights.add(parsePointLight(element));
+					break;
+				case "spotLight":
+					lights.add(parseSpotLight(element));
+					break;
+				}
+			}
+		}
+
+		scene.setLights(lights);
+
 		return scene;
 
+	}
+
+	/**
+	 * Parses a spot light element from the XML and creates a SpotLight object.
+	 *
+	 * @param element the XML element representing the spot light
+	 * @return a SpotLight object
+	 */
+	private static SpotLight parseSpotLight(Element element) {
+		String direction = element.getAttribute("direction");
+		Double3 directionVector = parseDouble3(direction);
+		String color = element.getAttribute("intensity");
+		Double3 intensity = parseDouble3(color);
+		String position = element.getAttribute("position");
+		Double3 positionVector = parseDouble3(position);
+		String kc = element.getAttribute("kc");
+		String kl = element.getAttribute("kl");
+		String kq = element.getAttribute("kq");
+
+		Point point = new Point(positionVector);
+		SpotLight spotlight = new SpotLight(new Color(intensity.d1(), intensity.d2(), intensity.d3()), point,
+				new Vector(directionVector));
+
+		if (!kc.isEmpty()) {
+			spotlight.setKc(Double.parseDouble(kc));
+		}
+		if (!kl.isEmpty()) {
+			spotlight.setKl(Double.parseDouble(kl));
+		}
+		if (!kq.isEmpty()) {
+			spotlight.setKq(Double.parseDouble(kq));
+		}
+
+		return spotlight;
+	}
+
+	/**
+	 * Parses a point light element from the XML and creates a PointLight object.
+	 *
+	 * @param element the XML element representing the point light
+	 * @return a PointLight object
+	 */
+	private static PointLight parsePointLight(Element element) {
+		String color = element.getAttribute("intensity");
+		Double3 intensity = parseDouble3(color);
+		String position = element.getAttribute("position");
+		Double3 positionVector = parseDouble3(position);
+		String kc = element.getAttribute("kc");
+		String kl = element.getAttribute("kl");
+		String kq = element.getAttribute("kq");
+
+		Point point = new Point(positionVector);
+		PointLight pointLight = new PointLight(new Color(intensity.d1(), intensity.d2(), intensity.d3()), point);
+
+		if (!kc.isEmpty()) {
+			pointLight.setKc(Double.parseDouble(kc));
+		}
+		if (!kl.isEmpty()) {
+			pointLight.setKl(Double.parseDouble(kl));
+		}
+		if (!kq.isEmpty()) {
+			pointLight.setKq(Double.parseDouble(kq));
+		}
+
+		return pointLight;
+	}
+
+	/**
+	 * Parses a directional light element from the XML and creates a
+	 * DirectionalLight object.
+	 *
+	 * @param element the XML element representing the directional light
+	 * @return a DirectionalLight object
+	 */
+	private static DirectionalLight parseDirectionalLight(Element element) {
+		String color = element.getAttribute("intensity");
+		Double3 intensity = parseDouble3(color);
+		String direction = element.getAttribute("direction");
+		Double3 directionVector = parseDouble3(direction);
+
+		return new DirectionalLight(new Color(intensity.d1(), intensity.d2(), intensity.d3()),
+				new Vector(directionVector));
 	}
 
 	/**
@@ -104,7 +219,10 @@ public class LoaderXml {
 		double radius = Double.parseDouble(element.getAttribute("radius"));
 
 		// Create and return the Sphere object
-		return new Sphere(center, radius);
+		Sphere sphere = new Sphere(center, radius);
+		praseGeomtryColor(element, sphere);
+		return sphere;
+
 	}
 
 	/**
@@ -123,7 +241,9 @@ public class LoaderXml {
 		Point p3 = new Point(parseDouble3(p3Coords));
 
 		// Create and return the Triangle object
-		return new Triangle(p1, p2, p3);
+		Triangle triangle = new Triangle(p1, p2, p3);
+		praseGeomtryColor(element, triangle);
+		return triangle;
 	}
 
 	/**
@@ -138,19 +258,62 @@ public class LoaderXml {
 			Point p0 = new Point(parseDouble3(element.getAttribute("p0")));
 			Point p1 = new Point(parseDouble3(element.getAttribute("p1")));
 			Point p2 = new Point(parseDouble3(element.getAttribute("p2")));
-			return new Plane(p0, p1, p2);
+			Plane plane = new Plane(p0, p1, p2);
+			praseGeomtryColor(element, plane);
+			return plane;
 		}
 
 		// Option 2: Parse using a point and a normal vector
 		if (element.hasAttribute("p") && element.hasAttribute("normal")) {
 			Point p0 = new Point(parseDouble3(element.getAttribute("p")));
 			Vector normal = new Vector(parseDouble3(element.getAttribute("normal")));
-			return new Plane(p0, normal);
+			Plane plane = new Plane(p0, normal);
+			praseGeomtryColor(element, plane);
+			return plane;
 		}
 
 		// If neither format is valid, throw an exception
 		throw new IllegalArgumentException(
 				"Invalid plane definition: must provide either (p0, p1, p2) or (p0, normal)");
+	}
+
+	/**
+	 * Parses the geometry color attributes from the XML element and sets them in
+	 * the Geometry object.
+	 *
+	 * @param element  the XML element representing the geometry
+	 * @param geometry the Geometry object to set the color attributes for
+	 */
+	public static void praseGeomtryColor(Element element, Geometry geometry) {
+		String emissionColor = element.getAttribute("emission");
+		if (!emissionColor.isEmpty()) {
+			Double3 emission = parseDouble3(emissionColor);
+			geometry.setEmission(new Color(emission.d1(), emission.d2(), emission.d3()));
+		}
+		String material = element.getAttribute("material");
+		if (!material.isEmpty()) {
+			String KA = element.getAttribute("kA");
+			if (!KA.isEmpty()) {
+				Double3 kA = parseDouble3(KA);
+				geometry.setMaterial(geometry.getMaterial().setKA(kA));
+			}
+			String KD = element.getAttribute("kD");
+			if (!KD.isEmpty()) {
+				Double3 kD = parseDouble3(KD);
+				geometry.setMaterial(geometry.getMaterial().setKD(kD));
+			}
+			String KS = element.getAttribute("kS");
+			if (!KS.isEmpty()) {
+				Double3 kS = parseDouble3(KS);
+				geometry.setMaterial(geometry.getMaterial().setKS(kS));
+			}
+			String shininess = element.getAttribute("shininess");
+			if (!shininess.isEmpty()) {
+				int shininessValue = Integer.parseInt(shininess);
+				geometry.setMaterial(geometry.getMaterial().setShininess(shininessValue));
+			}
+
+		}
 	}
 
 	/**

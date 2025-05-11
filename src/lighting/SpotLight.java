@@ -64,7 +64,7 @@ public class SpotLight extends PointLight {
 	/**
 	 * Sets the direction of the light source.
 	 * 
-	 * @param direction= the new direction of the light
+	 * @param narrowBeam the direction of the light source
 	 * @return this SpotLight object
 	 */
 	public SpotLight setNarrowBeam(double narrowBeam) {

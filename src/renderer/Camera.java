@@ -71,6 +71,11 @@ public class Camera implements Cloneable {
 	 * the number of pixels in the height - resolution
 	 */
 	private int nY = 1;
+	/**
+	 * The center point of the view plane, calculated based on the camera's
+	 * location, direction, and distance to the view plane.
+	 */
+	private Point centerViewPlane;
 
 	/**
 	 * Empty constructor
@@ -140,12 +145,12 @@ public class Camera implements Cloneable {
 	 * @return the ray from the camera to pixel
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		Point pCenter = location.add(vTo.scale(distance));
+		centerViewPlane = location.add(vTo.scale(distance));
 		double rY = height / nY;
 		double rX = length / nX;
 		double xJ = (j - (nX - 1) / 2.0) * rX;
 		double yI = -(i - (nY - 1) / 2.0) * rY;
-		Point pIJ = pCenter;
+		Point pIJ = centerViewPlane;
 		if (xJ != 0)
 			pIJ = pIJ.add(vRight.scale(xJ));
 		if (yI != 0)

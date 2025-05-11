@@ -13,10 +13,6 @@ import primitives.Color;
  * geometrical objects. This is a plain data structure (PDS) with public fields.
  */
 public class Scene {
-	/**
-	 * The list of light sources in the scene. Defaults to an empty collection.
-	 */
-	public List<LightSource> lights = new LinkedList<>();
 
 	/**
 	 * The name of the scene (cannot be changed after construction).
@@ -37,6 +33,11 @@ public class Scene {
 	 * The geometries contained in the scene. Defaults to an empty collection.
 	 */
 	public Geometries geometries = new Geometries();
+
+	/**
+	 * The list of light sources in the scene. Defaults to an empty collection.
+	 */
+	public List<LightSource> lights = new LinkedList<>();
 
 	/**
 	 * Constructs a Scene with the given name.
