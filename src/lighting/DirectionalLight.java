@@ -8,7 +8,8 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- * 
+ * The DirectionalLight class represents a directional light source in a 3D
+ * sence.
  */
 public class DirectionalLight extends Light implements LightSource {
 	/**

@@ -25,39 +25,6 @@ public class Triangle extends Polygon {
 		super(p1, p2, p3);
 	}
 
-//	@Override
-//	public List<Point> findIntersections(Ray ray) {
-//		List<Point> intersections = super.plane.findIntersections(ray);
-//		if (intersections == null)
-//			return null;
-//
-//		Point rayHead = ray.getHead();
-//		Vector rayDir = ray.getDir();
-//
-//		// Create vectors from the triangle vertices to the intersection point
-//		Vector v1 = vertices.get(0).subtract(rayHead);
-//		Vector v2 = vertices.get(1).subtract(rayHead);
-//		// Calculate the normals of the triangle's faces
-//		Vector n1 = v1.crossProduct(v2).normalize();
-//		// Direction of the ray
-//		double dot1 = alignZero(n1.dotProduct(rayDir));
-//		if (dot1 == 0)
-//			return null;
-//
-//		Vector v3 = vertices.get(2).subtract(rayHead);
-//		Vector n2 = v2.crossProduct(v3).normalize();
-//		double dot2 = alignZero(n2.dotProduct(rayDir));
-//		if (dot1 * dot2 <= 0)
-//			return null;
-//
-//		Vector n3 = v3.crossProduct(v1).normalize();
-//		double dot3 = alignZero(n3.dotProduct(rayDir));
-//		if (dot1 * dot3 <= 0)
-//			return null;
-//
-//		return intersections;
-//	}
-
 	@Override
 	protected List<Intersection> calculateIntersectionsHelper(Ray ray) {
 		List<Point> intersections = super.plane.findIntersections(ray);

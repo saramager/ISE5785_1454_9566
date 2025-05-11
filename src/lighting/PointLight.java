@@ -4,9 +4,19 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
+/**
+ * The PointLight class represents a point light source in a 3D scene. It
+ * extends the Light class and implements the LightSource interface.
+ */
 public class PointLight extends Light implements LightSource {
 
+	/**
+	 * The position of the point light source.
+	 */
 	private final Point position;
+	/**
+	 * The attenuation factors for the light source.
+	 */
 	private double kC = 1, kL = 0, kQ = 0;
 
 	/**

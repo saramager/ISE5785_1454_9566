@@ -61,11 +61,12 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
-	 * Calculates the color at a given intersection point.
+	 * Sets the light source in intersection for a given intersection point.
 	 * 
 	 * @param intersection the intersection point
-	 * @param ray          the ray that intersects with the geometry
-	 * @return the color at the intersection point
+	 * @param light        the light source
+	 * @return true if the light sorcue direction dot product with normal difrrent
+	 *         from zero , false otherwise
 	 */
 	private boolean setLightSource(Intersection intersection, LightSource light) {
 

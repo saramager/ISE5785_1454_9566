@@ -56,23 +56,6 @@ public class Plane extends Geometry {
 	public Vector getNormal(Point p) {
 		return this.normal;
 	}
-//
-//	@Override
-//	public List<Point> findIntersections(Ray ray) {
-//		Point p0 = ray.getHead();
-//		Vector vec = ray.getDir();
-//		if (p.equals(p0))
-//			return null;
-//		Vector vecP0P = p.subtract(p0);
-//		double denominator = alignZero(normal.dotProduct(vec));
-//		if (isZero(denominator))
-//			return null;
-//		double t = alignZero(normal.dotProduct(vecP0P) / denominator);
-//
-//		if (!Util.isZero(t) && t > 0)
-//			return List.of(ray.getPoint(t));// ray.getPoint(t1);
-//		return null;
-//	}
 
 	@Override
 	protected List<Intersection> calculateIntersectionsHelper(Ray ray) {

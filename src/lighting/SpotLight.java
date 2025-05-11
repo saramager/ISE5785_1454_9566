@@ -8,13 +8,19 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- * 
+ * The SpotLight class represents a point light source with a specific direction
+ * in a 3D scene. It extends the PointLight class and adds functionality for
+ * directional lighting.
  */
 public class SpotLight extends PointLight {
 
+	/**
+	 * The direction of the light source.
+	 */
 	private Vector direction;
 
 	/**
+	 * Constructs a SpotLight with the specified intensity, position, and direction.
 	 * 
 	 * @param intensity= the color intensity of the light
 	 * @param position=  the position of the light

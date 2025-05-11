@@ -23,9 +23,13 @@ import scene.Scene;
  * @author Dan
  */
 public class RenderTests {
+	/** White color for the background of the scene */
 	private static final java.awt.Color WHITE = new java.awt.Color(255, 255, 255);
+	/** blue color **/
 	private static final java.awt.Color BLUE = new java.awt.Color(0, 0, 255);
+	/** red color **/
 	private static final java.awt.Color RED = new java.awt.Color(255, 0, 0);
+	/** green color **/
 	private static final java.awt.Color GREEN = new java.awt.Color(0, 255, 0);
 
 	/** Default constructor to satisfy JavaDoc generator */

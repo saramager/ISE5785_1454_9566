@@ -16,17 +16,54 @@ import primitives.Vector;
  */
 public abstract class Intersectable {
 
+	/**
+	 * inner class to help with the intersection
+	 */
 	public static class Intersection {
+		/**
+		 * the geometry that intersect with the ray
+		 */
 		public final Geometry geometry;
+		/**
+		 * the point that intersect with the ray
+		 */
 		public final Point point;
+		/**
+		 * the material of the geometry
+		 */
 		public final Material material;
+		/**
+		 * the normal of the geometry
+		 */
 		public Vector normal;
+		/**
+		 * the vector of the ray
+		 */
 		public Vector v;
+		/**
+		 * the dot product of the vector and the normal
+		 */
 		public double vNormal;
+		/**
+		 * the light source that intersect with the ray
+		 */
 		public LightSource light;
+		/**
+		 * the vector the light source points to.
+		 */
 		public Vector l;
+		/**
+		 * the dot product of the light source and the normal
+		 */
 		public double lNormal;
 
+		/**
+		 * constructor for the intersection
+		 * 
+		 * @param geometry - the geometry that intersect with the ray
+		 * @param point    - the point that intersect with the ray
+		 * @param material - the material of the geometry
+		 */
 		public Intersection(Geometry geometry, Point point, Material material) {
 			this.geometry = geometry;
 			this.point = point;

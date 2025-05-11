@@ -4,7 +4,7 @@
 package primitives;
 
 /**
- * 
+ * Material class represents the material properties of a 3D object -PDS
  */
 public class Material {
 	/**
@@ -25,6 +25,7 @@ public class Material {
 	public Double3 kA = Double3.ONE;
 
 	/**
+	 * set the diffuse coefficient
 	 * 
 	 * @param kD= the diffuse coefficient
 	 * @return the material after setting the diffuse coefficient
@@ -70,7 +71,7 @@ public class Material {
 	/**
 	 * set the shininess coefficient
 	 * 
-	 * @param nShininess
+	 * @param nShininess = the shininess coefficient
 	 * @return the material after setting the shininess coefficient
 	 */
 	public Material setShininess(int nShininess) {

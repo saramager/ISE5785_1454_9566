@@ -81,9 +81,9 @@ public class Scene {
 	}
 
 	/**
-	 * Adds a geometrical object to the scene.
+	 * Adds a light sorcues to the scene.
 	 *
-	 * @param geometry the geometrical object to add
+	 * @param lights the lights sources list to add
 	 * @return the scene object itself (for method chaining)
 	 */
 	public Scene setLights(List<LightSource> lights) {
