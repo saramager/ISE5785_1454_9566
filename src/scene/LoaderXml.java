@@ -93,7 +93,6 @@ public class LoaderXml {
 
 		scene.setGeometries(geometries);
 
-		Element lightsElement = (Element) document.getElementsByTagName("lights").item(0);
 		NodeList lightsNodes = geometriesElement.getChildNodes();
 
 		List<LightSource> lights = new LinkedList<>();

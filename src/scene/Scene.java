@@ -73,7 +73,7 @@ public class Scene {
 	/**
 	 * Sets the geometries of the scene.
 	 *
-	 * @param geometries the geometrical model to use
+	 * @param geometries the geometric model to use
 	 * @return the scene object itself (for method chaining)
 	 */
 	public Scene setGeometries(Geometries geometries) {
@@ -82,7 +82,7 @@ public class Scene {
 	}
 
 	/**
-	 * Adds a light sorcues to the scene.
+	 * Adds a light sources to the scene.
 	 *
 	 * @param lights the lights sources list to add
 	 * @return the scene object itself (for method chaining)

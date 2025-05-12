@@ -125,7 +125,7 @@ public class Polygon extends Geometry {
 			positive = sign > 0;
 		}
 
-		return List.of(new Intersection(this, p, getMaterial()));
+		return List.of(new Intersection(this, p));
 
 	}
 

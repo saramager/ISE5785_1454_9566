@@ -25,13 +25,4 @@ public class AmbientLight extends Light {
 		super(intensity);
 	}
 
-	/**
-	 * Returns the intensity of the ambient light.
-	 *
-	 * @return the ambient light intensity as a Color
-	 */
-	public Color getIntensity() {
-		return intensity;
-	}
-
 }

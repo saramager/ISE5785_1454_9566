@@ -12,7 +12,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 /**
- * interface help with all the intersction
+ * interface help with all the intersection
  */
 public abstract class Intersectable {
 
@@ -64,10 +64,10 @@ public abstract class Intersectable {
 		 * @param point    - the point that intersect with the ray
 		 * @param material - the material of the geometry
 		 */
-		public Intersection(Geometry geometry, Point point, Material material) {
+		public Intersection(Geometry geometry, Point point) {
 			this.geometry = geometry;
 			this.point = point;
-			this.material = material;
+			this.material = geometry == null ? null : geometry.getMaterial();
 		}
 
 		@Override
@@ -79,18 +79,16 @@ public abstract class Intersectable {
 		public boolean equals(Object obj) {
 			if (this == obj)
 				return true;
-			if (obj instanceof Intersection) {
-				Intersection other = (Intersection) obj;
-				return geometry == other.geometry && point.equals(other.point);
-			}
-			return false;
+			return (obj instanceof Intersection other) //
+					&& geometry == other.geometry && point.equals(other.point);
 		}
+
 	}
 
 	/**
 	 * find the intersections point between an gematry and ray
 	 * 
-	 * @param ray -check intsersectuion for ray
+	 * @param ray check intsersectuion for ray
 	 * @return list of Points that intsersectuion
 	 */
 	public final List<Point> findIntersections(Ray ray) {
@@ -99,22 +97,21 @@ public abstract class Intersectable {
 	}
 
 	/**
-	 * help mothode to find the intersections point between an gematry and ray
+	 * help method to find the intersections point between an geometry and ray
 	 * 
-	 * @param ray -check intsersectuion for ray
-	 * @return list of Intersections that intsersectuion
+	 * @param ray -check intersection for ray
+	 * @return list of Intersections that intersection
 	 */
 	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray);
 
 	/**
-	 * find the intersections point between an gematry and ray
+	 * find the intersections point between an geometry and ray
 	 * 
-	 * @param ray - check intsersectuion for ray
-	 * @return list of Intersections that intsersectuion
+	 * @param ray - check intersection for ray
+	 * @return list of Intersections that intersection
 	 */
 	public final List<Intersection> calculateIntersections(Ray ray) {
 		return calculateIntersectionsHelper(ray);
-
 	}
 
 }

@@ -41,7 +41,7 @@ public class Sphere extends RadialGeometry {
 		Vector vec = ray.getDir();
 		// "the v vector" from the presentation
 		if (center.equals(p0))
-			return List.of(new Intersection(this, ray.getPoint(radius), getMaterial()));
+			return List.of(new Intersection(this, ray.getPoint(radius)));
 
 		Vector u = center.subtract(p0);
 		double tm = (vec.dotProduct(u));
@@ -57,9 +57,8 @@ public class Sphere extends RadialGeometry {
 			return null;
 
 		double t1 = tm - th;
-		return alignZero(t1) <= 0 ? List.of(new Intersection(this, ray.getPoint(t2), getMaterial()))//
-				: List.of(new Intersection(this, ray.getPoint(t1), getMaterial()),
-						new Intersection(this, ray.getPoint(t2), getMaterial()));
+		return alignZero(t1) <= 0 ? List.of(new Intersection(this, ray.getPoint(t2)))//
+				: List.of(new Intersection(this, ray.getPoint(t1)), new Intersection(this, ray.getPoint(t2)));
 
 	}
 }

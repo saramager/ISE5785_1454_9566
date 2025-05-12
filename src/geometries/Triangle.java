@@ -55,6 +55,6 @@ public class Triangle extends Polygon {
 		if (dot1 * dot3 <= 0)
 			return null;
 
-		return List.of(new Intersection(this, intersections.get(0), this.getMaterial()));
+		return List.of(new Intersection(this, intersections.getFirst()));
 	}
 }

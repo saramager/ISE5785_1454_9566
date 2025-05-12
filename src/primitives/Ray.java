@@ -47,17 +47,17 @@ public class Ray {
 	}
 
 	/**
-	 * refrecser help claclution
+	 * Get point on the ray at a given distance from the head.
 	 * 
-	 * @param t the number to help calclution
-	 * @return The point of the ray + t*ray direction
+	 * @param t the distance from the head of the ray
+	 * @return The point of the ray at distance t from the head.
 	 */
 	public Point getPoint(double t) {
-		Point toReturn = head;
-		if (!Util.isZero(t))
-			toReturn = toReturn.add(direction.scale(t));
-		return toReturn;
-
+		try {
+			return head.add(direction.scale(t));
+		} catch (IllegalArgumentException ignored) {
+			return head;
+		}
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class Ray {
 	 */
 	public Point findClosestPoint(List<Point> points) {
 		return points == null ? null
-				: findClosestIntersection(points.stream().map(p -> new Intersection(null, p, null)).toList()).point;
+				: findClosestIntersection(points.stream().map(p -> new Intersection(null, p)).toList()).point;
 	}
 
 	/**
@@ -91,12 +91,12 @@ public class Ray {
 	 *         is empty
 	 */
 	public Intersection findClosestIntersection(List<Intersection> points) {
-		if (points == null || points.isEmpty()) {
+		if (points == null) {
 			return null;
 		}
 
 		Intersection closestIntersection = null;
-		double minDistance = Double.MAX_VALUE;
+		double minDistance = Double.POSITIVE_INFINITY;
 
 		for (Intersection intersection : points) {
 			double distance = head.distance(intersection.point);

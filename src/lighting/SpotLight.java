@@ -3,6 +3,8 @@
  */
 package lighting;
 
+import static primitives.Util.alignZero;
+
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
@@ -17,7 +19,7 @@ public class SpotLight extends PointLight {
 	/**
 	 * The direction of the light source.
 	 */
-	private Vector direction;
+	private final Vector direction;
 	/**
 	 * The narrow beam angle of the light source.
 	 */
@@ -37,14 +39,15 @@ public class SpotLight extends PointLight {
 
 	@Override
 	public Color getIntensity(Point p) {
-		double spotIntensity = Math.max(0, direction.dotProduct(getL(p)));
+		double spotIntensity = direction.dotProduct(getL(p));
+		if (alignZero(spotIntensity) <= 0)
+			return Color.BLACK;
 		spotIntensity = Math.pow(spotIntensity, narrowBeam);
 		return super.getIntensity(p).scale(spotIntensity);
 	}
 
 	@Override
 	public SpotLight setKc(double kC) {
-
 		super.setKc(kC);
 		return this;
 	}
@@ -68,7 +71,7 @@ public class SpotLight extends PointLight {
 	 * @return this SpotLight object
 	 */
 	public SpotLight setNarrowBeam(double narrowBeam) {
-		if (narrowBeam > 0)
+		if (narrowBeam >= 1)
 			this.narrowBeam = narrowBeam;
 		return this;
 	}

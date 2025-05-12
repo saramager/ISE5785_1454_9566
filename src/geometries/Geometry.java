@@ -57,11 +57,8 @@ public abstract class Geometry extends Intersectable {
 	 * 
 	 * @return the emission color
 	 */
-	public Color getEmission()
-
-	{
+	public Color getEmission() {
 		return emission;
-
 	}
 
 	/**
@@ -71,7 +68,6 @@ public abstract class Geometry extends Intersectable {
 	 */
 	public Material getMaterial() {
 		return material;
-
 	}
 
 }

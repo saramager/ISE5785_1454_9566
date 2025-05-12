@@ -18,17 +18,14 @@ class ImageWriterTest {
 	 */
 	@Test
 	void testWriteToImage() {
-		ImageWriter image = new ImageWriter(800, 500);
+		int length = 500, width = 800;
+		ImageWriter image = new ImageWriter(width, length);
 		Color backgroundColor = new Color(200, 200, 255); // Light Purple background
 		Color gridColor = Color.BLACK; // Black grid lines
-		int lenght = 500, width = 800;
 
 		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < lenght; j++)
-				if (i % 50 == 0 || j % 50 == 0)
-					image.writePixel(i, j, gridColor);
-				else
-					image.writePixel(i, j, backgroundColor);
+			for (int j = 0; j < length; j++)
+				image.writePixel(i, j, i % 50 == 0 || j % 50 == 0 ? gridColor : backgroundColor);
 		}
 		image.writeToImage("test");
 

@@ -7,7 +7,6 @@ import java.util.List;
 
 import primitives.Point;
 import primitives.Ray;
-import primitives.Util;
 import primitives.Vector;
 
 /**
@@ -69,9 +68,7 @@ public class Plane extends Geometry {
 			return null;
 		double t = alignZero(normal.dotProduct(vecP0P) / denominator);
 
-		if (!Util.isZero(t) && t > 0)
-			return List.of(new Intersection(this, ray.getPoint(t), this.getMaterial()));// ray.getPoint(t1);
-		return null;
+		return t <= 0 ? null : List.of(new Intersection(this, ray.getPoint(t)));
 
 	}
 

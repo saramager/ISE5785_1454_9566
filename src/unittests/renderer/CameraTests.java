@@ -84,7 +84,6 @@ class CameraTests {
 		// =============== Boundary Values Tests ==================
 		// BV01: set to a target on Y-axis without up vector
 
-		Point target3 = new Point(0, 1, 0);
 		Camera camera3 = cameraBuilder.setDirection(new Point(0, 1, 0)).build();
 		Point center3 = new Point(0, 10, 0);
 		Vector right3 = new Vector(1, 0, 0);
