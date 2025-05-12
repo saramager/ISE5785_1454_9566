@@ -321,7 +321,7 @@ public class LoaderXml {
 	 * representing the color.
 	 *
 	 * @param str the color string
-	 * @return a Double3 object representing the color
+	 * @return a Double3 object with the objects
 	 */
 	private static Double3 parseDouble3(String str) {
 		Pattern p = Pattern.compile("-?\\d+(\\.\\d+)?");
