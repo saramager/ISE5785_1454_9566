@@ -4,6 +4,8 @@ package renderer;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
+import java.util.List;
+
 import geometries.Intersectable.Intersection;
 import lighting.LightSource;
 import primitives.Color;
@@ -16,6 +18,10 @@ import scene.Scene;
  * A simple ray tracer implementation that extends the RayTracerBase class.
  */
 public class SimpleRayTracer extends RayTracerBase {
+	/**
+	 * A small constant used to avoid floating-point precision issues.
+	 */
+	private static final double DELTA = 0.1;
 
 	/**
 	 * Constructor - initializes the ray tracer with a given scene.
@@ -88,7 +94,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	private Color calcColorLocalEffects(Intersection intersection) {
 		Color color = intersection.geometry.getEmission();
 		for (LightSource lightSource : scene.lights) {
-			if (!setLightSource(intersection, lightSource))
+			if (!setLightSource(intersection, lightSource) || !unshaded(intersection))
 				continue;
 
 			Color iL = lightSource.getIntensity(intersection.point);
@@ -121,6 +127,15 @@ public class SimpleRayTracer extends RayTracerBase {
 		if (minusVR <= 0)
 			return Double3.ZERO;
 		return intersection.material.kS.scale(Math.pow(minusVR, intersection.material.nShininess));
+	}
+
+	private boolean unshaded(Intersection intersection) {
+		Vector pointToLight = intersection.l.scale(-1);
+		Vector delta = intersection.normal.scale(intersection.lNormal < 0 ? DELTA : -DELTA);
+		Ray shadowRay = new Ray(intersection.point.add(delta), pointToLight);
+
+		List<Intersection> intersections = scene.geometries.calculateIntersections(shadowRay);
+		return intersections == null;
 	}
 
 }

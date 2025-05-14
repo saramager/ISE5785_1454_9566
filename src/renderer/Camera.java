@@ -220,7 +220,7 @@ public class Camera implements Cloneable {
 		 */
 		public Builder setRotation(double angleDegreess) {
 			rotationAngleDegrees = angleDegreess;
-			rotationAxis = new Vector(0, 1, 0);
+			rotationAxis = camera.vTo;
 			return this;
 		}
 
@@ -382,6 +382,7 @@ public class Camera implements Cloneable {
 			Vector term3 = u.scale(u.dotProduct(v) * (1 - cos));// u * (u • v)(1 - cosθ)
 
 			return term1.add(term2).add(term3); // חיבור כל שלושת האיברים
+
 		}
 
 		/**
