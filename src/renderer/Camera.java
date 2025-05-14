@@ -179,6 +179,50 @@ public class Camera implements Cloneable {
 		 * Camera builder
 		 */
 		private final Camera camera = new Camera();
+		/**
+		 * The translation vector for the camera.
+		 */
+		private Vector translation = null;
+		private double rotationAngleDegrees = 0.0;
+		private Vector rotationAxis = null;
+
+		/**
+		 * Sets the translation vector for the camera.
+		 * 
+		 * @param translation the translation vector to apply
+		 * @return the builder instance
+		 */
+		public Builder setTranslation(Vector translation) {
+			this.translation = translation;
+			return this;
+		}
+
+		/**
+		 * Sets the rotation for the camera.
+		 * 
+		 * @param angleDegrees rotation angle in degrees
+		 * @param axis         unit vector representing axis of rotation (must be
+		 *                     normalized)
+		 * @return the builder instance
+		 */
+		public Builder setRotation(double angleDegrees, Vector axis) {
+			this.rotationAngleDegrees = angleDegrees;
+			this.rotationAxis = axis.normalize();
+			return this;
+		}
+
+		/**
+		 * Sets the rotation for the camera.
+		 * 
+		 * @param angleDegrees rotation angle in degrees
+		 * 
+		 * @return the builder instance wtith Y axis.
+		 */
+		public Builder setRotation(double angleDegreess) {
+			rotationAngleDegrees = angleDegreess;
+			rotationAxis = new Vector(0, 1, 0);
+			return this;
+		}
 
 		/**
 		 * set Location
@@ -322,6 +366,25 @@ public class Camera implements Cloneable {
 		}
 
 		/**
+		 * Rotates a vector around a given axis by a specified angle in radians.
+		 * 
+		 * @param v     the vector to rotate
+		 * @param u     the axis of rotation (must be normalized)
+		 * @param theta the angle of rotation in radians
+		 * @return the rotated vector
+		 */
+		private static Vector rotateVector(Vector v, Vector u, double theta) {
+			double cos = Math.cos(theta);
+			double sin = Math.sin(theta);
+
+			Vector term1 = v.scale(cos); // v * cosθ
+			Vector term2 = u.crossProduct(v).scale(sin); // (u × v) * sinθ
+			Vector term3 = u.scale(u.dotProduct(v) * (1 - cos));// u * (u • v)(1 - cosθ)
+
+			return term1.add(term2).add(term3); // חיבור כל שלושת האיברים
+		}
+
+		/**
 		 * Camera build
 		 * 
 		 * @return camera
@@ -355,6 +418,18 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, RESOLUTIONX_FIELD);
 			if (camera.nY <= 0)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, RESOLUTIONY_FIELD);
+
+			if (translation != null) {
+				camera.location = camera.location.add(translation);
+			}
+
+			if (!isZero(rotationAngleDegrees) && rotationAxis != null) {
+				double angleRad = Math.toRadians(rotationAngleDegrees);
+
+				camera.vTo = rotateVector(camera.vTo, rotationAxis, angleRad).normalize();
+				camera.vUp = rotateVector(camera.vUp, rotationAxis, angleRad).normalize();
+				camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
+			}
 
 			camera.imageWriter = new ImageWriter(camera.nX, camera.nY);
 			if (camera.rayTracer == null)

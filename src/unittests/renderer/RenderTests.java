@@ -185,4 +185,52 @@ public class RenderTests {
 				.writeToImage("our color render test");
 
 	}
+
+	@Test
+	public void testCameraRotationAndTranslation() {
+		// Scene basic setup
+		Scene scene = new Scene("Rotation and Translation Test").setBackground(new Color(75, 127, 90))
+				.setAmbientLight(new AmbientLight(new Color(255, 191, 191)));
+
+		// Add a few objects to the scene
+		scene.geometries.add(new Sphere(new Point(0, 0, -100), 50d),
+				new Triangle(new Point(-100, 0, -100), new Point(0, 100, -100), new Point(-100, 100, -100)),
+				new Triangle(new Point(-100, 0, -100), new Point(0, -100, -100), new Point(-100, -100, -100)),
+				new Triangle(new Point(100, 0, -100), new Point(0, -100, -100), new Point(100, -100, -100)));
+
+		// Define the initial camera settings
+		Camera.Builder camera4 = camera.setRayTracer(scene, RayTracerType.SIMPLE).setResolution(1000, 1000);
+
+		// 1. Render image with no transformation (original position)
+		Camera.Builder camera1 = camera4;
+		camera1.build().renderImage().writeToImage("renderOriginal.png");
+
+		// 2. Translate camera in the X direction and render image
+		Camera.Builder camera2 = camera4;
+		camera2.setTranslation(new Vector(50, 0, 0));
+		camera2.build().renderImage().writeToImage("renderTranslatedX.png");
+
+		// 3. Translate camera in the Y direction and render image
+		Camera.Builder camera3 = camera4;
+
+		camera3.setTranslation(new Vector(0, 50, 0));
+		camera3.build().renderImage().writeToImage("renderTranslatedY.png");
+
+		// 4. Rotate camera around the Y axis by 45 degrees and render image
+		Camera.Builder camera5 = camera4;
+		camera5.setRotation(45, new Vector(0, 1, 0)); // Rotate around Y axis by 45 degrees
+		camera5.build().writeToImage("renderRotated45.png");
+
+		// 5. Rotate camera around the Y axis by 90 degrees and render image
+		Camera.Builder camera6 = camera4;
+		camera6.setRotation(90, new Vector(0, 1, 0)); // Rotate around Y axis by 90 degrees
+		camera6.build().writeToImage("renderRotated90.png");
+
+		// 6. Translate camera and rotate, then render image
+		Camera.Builder camera7 = camera4;
+
+		camera7.setTranslation(new Vector(50, 50, 0)).setRotation(45, new Vector(0, 1, 0));
+		camera7.build().renderImage().writeToImage("renderTranslatedAndRotated45.png");
+	}
+
 }
