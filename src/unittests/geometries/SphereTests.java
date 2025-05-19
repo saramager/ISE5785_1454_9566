@@ -150,6 +150,10 @@ class SphereTests {
 		assertEquals(List.of(new Point(0.5, 0.8660254037844386, 0)), result, "Ray crosses sphere");
 	}
 
+	/**
+	 * Test method for {@link geometries.Sphere#findIntersections(Ray, double)}
+	 */
+
 	@Test
 	void testFindIntersectionsWithMaxDistance() {
 		Sphere sphere = new Sphere(new Point(0, 0, 0), 1.0);

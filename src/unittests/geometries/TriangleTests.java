@@ -91,6 +91,10 @@ class TriangleTests {
 
 	}
 
+	/**
+	 * Test method for
+	 * {@link geometries.Triangle#calculateIntersections(Ray, double)}
+	 */
 	@Test
 	void testTriangleCalculateIntersectionsWithMaxDistance() {
 		// Create a triangle in the XY plane
