@@ -102,7 +102,7 @@ public abstract class Intersectable {
 	 * @param ray -check intersection for ray
 	 * @return list of Intersections that intersection
 	 */
-	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray);
+//	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray);
 
 	/**
 	 * find the intersections point between an geometry and ray
@@ -111,7 +111,14 @@ public abstract class Intersectable {
 	 * @return list of Intersections that intersection
 	 */
 	public final List<Intersection> calculateIntersections(Ray ray) {
-		return calculateIntersectionsHelper(ray);
+		return calculateIntersections(ray, Double.POSITIVE_INFINITY);
+		// return calculateIntersectionsHelper(ray);
 	}
+
+	public final List<Intersection> calculateIntersections(Ray ray, double maxDistance) {
+		return calculateIntersectionsHelper(ray, maxDistance);
+	}
+
+	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray, double maxDistance);
 
 }

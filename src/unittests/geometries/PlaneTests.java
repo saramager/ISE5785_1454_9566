@@ -3,12 +3,19 @@
  */
 package unittests.geometries;
 
-import static org.junit.jupiter.api.Assertions.*;
-import primitives.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import geometries.Plane;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
+
+import geometries.Intersectable.Intersection;
+import geometries.Plane;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 /**
  * Test Junit for geometries.Plane
@@ -140,5 +147,40 @@ class PlaneTests {
 		final Ray ray9 = new Ray(new Point(0, 0, 0), new Vector(1, 1, -1)); // Starts from the plane
 		assertNull(plane.findIntersections(ray9), "Ray starting from the plane should return null");
 
+	}
+
+	@Test
+	void testPlaneCalculateIntersectionsWithMaxDistance() {
+		// Plane in XY plane (Z = 0)
+		Plane plane = new Plane(new Point(0, 0, 0), new Vector(0, 0, 1));
+
+		Vector dir = new Vector(0, 0, 1); // Upwards toward the plane
+
+		// TC1: Intersection exactly at distance = 1 → 1 point
+		Ray ray1 = new Ray(new Point(0, 0, -1), dir);
+		List<Intersection> result1 = plane.calculateIntersections(ray1, 1.0);
+		assertEquals(1, result1.size(), "TC1: Expected 1 intersection at exact maxDistance");
+
+		// TC2: Intersection just below max distance → 1 point
+		Ray ray2 = new Ray(new Point(0, 0, -0.99), dir);
+		List<Intersection> result2 = plane.calculateIntersections(ray2, 1.0);
+		assertEquals(1, result2.size(), "TC2: Expected 1 intersection just below maxDistance");
+
+		// TC3: Intersection just above max distance → no intersection
+		Ray ray3 = new Ray(new Point(0, 0, -1.01), dir);
+		assertNull(plane.calculateIntersections(ray3, 1.0), "TC3: Expected no intersection just above maxDistance");
+
+		// TC4: Ray starts exactly on the plane → distance 0
+		Ray ray4 = new Ray(new Point(0, 0, 0), dir);
+		List<Intersection> result4 = plane.calculateIntersections(ray4, 0);
+		assertNull(result4, "TC4: Expected 0 intersection at distance 0");
+
+		// TC5: Ray intersects far beyond distance → no intersection
+		Ray ray5 = new Ray(new Point(0, 0, -10), dir);
+		assertNull(plane.calculateIntersections(ray5, 1.0), "TC5: Expected no intersection (intersection too far)");
+
+		// TC6: Ray opposite to plane normal → no intersection (backwards)
+		Ray ray6 = new Ray(new Point(0, 0, -1), new Vector(0, 0, -1));
+		assertNull(plane.calculateIntersections(ray6, 5.0), "TC6: Expected no intersection (wrong direction)");
 	}
 }

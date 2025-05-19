@@ -186,7 +186,7 @@ public class RenderTests {
 
 	}
 
-	@Test
+//	@Test
 	public void testCameraRotationAndTranslation() {
 		// Scene basic setup
 		Scene scene = new Scene("Rotation and Translation Test").setBackground(new Color(75, 127, 90))

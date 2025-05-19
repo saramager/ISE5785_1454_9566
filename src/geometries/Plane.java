@@ -57,7 +57,7 @@ public class Plane extends Geometry {
 	}
 
 	@Override
-	protected List<Intersection> calculateIntersectionsHelper(Ray ray) {
+	protected List<Intersection> calculateIntersectionsHelper(Ray ray, double maxDistance) {
 		Point p0 = ray.getHead();
 		Vector vec = ray.getDir();
 		if (p.equals(p0))
@@ -67,8 +67,9 @@ public class Plane extends Geometry {
 		if (isZero(denominator))
 			return null;
 		double t = alignZero(normal.dotProduct(vecP0P) / denominator);
-
-		return t <= 0 ? null : List.of(new Intersection(this, ray.getPoint(t)));
+		if (alignZero(t - maxDistance) <= 0)
+			return t <= 0 ? null : List.of(new Intersection(this, ray.getPoint(t)));
+		return null;
 
 	}
 

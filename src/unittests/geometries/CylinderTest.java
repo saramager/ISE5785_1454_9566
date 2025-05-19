@@ -3,10 +3,14 @@
  */
 package unittests.geometries;
 
-import static org.junit.jupiter.api.Assertions.*;
-import primitives.*;
-import geometries.Cylinder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
+
+import geometries.Cylinder;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 /**
  * Test Junit for geometries.Cylinder
@@ -60,4 +64,5 @@ class CylinderTest {
 		assertEquals(new Vector(1, 0, 0), cylinder.getNormal(p7),
 				"ERROR: The normal at the top base edge should match the lateral surface normal");
 	}
+
 }

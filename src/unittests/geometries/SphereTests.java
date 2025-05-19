@@ -3,13 +3,18 @@
  */
 package unittests.geometries;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import geometries.Sphere;
-import primitives.*;
-import primitives.Vector;
 import org.junit.jupiter.api.Test;
+
+import geometries.Intersectable.Intersection;
+import geometries.Sphere;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 /**
  * Test Junit for geometries.Sphere
@@ -143,7 +148,45 @@ class SphereTests {
 		result = sphere.findIntersections(new Ray(pInside, vOrthogonalInside));
 		assertEquals(1, result.size(), "Wrong number of points");
 		assertEquals(List.of(new Point(0.5, 0.8660254037844386, 0)), result, "Ray crosses sphere");
-
 	}
 
+	@Test
+	void testFindIntersectionsWithMaxDistance() {
+		Sphere sphere = new Sphere(new Point(0, 0, 0), 1.0);
+		Vector dir = new Vector(1, 0, 0);
+
+		// TC30: Ray intersects at 2 points, both beyond max distance → no intersections
+		Ray ray1 = new Ray(new Point(-5, 0, 0), dir);
+		assertNull(sphere.calculateIntersections(ray1, 1), "TC30: Expected no intersection due to distance");
+
+		// TC31: Ray intersects at 2 points, only the first within max distance → 1
+		// point
+		Ray ray2 = new Ray(new Point(-2, 0, 0), dir);
+		List<Intersection> result31 = sphere.calculateIntersections(ray2, 2.5);
+		assertEquals(1, result31.size(), "TC31: Expected 1 intersection due to distance limit");
+		assertEquals(new Point(-1, 0, 0), result31.get(0).point, "TC31: Wrong intersection point");
+
+		// TC32: Ray starts inside sphere, intersection exists but beyond max distance →
+		// no intersection
+		Ray ray3 = new Ray(new Point(0.5, 0, 0), dir);
+		assertNull(sphere.calculateIntersections(ray3, 0.4), "TC32: Expected no intersection due to max distance");
+
+		// TC33: Ray starts at sphere center, intersection at radius distance → point
+		// returned
+		Ray ray4 = new Ray(new Point(0, 0, 0), dir);
+		List<Intersection> result33 = sphere.calculateIntersections(ray4, 1.0);
+		assertEquals(1, result33.size(), "TC33: Expected 1 intersection from center");
+		assertEquals(new Point(1, 0, 0), result33.get(0).point, "TC33: Wrong intersection point");
+
+		// TC34: Ray starts inside the sphere and intersects within max distance → point
+		// returned
+		Ray ray5 = new Ray(new Point(0.5, 0, 0), dir);
+		List<Intersection> result34 = sphere.calculateIntersections(ray5, 1.0);
+		assertEquals(1, result34.size(), "TC34: Expected 1 intersection inside sphere");
+		assertEquals(new Point(1, 0, 0), result34.get(0).point, "TC34: Wrong intersection point");
+
+		// TC35: Ray misses sphere completely → no intersection, regardless of distance
+		Ray ray6 = new Ray(new Point(-5, 2, 0), dir);
+		assertNull(sphere.calculateIntersections(ray6, 100), "TC35: Expected no intersection");
+	}
 }

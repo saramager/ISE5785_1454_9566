@@ -1,11 +1,19 @@
 package unittests.geometries;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import geometries.Intersectable.Intersection;
 import geometries.Polygon;
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 /**
  * Testing Polygons
@@ -126,5 +134,40 @@ class PolygonTests {
 				new Point(0, -1, 0));
 		assertEquals(1, mesh3.findIntersections(new Ray(new Point(-1, -1, -1), new Vector(1, 1, 1))).size(),
 				"Failed to find the intersection point when the intersection point is inside the Polygon");
+	}
+
+	@Test
+	void testPolygonCalculateIntersectionsWithMaxDistance() {
+		// Polygon in XY plane: square from (0,0,0) to (1,1,0)
+		Polygon polygon = new Polygon(new Point(0, 0, 0), new Point(1, 0, 0), new Point(1, 1, 0), new Point(0, 1, 0));
+
+		Vector dir = new Vector(0, 0, 1); // Direction towards the polygon from below
+
+		// TC1: Intersection exactly at distance = 1 → 1 point
+		Ray ray1 = new Ray(new Point(0.5, 0.5, -1), dir);
+		List<Intersection> result1 = polygon.calculateIntersections(ray1, 1.0);
+		assertEquals(1, result1.size(), "TC1: Expected 1 intersection at exact maxDistance");
+
+		// TC2: Intersection just below max distance → 1 point
+		Ray ray2 = new Ray(new Point(0.5, 0.5, -0.99), dir);
+		List<Intersection> result2 = polygon.calculateIntersections(ray2, 1.0);
+		assertEquals(1, result2.size(), "TC2: Expected 1 intersection just below maxDistance");
+
+		// TC3: Intersection just above max distance → no intersection
+		Ray ray3 = new Ray(new Point(0.5, 0.5, -1.01), dir);
+		assertNull(polygon.calculateIntersections(ray3, 1.0), "TC3: Expected no intersection just above maxDistance");
+
+		// TC4: Intersection at far distance, maxDistance small → no intersection
+		Ray ray4 = new Ray(new Point(0.5, 0.5, -5), dir);
+		assertNull(polygon.calculateIntersections(ray4, 1.0), "TC4: Expected no intersection due to large distance");
+
+		// TC5: Ray starts on the plane → intersection at distance 0
+		Ray ray5 = new Ray(new Point(0.5, 0.5, 0), dir);
+		List<Intersection> result5 = polygon.calculateIntersections(ray5, 0);
+		assertNull(result5, "TC5: Expected 0 intersection at distance 0");
+
+		// TC6: Ray misses the polygon → no intersection regardless of distance
+		Ray ray6 = new Ray(new Point(2, 2, -1), dir);
+		assertNull(polygon.calculateIntersections(ray6, 5.0), "TC6: Expected no intersection (ray misses polygon)");
 	}
 }

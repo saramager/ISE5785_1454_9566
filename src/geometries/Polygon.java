@@ -89,14 +89,15 @@ public class Polygon extends Geometry {
 	}
 
 	@Override
-	protected List<Intersection> calculateIntersectionsHelper(Ray ray) {
-		List<Point> planeIntersections = plane.findIntersections(ray);
+	protected List<Intersection> calculateIntersectionsHelper(Ray ray, double maxDistance) {
+		// List<Point> planeIntersections = plane.findIntersections(ray);
+		List<Intersection> planeIntersections = plane.calculateIntersections(ray, maxDistance);
 		// check intersections with the plane
 		if (planeIntersections == null)
 			return null;
 
 		Point p0 = ray.getHead();
-		Point p = planeIntersections.get(0);
+		Point p = planeIntersections.get(0).point;
 
 		Vector n = plane.getNormal(p0);
 

@@ -35,13 +35,13 @@ public class Sphere extends RadialGeometry {
 	}
 
 	@Override
-	protected List<Intersection> calculateIntersectionsHelper(Ray ray) {
+	protected List<Intersection> calculateIntersectionsHelper(Ray ray, double maxDistance) {
 		Point p0 = ray.getHead(); // ray's starting point
 		Point center = this.center; // the sphere's center point
 		Vector vec = ray.getDir();
 		// "the v vector" from the presentation
 		if (center.equals(p0))
-			return List.of(new Intersection(this, ray.getPoint(radius)));
+			return alignZero(radius - maxDistance) <= 0 ? List.of(new Intersection(this, ray.getPoint(radius))) : null;
 
 		Vector u = center.subtract(p0);
 		double tm = (vec.dotProduct(u));
@@ -57,8 +57,17 @@ public class Sphere extends RadialGeometry {
 			return null;
 
 		double t1 = tm - th;
-		return alignZero(t1) <= 0 ? List.of(new Intersection(this, ray.getPoint(t2)))//
-				: List.of(new Intersection(this, ray.getPoint(t1)), new Intersection(this, ray.getPoint(t2)));
+		boolean t1Valid = alignZero(t1) > 0 && alignZero(t1 - maxDistance) <= 0;
+		boolean t2Valid = alignZero(t2) > 0 && alignZero(t2 - maxDistance) <= 0;
+
+		if (t1Valid && t2Valid)
+			return List.of(new Intersection(this, ray.getPoint(t1)), new Intersection(this, ray.getPoint(t2)));
+		if (t1Valid)
+			return List.of(new Intersection(this, ray.getPoint(t1)));
+		if (t2Valid)
+			return List.of(new Intersection(this, ray.getPoint(t2)));
+
+		return null;
 
 	}
 }
