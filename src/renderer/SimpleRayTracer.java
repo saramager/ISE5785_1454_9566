@@ -158,6 +158,23 @@ public class SimpleRayTracer extends RayTracerBase {
 		return intersections == null;
 	}
 
+	private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
+		Double3 kkx = k.product(kx);
+		if (kkx.lowerThan(MIN_CALC_COLOR_K))
+			return Color.BLACK;
+		List<Intersection> points = scene.geometries.calculateIntersections(ray);
+		Intersection intersection = ray.findClosestIntersection(points);
+		if (intersection == null)
+			return scene.background.scale(kx);
+		return preprocessIntersection(intersection, ray.getDir()) ? calcColor(intersection, level - 1, kkx).scale(kx)
+				: Color.BLACK;
+	}
+
+	private Color calcGlobalEffects(Intersection intersection, int level, Double3 k) {
+		return calcGlobalEffect(constructRefractedRay(intersection), level, k, intersection.material.kT)
+				.add(calcGlobalEffect(constructReflectedRay(intersection), level, k, intersection.material.kT));
+	}
+
 	/**
 	 * Calculates the color at a given intersection point.
 	 * 
@@ -193,11 +210,11 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	//
-	private Ray constructTransparencyRay(Intersection intersection) {
+	private Ray constructRefractedRay(Intersection intersection) {
 		Vector delta = intersection.normal.scale(intersection.lNormal < 0 ? DELTA : -DELTA);
 		Point newOrigin = intersection.point.add(delta);
 		return new Ray(newOrigin, intersection.v);
-		// TODO: snail
+
 	}
 
 }
