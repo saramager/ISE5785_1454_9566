@@ -151,9 +151,15 @@ class SphereTests {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Test method for
 	 * {@link geometries.Sphere#calculateIntersections(Ray, double)}.
 	 */
+=======
+	 * Test method for {@link geometries.Sphere#findIntersections(Ray, double)}
+	 */
+
+>>>>>>> branch 'master' of https://github.com/saramager/ISE5785_1454_9566.git
 	@Test
 	void testcalculateIntersectionsWithMaxDistance() {
 		Sphere sphere = new Sphere(new Point(0, 0, 0), 1.0);

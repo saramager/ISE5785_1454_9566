@@ -92,7 +92,12 @@ class TriangleTests {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Test method for {@link geometries.Triangle#calculateIntersections(Ray)}.
+=======
+	 * Test method for
+	 * {@link geometries.Triangle#calculateIntersections(Ray, double)}
+>>>>>>> branch 'master' of https://github.com/saramager/ISE5785_1454_9566.git
 	 */
 	@Test
 	void testTriangleCalculateIntersectionsWithMaxDistance() {
