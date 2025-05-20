@@ -23,6 +23,14 @@ public class Material {
 	 * The ambient coefficient.
 	 */
 	public Double3 kA = Double3.ONE;
+	/**
+	 * The transparency coefficient.
+	 */
+	public Double3 kT = Double3.ZERO;
+	/**
+	 * The reflection coefficient.
+	 */
+	public Double3 kR = Double3.ZERO;
 
 	/**
 	 * set the diffuse coefficient
@@ -98,6 +106,50 @@ public class Material {
 	 */
 	public Material setKA(double kA) {
 		this.kA = new Double3(kA);
+		return this;
+	}
+
+	/**
+	 * set the reflection coefficient
+	 * 
+	 * @param kR= the reflection coefficient
+	 * @return the material after setting the reflection coefficient
+	 */
+	public Material setKR(Double3 kR) {
+		this.kR = kR;
+		return this;
+	}
+
+	/**
+	 * set the reflection coefficient
+	 * 
+	 * @param kR= the reflection coefficient
+	 * @return the material after setting the reflection coefficient
+	 */
+	public Material setKR(double kR) {
+		this.kR = new Double3(kR);
+		return this;
+	}
+
+	/**
+	 * set the transparency coefficient
+	 * 
+	 * @param kT= the transparency coefficient
+	 * @return the material after setting the transparency coefficient
+	 */
+	public Material setKT(Double3 kT) {
+		this.kT = kT;
+		return this;
+	}
+
+	/**
+	 * set the transparency coefficient
+	 * 
+	 * @param kT= the transparency coefficient
+	 * @return the material after setting the transparency coefficient
+	 */
+	public Material setKT(double kT) {
+		this.kT = new Double3(kT);
 		return this;
 	}
 
