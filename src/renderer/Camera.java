@@ -183,7 +183,13 @@ public class Camera implements Cloneable {
 		 * The translation vector for the camera.
 		 */
 		private Vector translation = null;
+		/**
+		 * The rotation angle in degrees for the camera.
+		 */
 		private double rotationAngleDegrees = 0.0;
+		/**
+		 * The rotation axis for the camera.
+		 */
 		private Vector rotationAxis = null;
 
 		/**
@@ -214,7 +220,7 @@ public class Camera implements Cloneable {
 		/**
 		 * Sets the rotation for the camera.
 		 * 
-		 * @param angleDegrees rotation angle in degrees
+		 * @param angleDegreess rotation angle in degrees
 		 * 
 		 * @return the builder instance wtith Y axis.
 		 */

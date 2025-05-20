@@ -62,7 +62,6 @@ public abstract class Intersectable {
 		 * 
 		 * @param geometry - the geometry that intersect with the ray
 		 * @param point    - the point that intersect with the ray
-		 * @param material - the material of the geometry
 		 */
 		public Intersection(Geometry geometry, Point point) {
 			this.geometry = geometry;
@@ -115,10 +114,24 @@ public abstract class Intersectable {
 		// return calculateIntersectionsHelper(ray);
 	}
 
+	/**
+	 * find the intersections point between an geometry and ray
+	 * 
+	 * @param ray         - check intersection for ray
+	 * @param maxDistance - the max distance to check for intersection
+	 * @return list of Intersections that intersection
+	 */
 	public final List<Intersection> calculateIntersections(Ray ray, double maxDistance) {
 		return calculateIntersectionsHelper(ray, maxDistance);
 	}
 
+	/**
+	 * help method to find the intersections point between an geometry and ray
+	 * 
+	 * @param ray         check intersection for ray
+	 * @param maxDistance the max distance to check for intersection
+	 * @return list of Intersections that intersection
+	 */
 	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray, double maxDistance);
 
 }

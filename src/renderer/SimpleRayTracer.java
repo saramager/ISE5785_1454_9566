@@ -129,6 +129,12 @@ public class SimpleRayTracer extends RayTracerBase {
 		return intersection.material.kS.scale(Math.pow(minusVR, intersection.material.nShininess));
 	}
 
+	/**
+	 * Checks if the intersection point is unshaded by any geometry.
+	 * 
+	 * @param intersection the intersection point
+	 * @return true if the intersection point is unshaded, false otherwise
+	 */
 	private boolean unshaded(Intersection intersection) {
 		Vector pointToLight = intersection.l.scale(-1);
 		Vector delta = intersection.normal.scale(intersection.lNormal < 0 ? DELTA : -DELTA);

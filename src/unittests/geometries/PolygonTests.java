@@ -136,6 +136,10 @@ class PolygonTests {
 				"Failed to find the intersection point when the intersection point is inside the Polygon");
 	}
 
+	/**
+	 * Test method for
+	 * {@link geometries.Polygon#calculateIntersections(primitives.Ray, double)}.
+	 */
 	@Test
 	void testPolygonCalculateIntersectionsWithMaxDistance() {
 		// Polygon in XY plane: square from (0,0,0) to (1,1,0)

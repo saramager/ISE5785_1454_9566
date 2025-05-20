@@ -149,6 +149,9 @@ class PlaneTests {
 
 	}
 
+	/**
+	 * Test method for {@link Plane#calculateIntersections(Ray, double)}
+	 */
 	@Test
 	void testPlaneCalculateIntersectionsWithMaxDistance() {
 		// Plane in XY plane (Z = 0)
