@@ -15,6 +15,10 @@ public class Ray {
 
 	/** The direction vector of the ray (normalized). */
 	private final Vector direction;
+	/**
+	 * A small constant used to avoid floating-point precision issues.
+	 */
+	private static final double DELTA = 0.1;
 
 	/**
 	 * Constructs a ray with a given starting point and direction vector. The
@@ -26,6 +30,27 @@ public class Ray {
 	public Ray(Point point, Vector vector) {
 		direction = vector.normalize();
 		head = point;
+	}
+
+	/**
+	 * Constructs a ray with a given starting point, direction vector, and normal
+	 * vector. The direction vector is normalized, and the head of the ray is
+	 * adjusted slightly away from the surface to avoid floating-point precision
+	 * issues.
+	 *
+	 * @param head      the starting point of the ray
+	 * @param direction the direction vector of the ray (will be normalized)
+	 * @param normal    the normal vector at the surface point (used to adjust the
+	 *                  head)
+	 */
+	public Ray(Point head, Vector direction, Vector normal) {
+		this.direction = direction.normalize();
+		double nv = normal.dotProduct(this.direction);
+
+		// Add a small delta to the ray's origin to avoid floating-point precision
+		// issues
+
+		this.head = !Util.isZero(nv) ? head.add(normal.scale(nv > 0 ? DELTA : -DELTA)) : head;
 	}
 
 	/**
