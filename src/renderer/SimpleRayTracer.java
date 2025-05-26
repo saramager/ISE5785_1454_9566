@@ -48,8 +48,14 @@ public class SimpleRayTracer extends RayTracerBase {
 
 	@Override
 	public Color traceRay(Ray ray) {
-		var intersections = scene.geometries.calculateIntersections(ray);
-		return intersections == null ? scene.background : calcColor(ray.findClosestIntersection(intersections), ray);
+
+		Intersection intersections = findClosestIntersection(ray);
+		return intersections == null ? scene.background : calcColor(intersections, ray);
+	}
+
+	private Intersection findClosestIntersection(Ray ray) {
+		List<Intersection> points = scene.geometries.calculateIntersections(ray);
+		return points == null ? null : ray.findClosestIntersection(points);
 	}
 
 	/**
@@ -149,6 +155,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return true if the intersection point is unshaded, false otherwise
 	 */
 	private boolean unshaded(Intersection intersection) {
+		if (!intersection.material.kT.lowerThan(MIN_CALC_COLOR_K))
+			return false;
 		Vector pointToLight = intersection.l.scale(-1);
 		Vector delta = intersection.normal.scale(intersection.lNormal < 0 ? DELTA : -DELTA);
 		Ray shadowRay = new Ray(intersection.point.add(delta), pointToLight);
@@ -162,8 +170,7 @@ public class SimpleRayTracer extends RayTracerBase {
 		Double3 kkx = k.product(kx);
 		if (kkx.lowerThan(MIN_CALC_COLOR_K))
 			return Color.BLACK;
-		List<Intersection> points = scene.geometries.calculateIntersections(ray);
-		Intersection intersection = ray.findClosestIntersection(points);
+		Intersection intersection = findClosestIntersection(ray);
 		if (intersection == null)
 			return scene.background.scale(kx);
 		return preprocessIntersection(intersection, ray.getDir()) ? calcColor(intersection, level - 1, kkx).scale(kx)
@@ -209,7 +216,6 @@ public class SimpleRayTracer extends RayTracerBase {
 		return new Ray(newOrigin, r); // new Ray{point,v-2*(v*n)*n}
 	}
 
-	//
 	private Ray constructRefractedRay(Intersection intersection) {
 		Vector delta = intersection.normal.scale(intersection.lNormal < 0 ? DELTA : -DELTA);
 		Point newOrigin = intersection.point.add(delta);
