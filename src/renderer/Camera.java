@@ -283,7 +283,7 @@ public class Camera implements Cloneable {
 
 			Vector to = target.subtract(camera.location).normalize();
 			// If up and to are almost parallel, choose a different up vector (Z axis)
-			if (alignZero(to.dotProduct(up)) == 1 || alignZero(to.dotProduct(up)) == -1) {
+			if (alignZero(to.dotProduct(up) - 1) == 0 || alignZero(to.dotProduct(up) + 1) == 0) {
 				up = Vector.AXIS_Z;
 			}
 

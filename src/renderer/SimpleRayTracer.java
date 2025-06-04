@@ -194,6 +194,17 @@ public class SimpleRayTracer extends RayTracerBase {
 		return ktr;
 	}
 
+	/**
+	 * Calculates the global effects (reflection and transparency) at a given ray.
+	 * 
+	 * @param ray   the ray to be traced
+	 * @param level the current recursion level
+	 * @param k
+	 * @param kx
+	 * @return the color resulting from global effects
+	 * 
+	 */
+
 	private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
 		Double3 kkx = k.product(kx);
 		if (kkx.lowerThan(MIN_CALC_COLOR_K))
@@ -215,6 +226,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * 
 	 * @param intersection the intersection point
 	 * @param level        the current recursion level
+	 * @param k
 	 * @return the color at the intersection point
 	 */
 	private Color calcColor(Intersection intersection, int level, Double3 k) {

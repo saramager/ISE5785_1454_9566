@@ -5,6 +5,8 @@ import static java.awt.Color.RED;
 
 import org.junit.jupiter.api.Test;
 
+import geometries.Plane;
+import geometries.Polygon;
 import geometries.Sphere;
 import geometries.Triangle;
 import lighting.AmbientLight;
@@ -113,174 +115,173 @@ class ReflectionRefractionTests {
 	}
 
 	@Test
-	void mySceneTest() {
-		Scene scene = new Scene("My Test Scene");
-
-		// הגדרות תאורה כללית
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
-
-		// גופים בסצנה
+	void transparencyReflectionShadow1Test() {
 		scene.geometries.add(
-				// כדור שקוף בלבד
-				new Sphere(new Point(0, 0, -80), 30.0).setEmission(new Color(30, 144, 255)) // צבע תכלת בוהק
-						.setMaterial(new Material().setKD(0.2).setKS(0.3).setShininess(100).setKT(0.6)),
-
-				// מצלוע מחזיר אור
-				new geometries.Polygon(new Point(60, -40, -100), new Point(90, 0, -100), new Point(60, 40, -100),
-						new Point(30, 0, -100)).setEmission(new Color(255, 105, 180)) // ורוד-פוקסיה
-						.setMaterial(new Material().setKR(0.6).setKS(0.4).setShininess(150)),
-
-				// משולש רגיל עם צבע עז
-				new Triangle(new Point(-80, -50, -120), new Point(-30, 50, -100), new Point(-60, 60, -130))
-						.setEmission(new Color(0, 255, 127)) // ירוק-מנטה
-						.setMaterial(new Material().setKD(0.4).setKS(0.5).setShininess(120)));
-
-		// מקור אור בולט
-		scene.lights.add(new SpotLight(new Color(1000, 600, 400), new Point(0, 100, 100), new Vector(0, -1, -2))
-				.setKl(0.0004).setKq(0.0000006));
-
-		// הגדרת מצלמה
-		Camera.getBuilder().setRayTracer(scene, RayTracerType.SIMPLE).setLocation(new Point(0, 0, 1000))
-				.setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(1000).setVpSize(150, 150).setResolution(500, 500)
-				.build().renderImage().writeToImage("mySceneTest");
-	}
-
-	@Test
-	void mySceneTest_centerSphere() {
-		Scene scene = new Scene("My Scene - Sphere Center");
-
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
-
-		scene.geometries.add(
-				// כדור שקוף במרכז מול המראה
-				new Sphere(new Point(0, 0, -120), 40.0).setEmission(new Color(0, 255, 255)) // טורקיז זוהר
-						.setMaterial(new Material().setKD(0.2).setKS(0.3).setShininess(100).setKT(0.6)),
-
-				// מצלוע - מראה צבעונית
-				new geometries.Polygon(new Point(-100, -60, -160), new Point(100, -60, -160), new Point(100, 60, -160),
-						new Point(-100, 60, -160)).setEmission(new Color(255, 105, 180)) // ורוד-פוקסיה
-						.setMaterial(new Material().setKR(1).setShininess(300)),
-
-				// משולש בצד ימין, מוסיף צבע
-				new Triangle(new Point(60, -50, -100), new Point(100, 0, -100), new Point(60, 50, -100))
-						.setEmission(new Color(50, 255, 50))
-						.setMaterial(new Material().setKD(0.5).setKS(0.4).setShininess(120)),
-
-				// רקע כהה
-				new geometries.Polygon(new Point(-300, -150, -200), new Point(300, -150, -200),
-						new Point(300, 150, -200), new Point(-300, 150, -200)).setEmission(new Color(10, 10, 10)));
-
-		scene.lights.add(new SpotLight(new Color(1000, 600, 400), new Point(150, 150, 200), new Vector(-1, -1, -3))
-				.setKl(0.0003).setKq(0.0000004));
-
-		Camera.getBuilder().setRayTracer(scene, RayTracerType.SIMPLE).setLocation(new Point(0, 0, 1000))
-				.setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(1000).setVpSize(300, 300).setResolution(500, 500)
-				.build().renderImage().writeToImage("mySceneTest_centerSphere");
-	}
-
-	@Test
-	void mySceneTest_sideSphere() {
-		Scene scene = new Scene("My Scene - Sphere Side");
-
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
-
-		scene.geometries.add(
-				// כדור שקוף מימין (לא מסתיר את המראה)
-				new Sphere(new Point(80, 0, -120), 40.0).setEmission(new Color(0, 255, 255))
-						.setMaterial(new Material().setKD(0.2).setKS(0.3).setShininess(100).setKT(0.6)),
-
-				// מצלוע - מראה צבעונית
-				new geometries.Polygon(new Point(-100, -60, -160), new Point(100, -60, -160), new Point(100, 60, -160),
-						new Point(-100, 60, -160)).setEmission(new Color(255, 105, 180))
-						.setMaterial(new Material().setKR(1).setShininess(300)),
-
-				// משולש בצד שמאל
-				new Triangle(new Point(-100, -50, -100), new Point(-60, 0, -100), new Point(-100, 50, -100))
-						.setEmission(new Color(50, 255, 50))
-						.setMaterial(new Material().setKD(0.5).setKS(0.4).setShininess(120)),
-
-				// רקע כהה
-				new geometries.Polygon(new Point(-300, -150, -200), new Point(300, -150, -200),
-						new Point(300, 150, -200), new Point(-300, 150, -200)).setEmission(new Color(10, 10, 10)));
-
-		scene.lights.add(new SpotLight(new Color(1000, 600, 400), new Point(150, 150, 200), new Vector(-1, -1, -3))
-				.setKl(0.0003).setKq(0.0000004));
-
-		Camera.getBuilder().setRayTracer(scene, RayTracerType.SIMPLE).setLocation(new Point(0, 0, 1000))
-				.setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(1000).setVpSize(300, 300).setResolution(500, 500)
-				.build().renderImage().writeToImage("mySceneTest_sideSphere");
-	}
-
-	@Test
-	void threeNestedSpheres() {
-		Scene scene = new Scene("My Scene - Sphere Center3");
-
-		Point center = new Point(0, 0, -100);
-		scene.geometries.add(
-				new Sphere(center, 50.0).setEmission(new Color(BLUE))
+				// מצלוע שקוף (KT גבוה)
+				new Polygon(new Point(-60, 0, -50), new Point(-30, 60, -50), new Point(30, 60, -50),
+						new Point(60, 0, -50)).setEmission(new Color(0, 100, 150))
 						.setMaterial(new Material().setKD(0.2).setKS(0.3).setShininess(100).setKT(0.7)),
 
-				new Sphere(center, 35.0).setEmission(new Color(BLUE))
-						.setMaterial(new Material().setKD(0.3).setKS(0.3).setShininess(100).setKT(0.7)), // החזר
-																											// חלקי
+				// כדור כחול לא שקוף - יטיל צל
+				new Sphere(new Point(0, 30, -20), 20d).setEmission(new Color(BLUE))
+						.setMaterial(new Material().setKD(0.4).setKS(0.5).setShininess(100).setKT(0.7)),
 
-				new Sphere(center, 20.0).setEmission(new Color(RED))
-						.setMaterial(new Material().setKD(0.2).setKS(0.3).setShininess(100).setKT(0.8))); // החזר גבוה
+				// משולש מחזיר אור (KR גבוה)
+				new Triangle(new Point(-70, -50, -40), new Point(70, -50, -40), new Point(0, 50, -40))
+						.setEmission(new Color(100, 0, 100))
+						.setMaterial(new Material().setKD(0.2).setKS(0.7).setShininess(300).setKR(0.8)),
 
-		scene.setAmbientLight(new AmbientLight(new Color(20, 20, 20))); // תאורה סביבתית עם עוצמה נמוכה
+				// מישור מבריק
+				new Plane(new Point(0, 0, -60), new Vector(0, 0, 1)).setEmission(new Color(10, 10, 10))
+						.setMaterial(new Material().setKD(0.3).setKS(0.6).setShininess(100).setKR(0.6)));
 
-		scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(100, 100, 300), new Vector(-1, -1, -2))
-				.setKl(0.0001).setKq(0.000005));
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
 
-//		cameraBuilder.setLocation(new Point(0, 0, 100)).setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(100)
-//				.setVpSize(200, 200).setResolution(600, 600).build().renderImage().writeToImage("threeNestedSpheres");
+		// תאורת ספוט - תדגיש צל
+		scene.lights.add(new SpotLight(new Color(1000, 600, 600), new Point(0, 100, 200), new Vector(0, -1, -1))
+				.setKl(0.0001).setKq(0.00005));
 
-		Camera.getBuilder().setRayTracer(scene, RayTracerType.SIMPLE).setLocation(new Point(0, 0, 1000))
-				.setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(1000).setVpSize(200, 200).setResolution(600, 600)
-				.build().renderImage().writeToImage("threeNestedSpheres");
+		cameraBuilder.setLocation(new Point(0, 0, 300)) //
+				.setDirection(Point.ZERO, Vector.AXIS_Y) //
+				.setVpDistance(300).setVpSize(200, 200).setResolution(600, 600).build().renderImage()
+				.writeToImage("transparencyReflectionShadow");
 	}
 
 	@Test
-	void mySceneTest_reflectionAndTransparency() {
-		Scene scene = new Scene("My Scene - Reflection & Transparency");
-
-		scene.setAmbientLight(new AmbientLight(new Color(20, 20, 20))); // הפחתת תאורה סביבתית
-
+	void transparencyReflectionShadowTest() {
 		scene.geometries.add(
-				// מראה צבעונית במרכז
-				new geometries.Polygon(new Point(-100, -60, -160), new Point(100, -60, -160), new Point(100, 60, -160),
-						new Point(-100, 60, -160)).setEmission(new Color(255, 105, 180)) // פוקסיה
-						.setMaterial(new Material().setKR(1).setShininess(300)),
+				// מצולע שקוף - נהפוך אותו לזכוכית כהה יחסית
+				new Polygon(
+						new Point(-60, 0, -50), new Point(-30, 60, -50), new Point(30, 60, -50), new Point(60, 0, -50))
+						.setEmission(new Color(0, 30, 45)) // גוון כחול-ירקרק עדין, לא מאיר בעצמו חזק
+						.setMaterial(new Material().setKD(0.05) // כמעט ללא פיזור - זכוכית לא מפזרת אור
+								.setKS(0.7) // ברק ספקולרי חזק על פני השטח
+								.setShininess(250) // ברק חד
+								.setKT(0.8) // שקוף מאוד
+								.setKR(0.1)), // מעט השתקפות מראה כמו זכוכית
 
-				// כדור שקוף מימין – נראה דרכו
-				new Sphere(new Point(80, 0, -120), 40.0).setEmission(new Color(0, 255, 255)) // טורקיז
-						.setMaterial(new Material().setKD(0.2).setKS(0.3).setShininess(100).setKT(0.6)),
+				// כדור כחול - נהפוך אותו לאטום לחלוטין כמו כדור פלסטיק
+				new Sphere(new Point(0, 30, -20), 20d).setEmission(new Color(BLUE)) // הכדור כחול בגלל צבעו
+						.setMaterial(new Material().setKD(0.6) // מפזר אור כחול
+								.setKS(0.5) // מבריק
+								.setShininess(100) // ברק של פלסטיק
+								.setKT(0.0)), // **אטום לחלוטין** - אין מעבר אור דרכו
 
-				// כדור אדום קטן מאחור (ייראה דרך השקיפות)
-				new Sphere(new Point(80, 0, -180), 15.0).setEmission(new Color(255, 0, 0)) // אדום
-						.setMaterial(new Material().setKD(0.4).setKS(0.3).setShininess(80)),
+				// משולש מחזיר אור - מראה אמיתית יותר
+				new Triangle(new Point(-70, -50, -40), new Point(70, -50, -40), new Point(0, 50, -40))
+						.setEmission(new Color(0, 0, 0)) // **מראה אינה פולטת אור**
+						.setMaterial(new Material().setKD(0.01) // כמעט ללא פיזור (לא משנה אם זה מראה)
+								.setKS(0.05) // מינימלי, רוב ההשתקפות היא KR
+								.setShininess(500) // חד מאוד אם בכל זאת יש KS
+								.setKR(0.9)), // **השתקפות מראה חזקה מאוד**
 
-				// משולש כהה מעל המראה – יראה בהשתקפות
-				new Triangle(new Point(-30, 70, -100), new Point(0, 90, -100), new Point(30, 70, -100))
-						.setEmission(new Color(30, 30, 30))
-						.setMaterial(new Material().setKD(0.3).setKS(0.4).setShininess(100)),
+				// מישור מבריק - רצפה מלוטשת
+				new Plane(new Point(0, 0, -60), new Vector(0, 0, 1)).setEmission(new Color(20, 20, 20)) // צבע אפור כהה
+																										// בסיסי של
+																										// הרצפה
+						.setMaterial(new Material().setKD(0.4) // מפזר אור (הצבע יבוא מהאמישן)
+								.setKS(0.6) // מבריק
+								.setShininess(100) // ברק סביר
+								.setKR(0.3))); // השתקפות עדינה יותר כמו רצפה מלוטשת ולא מראה
 
-				// משולש ירוק משמאל – יוסיף צבע וצל
-				new Triangle(new Point(-100, -50, -100), new Point(-60, 0, -100), new Point(-100, 50, -100))
-						.setEmission(new Color(50, 255, 50))
-						.setMaterial(new Material().setKD(0.5).setKS(0.4).setShininess(120)),
+		scene.setAmbientLight(new AmbientLight(new Color(40, 40, 40))); // תאורת סביבה מעט חזקה יותר
 
-				// רקע כהה
-				new geometries.Polygon(new Point(-300, -150, -200), new Point(300, -150, -200),
-						new Point(300, 150, -200), new Point(-300, 150, -200)).setEmission(new Color(10, 10, 10)));
+		// תאורת ספוט - קצת יותר דעיכה
+		scene.lights.add(new SpotLight(new Color(1000, 600, 600), new Point(0, 100, 200), new Vector(0, -1, -1))
+				.setKl(0.001).setKq(0.0001)); // מקדמי דעיכה מעט גבוהים יותר - האור ידעך מהר יותר
+												// מה שגורם לו להיות מרוכז יותר סביב המקור.
 
-		// תאורה – עוצמה רכה יותר
-		scene.lights.add(new SpotLight(new Color(500, 300, 200), new Point(150, 150, 200), new Vector(-1, -1, -3))
-				.setKl(0.0005).setKq(0.0000005));
-
-		Camera.getBuilder().setRayTracer(scene, RayTracerType.SIMPLE).setLocation(new Point(0, 0, 1000))
-				.setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(1000).setVpSize(300, 300).setResolution(500, 500)
-				.build().renderImage().writeToImage("mySceneTest_reflectionAndTransparency");
-
+		cameraBuilder.setLocation(new Point(0, 0, 300)).setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(300)
+				.setVpSize(200, 200).setResolution(600, 600).build().renderImage()
+				.writeToImage("transparencyReflectionShadow_subtle_changes");
 	}
+
+	@Test
+	void transparencyReflectionShadow2Test() {
+		scene.geometries.add(
+				// מצולע שקוף - נהפוך אותו לזכוכית שקופה יותר ופחות "פולטת" אור
+				new Polygon(
+						new Point(-60, 0, -50), new Point(-30, 60, -50), new Point(30, 60, -50), new Point(60, 0, -50))
+						.setEmission(new Color(0, 10, 15)) // צבע אמישן עדין מאוד, כמעט שחור, כדי לא להפריע לשקיפות
+						.setMaterial(new Material().setKD(0.02) // כמעט ללא פיזור
+								.setKS(0.8) // השתקפות ספקולרית חזקה (ברק על הזכוכית)
+								.setShininess(300) // ברק חד
+								.setKT(0.95) // **שקיפות חזקה מאוד - כמעט 100% שקיפות**
+								.setKR(0.1)), // מעט השתקפות מראה על פני הזכוכית
+
+				// כדור כחול - נהפוך אותו לאטום לחלוטין כמו כדור פלסטיק
+				new Sphere(new Point(0, 30, -20), 20d).setEmission(new Color(BLUE)) // הכדור כחול בגלל צבעו
+						.setMaterial(new Material().setKD(0.6) // מפזר אור כחול
+								.setKS(0.5) // מבריק
+								.setShininess(100) // ברק של פלסטיק
+								.setKT(0.0)), // **אטום לחלוטין** - אין מעבר אור דרכו
+
+				// משולש מחזיר אור - מראה אמיתית יותר
+				new Triangle(new Point(-70, -50, -40), new Point(70, -50, -40), new Point(0, 50, -40))
+						.setEmission(new Color(0, 0, 0)) // **מראה אינה פולטת אור**
+						.setMaterial(new Material().setKD(0.01) // כמעט ללא פיזור (לא משנה אם זה מראה)
+								.setKS(0.05) // מינימלי, רוב ההשתקפות היא KR
+								.setShininess(500) // חד מאוד אם בכל זאת יש KS
+								.setKR(0.9)), // **השתקפות מראה חזקה מאוד**
+
+				// מישור מבריק - רצפה מלוטשת
+				new Plane(new Point(0, 0, -60), new Vector(0, 0, 1)).setEmission(new Color(150, 150, 150)) // צבע אפור
+																											// בהיר
+																											// בסיסי של
+																											// הרצפה
+						.setMaterial(new Material().setKD(0.4) // מפזר אור
+								.setKS(0.6) // מבריק
+								.setShininess(100) // ברק סביר
+								.setKR(0.2)), // השתקפות עדינה יותר כמו רצפה מלוטשת ולא מראה
+
+				// **כדור ירוק נוסף - כדי להדגיש את השקיפות מאחורי המצולע**
+				new Sphere(new Point(0, 0, -80), 15d) // מיקום: X=0, Y=0, Z=-80 (מאחורי המצולע שנמצא ב-Z=-50)
+						.setEmission(new Color(0, 200, 0)) // צבע ירוק בוהק
+						.setMaterial(new Material().setKD(0.6).setKS(0.4).setShininess(80)) // חומר רגיל
+		);
+
+		scene.setAmbientLight(new AmbientLight(new Color(40, 40, 40))); // תאורת סביבה מעט חזקה יותר
+
+		// תאורת ספוט - קצת יותר דעיכה
+		scene.lights.add(new SpotLight(new Color(1000, 600, 600), new Point(0, 100, 200), new Vector(0, -1, -1))
+				.setKl(0.001).setKq(0.0001)); // מקדמי דעיכה מעט גבוהים יותר - האור ידעך מהר יותר
+												// מה שגורם לו להיות מרוכז יותר סביב המקור.
+
+		cameraBuilder.setLocation(new Point(0, 0, 300)).setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(300)
+				.setVpSize(200, 200).setResolution(600, 600).build().renderImage()
+				.writeToImage("transparencyReflectionShadow_improved_transparency");
+	}
+//	@Test
+//	void transparencyReflectionShadow() {
+//		scene.geometries.add(
+//				// מישור אחורי מחזיר אור
+//				new Polygon(new Point(-100, -100, -150), new Point(100, -100, -150), new Point(100, 100, -150),
+//						new Point(-100, 100, -150)).setEmission(new Color(173, 216, 230)) // תכלת בהיר
+//						.setMaterial(new Material().setKD(0.3).setKS(0.6).setShininess(100).setKR(0.6)),
+//
+//				// משולש / מצלוע קדמי שקוף למחצה
+//				new Polygon(new Point(-80, -100, -50), new Point(80, -100, -50), new Point(0, 50, -50),
+//						new Point(0, 50, -50)) // מקרב לטרפז
+//						.setEmission(new Color(180, 50, 150))
+//						.setMaterial(new Material().setKD(0.3).setKS(0.4).setShininess(60).setKT(0.4)),
+//
+//				// כדור כחול – אטום
+//				new Sphere(new Point(0, 0, -20), 30d).setEmission(new Color(30, 30, 255))
+//						.setMaterial(new Material().setKD(0.2).setKS(0.5).setShininess(100)),
+//
+//				// רצפה כהה מחזירה
+//				new Polygon(new Point(-120, -120, -100), new Point(120, -120, -100), new Point(120, -120, -300),
+//						new Point(-120, -120, -300)).setEmission(new Color(20, 20, 20))
+//						.setMaterial(new Material().setKD(0.3).setKS(0.5).setShininess(100).setKR(0.5)));
+//
+//		scene.setAmbientLight(new AmbientLight(new Color(40, 40, 40)));
+//
+//		scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(0, 100, 100), new Vector(0, -1, -1))
+//				.setKl(1E-4).setKq(1E-5));
+//
+//		cameraBuilder.setLocation(new Point(0, 0, 300)).setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(300)
+//				.setVpSize(200, 200).setResolution(600, 600).build().renderImage()
+//				.writeToImage("transparencyReflectionShadow");
+//	}
+
 }
