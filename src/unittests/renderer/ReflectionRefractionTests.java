@@ -29,7 +29,7 @@ import scene.Scene;
 class ReflectionRefractionTests {
 	/** Default constructor to satisfy JavaDoc generator */
 	ReflectionRefractionTests() {
-		/* to satisfy JavaDoc generator */ }
+	}
 
 	/** Scene for the tests */
 	private final Scene scene = new Scene("Test scene");
@@ -123,27 +123,27 @@ class ReflectionRefractionTests {
 	@Test
 	void transparencyReflectionShadow1Test() {
 		scene.geometries.add(
-				// מצלוע שקוף (KT גבוה)
+				// Transparent polygon (high KT)
 				new Polygon(new Point(-60, 0, -50), new Point(-30, 60, -50), new Point(30, 60, -50),
 						new Point(60, 0, -50)).setEmission(new Color(0, 100, 150))
 						.setMaterial(new Material().setKD(0.2).setKS(0.3).setShininess(100).setKT(0.7)),
 
-				// כדור כחול לא שקוף - יטיל צל
+				// Opaque blue sphere - will cast shadowל
 				new Sphere(new Point(0, 30, -20), 20d).setEmission(new Color(BLUE))
 						.setMaterial(new Material().setKD(0.4).setKS(0.5).setShininess(100).setKT(0.7)),
 
-				// משולש מחזיר אור (KR גבוה)
+				// Reflective triangle (high KR)
 				new Triangle(new Point(-70, -50, -40), new Point(70, -50, -40), new Point(0, 50, -40))
 						.setEmission(new Color(100, 0, 100))
 						.setMaterial(new Material().setKD(0.2).setKS(0.7).setShininess(300).setKR(0.8)),
 
-				// מישור מבריק
+				// Glossy plane
 				new Plane(new Point(0, 0, -60), new Vector(0, 0, 1)).setEmission(new Color(10, 10, 10))
 						.setMaterial(new Material().setKD(0.3).setKS(0.6).setShininess(100).setKR(0.6)));
 
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
 
-		// תאורת ספוט - תדגיש צל
+		// Spot light - will emphasize shadow
 		scene.lights.add(new SpotLight(new Color(1000, 600, 600), new Point(0, 100, 200), new Vector(0, -1, -1))
 				.setKl(0.0001).setKq(0.00005));
 
@@ -160,46 +160,39 @@ class ReflectionRefractionTests {
 	@Test
 	void transparencyReflectionShadowTest() {
 		scene.geometries.add(
-				// מצולע שקוף - נהפוך אותו לזכוכית כהה יחסית
+				// Transparent polygon - we’ll turn it into relatively dark glass
 				new Polygon(
 						new Point(-60, 0, -50), new Point(-30, 60, -50), new Point(30, 60, -50), new Point(60, 0, -50))
-						.setEmission(new Color(0, 30, 45)) // גוון כחול-ירקרק עדין, לא מאיר בעצמו חזק
-						.setMaterial(new Material().setKD(0.05) // כמעט ללא פיזור - זכוכית לא מפזרת אור
-								.setKS(0.7) // ברק ספקולרי חזק על פני השטח
-								.setShininess(250) // ברק חד
-								.setKT(0.8) // שקוף מאוד
-								.setKR(0.1)), // מעט השתקפות מראה כמו זכוכית
+						.setEmission(new Color(0, 30, 45)) // Soft blue-greenish tint, not strongly self-emissive
+						.setMaterial(new Material().setKD(0.05) // Almost no diffusion – glass doesn’t scatter much
+																// light
+								.setKS(0.7).setShininess(250).setKT(0.8) // High transparency
+								.setKR(0.1)), // Slight reflection to simulate glass surface
 
-				// כדור כחול - נהפוך אותו לאטום לחלוטין כמו כדור פלסטיק
-				new Sphere(new Point(0, 30, -20), 20d).setEmission(new Color(BLUE)) // הכדור כחול בגלל צבעו
-						.setMaterial(new Material().setKD(0.6) // מפזר אור כחול
-								.setKS(0.5) // מבריק
-								.setShininess(100) // ברק של פלסטיק
-								.setKT(0.0)), // **אטום לחלוטין** - אין מעבר אור דרכו
+				// Blue sphere – we’ll make it completely opaque like a plastic ball
+				new Sphere(new Point(0, 30, -20), 20d).setEmission(new Color(BLUE))
+						.setMaterial(new Material().setKD(0.6).setKS(0.5).setShininess(100) // Plastic-like shine
+								.setKT(0.0)), // Opaque – no light passes through it
 
-				// משולש מחזיר אור - מראה אמיתית יותר
+				// Reflective triangle – more like a real mirror
 				new Triangle(new Point(-70, -50, -40), new Point(70, -50, -40), new Point(0, 50, -40))
-						.setEmission(new Color(0, 0, 0)) // **מראה אינה פולטת אור**
-						.setMaterial(new Material().setKD(0.01) // כמעט ללא פיזור (לא משנה אם זה מראה)
-								.setKS(0.05) // מינימלי, רוב ההשתקפות היא KR
-								.setShininess(500) // חד מאוד אם בכל זאת יש KS
-								.setKR(0.9)), // **השתקפות מראה חזקה מאוד**
+						.setEmission(new Color(0, 0, 0)) // Mirror does not emit light
+						.setMaterial(new Material().setKD(0.01) // Almost no diffusion (not important for mirror)
+								.setKS(0.05).setShininess(500).setKR(0.9)), // Very strong mirror reflectio
 
-				// מישור מבריק - רצפה מלוטשת
+				// Glossy plane – polished floor
 				new Plane(new Point(0, 0, -60), new Vector(0, 0, 1)).setEmission(new Color(20, 20, 20)) // צבע אפור כהה
 																										// בסיסי של
 																										// הרצפה
-						.setMaterial(new Material().setKD(0.4) // מפזר אור (הצבע יבוא מהאמישן)
-								.setKS(0.6) // מבריק
-								.setShininess(100) // ברק סביר
-								.setKR(0.3))); // השתקפות עדינה יותר כמו רצפה מלוטשת ולא מראה
+						.setMaterial(new Material().setKD(0.4) // Diffuses light (color comes from emission)
+								.setKS(0.6).setShininess(100).setKR(0.3))); // Softer reflection, like polished floor
+																			// not mirror
+		scene.setAmbientLight(new AmbientLight(new Color(40, 40, 40)));
 
-		scene.setAmbientLight(new AmbientLight(new Color(40, 40, 40))); // תאורת סביבה מעט חזקה יותר
-
-		// תאורת ספוט - קצת יותר דעיכה
+		// Spot light – with slightly more attenuation
 		scene.lights.add(new SpotLight(new Color(1000, 600, 600), new Point(0, 100, 200), new Vector(0, -1, -1))
-				.setKl(0.001).setKq(0.0001)); // מקדמי דעיכה מעט גבוהים יותר - האור ידעך מהר יותר
-												// מה שגורם לו להיות מרוכז יותר סביב המקור.
+				.setKl(0.001).setKq(0.0001)); // Slightly higher attenuation factors – light fades faster
+		// causing it to be more focused around the source
 
 		cameraBuilder.setLocation(new Point(0, 0, 300)).setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(300)
 				.setVpSize(200, 200).setResolution(600, 600).build().renderImage()
@@ -214,89 +207,47 @@ class ReflectionRefractionTests {
 	@Test
 	void transparencyReflectionShadow2Test() {
 		scene.geometries.add(
-				// מצולע שקוף - נהפוך אותו לזכוכית שקופה יותר ופחות "פולטת" אור
+				// Transparent polygon – we turn it into glass with higher transparency and less
+				// "light emission"ר
 				new Polygon(
 						new Point(-60, 0, -50), new Point(-30, 60, -50), new Point(30, 60, -50), new Point(60, 0, -50))
-						.setEmission(new Color(0, 10, 15)) // צבע אמישן עדין מאוד, כמעט שחור, כדי לא להפריע לשקיפות
-						.setMaterial(new Material().setKD(0.02) // כמעט ללא פיזור
-								.setKS(0.8) // השתקפות ספקולרית חזקה (ברק על הזכוכית)
-								.setShininess(300) // ברק חד
-								.setKT(0.95) // **שקיפות חזקה מאוד - כמעט 100% שקיפות**
-								.setKR(0.1)), // מעט השתקפות מראה על פני הזכוכית
+						.setEmission(new Color(0, 10, 15)) // Very subtle emission color, almost black, to not interfere
+															// with transparency
+						.setMaterial(new Material().setKD(0.02).setKS(0.8).setShininess(300) // Sharp gloss
+								.setKT(0.95) // **Very high transparency – almost 100% transparent**
+								.setKR(0.1)), // Slight mirror reflection on the glass surface
+				// Blue sphere – made completely opaque like a plastic ball
+				new Sphere(new Point(0, 30, -20), 20d).setEmission(new Color(BLUE)) // The sphere is blue because of its
+																					// color
+						.setMaterial(new Material().setKD(0.6) // Diffuses blue light
+								.setKS(0.5).setShininess(100).setKT(0.0)), // Completely opaque– no light passes through
 
-				// כדור כחול - נהפוך אותו לאטום לחלוטין כמו כדור פלסטיק
-				new Sphere(new Point(0, 30, -20), 20d).setEmission(new Color(BLUE)) // הכדור כחול בגלל צבעו
-						.setMaterial(new Material().setKD(0.6) // מפזר אור כחול
-								.setKS(0.5) // מבריק
-								.setShininess(100) // ברק של פלסטיק
-								.setKT(0.0)), // **אטום לחלוטין** - אין מעבר אור דרכו
-
-				// משולש מחזיר אור - מראה אמיתית יותר
+				// Reflective triangle – more like a real mirror
 				new Triangle(new Point(-70, -50, -40), new Point(70, -50, -40), new Point(0, 50, -40))
-						.setEmission(new Color(0, 0, 0)) // **מראה אינה פולטת אור**
-						.setMaterial(new Material().setKD(0.01) // כמעט ללא פיזור (לא משנה אם זה מראה)
-								.setKS(0.05) // מינימלי, רוב ההשתקפות היא KR
-								.setShininess(500) // חד מאוד אם בכל זאת יש KS
-								.setKR(0.9)), // **השתקפות מראה חזקה מאוד**
+						.setEmission(new Color(0, 0, 0)) // A mirror does not emit light
+						.setMaterial(new Material().setKD(0.01).setKS(0.05).setShininess(500).setKR(0.9)), // Very
+																											// strong
+																											// mirror
+																											// reflection
 
-				// מישור מבריק - רצפה מלוטשת
-				new Plane(new Point(0, 0, -60), new Vector(0, 0, 1)).setEmission(new Color(150, 150, 150)) // צבע אפור
-																											// בהיר
-																											// בסיסי של
-																											// הרצפה
-						.setMaterial(new Material().setKD(0.4) // מפזר אור
-								.setKS(0.6) // מבריק
-								.setShininess(100) // ברק סביר
-								.setKR(0.2)), // השתקפות עדינה יותר כמו רצפה מלוטשת ולא מראה
+				// hiny plane – polished floor
+				new Plane(new Point(0, 0, -60), new Vector(0, 0, 1)).setEmission(new Color(150, 150, 150)) // Light gray
+																											// color
 
-				// **כדור ירוק נוסף - כדי להדגיש את השקיפות מאחורי המצולע**
-				new Sphere(new Point(0, 0, -80), 15d) // מיקום: X=0, Y=0, Z=-80 (מאחורי המצולע שנמצא ב-Z=-50)
-						.setEmission(new Color(0, 200, 0)) // צבע ירוק בוהק
-						.setMaterial(new Material().setKD(0.6).setKS(0.4).setShininess(80)) // חומר רגיל
-		);
+						.setMaterial(new Material().setKD(0.4).setKS(0.6).setShininess(100).setKR(0.2)),
+				// Additional green sphere – to emphasize transparency behind the polygon
+				new Sphere(new Point(0, 0, -80), 15d).setEmission(new Color(0, 200, 0)) // Bright green color
+						.setMaterial(new Material().setKD(0.6).setKS(0.4).setShininess(80)));
 
-		scene.setAmbientLight(new AmbientLight(new Color(40, 40, 40))); // תאורת סביבה מעט חזקה יותר
+		scene.setAmbientLight(new AmbientLight(new Color(40, 40, 40)));
 
-		// תאורת ספוט - קצת יותר דעיכה
+		// Spot light – with a bit more attenuation
 		scene.lights.add(new SpotLight(new Color(1000, 600, 600), new Point(0, 100, 200), new Vector(0, -1, -1))
-				.setKl(0.001).setKq(0.0001)); // מקדמי דעיכה מעט גבוהים יותר - האור ידעך מהר יותר
-												// מה שגורם לו להיות מרוכז יותר סביב המקור.
+				.setKl(0.001).setKq(0.0001)); // Slightly higher attenuation coefficients – the light fades faster,
+		// making it more concentrated around the source.
 
 		cameraBuilder.setLocation(new Point(0, 0, 300)).setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(300)
 				.setVpSize(200, 200).setResolution(600, 600).build().renderImage()
 				.writeToImage("transparencyReflectionShadow_improved_transparency");
 	}
-//	@Test
-//	void transparencyReflectionShadow() {
-//		scene.geometries.add(
-//				// מישור אחורי מחזיר אור
-//				new Polygon(new Point(-100, -100, -150), new Point(100, -100, -150), new Point(100, 100, -150),
-//						new Point(-100, 100, -150)).setEmission(new Color(173, 216, 230)) // תכלת בהיר
-//						.setMaterial(new Material().setKD(0.3).setKS(0.6).setShininess(100).setKR(0.6)),
-//
-//				// משולש / מצלוע קדמי שקוף למחצה
-//				new Polygon(new Point(-80, -100, -50), new Point(80, -100, -50), new Point(0, 50, -50),
-//						new Point(0, 50, -50)) // מקרב לטרפז
-//						.setEmission(new Color(180, 50, 150))
-//						.setMaterial(new Material().setKD(0.3).setKS(0.4).setShininess(60).setKT(0.4)),
-//
-//				// כדור כחול – אטום
-//				new Sphere(new Point(0, 0, -20), 30d).setEmission(new Color(30, 30, 255))
-//						.setMaterial(new Material().setKD(0.2).setKS(0.5).setShininess(100)),
-//
-//				// רצפה כהה מחזירה
-//				new Polygon(new Point(-120, -120, -100), new Point(120, -120, -100), new Point(120, -120, -300),
-//						new Point(-120, -120, -300)).setEmission(new Color(20, 20, 20))
-//						.setMaterial(new Material().setKD(0.3).setKS(0.5).setShininess(100).setKR(0.5)));
-//
-//		scene.setAmbientLight(new AmbientLight(new Color(40, 40, 40)));
-//
-//		scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(0, 100, 100), new Vector(0, -1, -1))
-//				.setKl(1E-4).setKq(1E-5));
-//
-//		cameraBuilder.setLocation(new Point(0, 0, 300)).setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(300)
-//				.setVpSize(200, 200).setResolution(600, 600).build().renderImage()
-//				.writeToImage("transparencyReflectionShadow");
-//	}
-
 }

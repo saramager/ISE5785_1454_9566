@@ -6,9 +6,9 @@ import primitives.Color;
  * class represent Ambient Light
  */
 public class AmbientLight extends Light {
-//	/**
-//	 * The intensity of the ambient light (immutable).
-//	 */
+	/**
+	 * The intensity of the ambient light (immutable).
+	 */
 //	private final Color intensity;
 
 	/**

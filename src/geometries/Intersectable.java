@@ -111,7 +111,6 @@ public abstract class Intersectable {
 	 */
 	public final List<Intersection> calculateIntersections(Ray ray) {
 		return calculateIntersections(ray, Double.POSITIVE_INFINITY);
-		// return calculateIntersectionsHelper(ray);
 	}
 
 	/**
