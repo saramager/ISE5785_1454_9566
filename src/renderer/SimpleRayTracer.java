@@ -50,6 +50,14 @@ public class SimpleRayTracer extends RayTracerBase {
 		return intersections == null ? scene.background : calcColor(intersections, ray);
 	}
 
+	/**
+	 * Finds the closest intersection point between a ray and the geometries in the
+	 * scene.
+	 * 
+	 * @param ray the ray to be traced
+	 * @return the closest intersection point, or null if no intersection is found
+	 */
+
 	private Intersection findClosestIntersection(Ray ray) {
 		List<Intersection> points = scene.geometries.calculateIntersections(ray);
 		return points == null ? null : ray.findClosestIntersection(points);
@@ -173,6 +181,12 @@ public class SimpleRayTracer extends RayTracerBase {
 		return true;
 	}
 
+	/**
+	 * Calculates the transparency at a given intersection point.
+	 * 
+	 * @param intersection the intersection point
+	 * @return the transparency factor at the intersection point
+	 */
 	private Double3 transparency(Intersection intersection) {
 		Double3 ktr = Double3.ONE;
 		Point point = intersection.point;
@@ -199,8 +213,9 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * 
 	 * @param ray   the ray to be traced
 	 * @param level the current recursion level
-	 * @param k
-	 * @param kx
+	 * @param k     the color factor for the current level
+	 * @param kx    the color factor for the global effects (reflection and
+	 *              transparency)
 	 * @return the color resulting from global effects
 	 * 
 	 */
@@ -216,6 +231,15 @@ public class SimpleRayTracer extends RayTracerBase {
 				: Color.BLACK;
 	}
 
+	/**
+	 * Calculates the global effects (reflection and transparency) at a given
+	 * intersection point.
+	 * 
+	 * @param intersection the intersection point
+	 * @param level        the current recursion level
+	 * @param k            the color factor for the current level
+	 * @return the color resulting from global effects
+	 */
 	private Color calcGlobalEffects(Intersection intersection, int level, Double3 k) {
 		return calcGlobalEffect(constructTransparencydRay(intersection), level, k, intersection.material.kT)
 				.add(calcGlobalEffect(constructReflectedRay(intersection), level, k, intersection.material.kR));
@@ -226,7 +250,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * 
 	 * @param intersection the intersection point
 	 * @param level        the current recursion level
-	 * @param k
+	 * @param k            the color factor for the current level
 	 * @return the color at the intersection point
 	 */
 	private Color calcColor(Intersection intersection, int level, Double3 k) {
@@ -234,6 +258,13 @@ public class SimpleRayTracer extends RayTracerBase {
 		return color;
 	}
 
+	/**
+	 * Constructs a reflected ray based on the intersection point and the normal
+	 * vector.
+	 * 
+	 * @param intersection the intersection point
+	 * @return the reflected ray, or null if the reflection is not valid
+	 */
 	private Ray constructReflectedRay(Intersection intersection) {
 		Vector v = intersection.v;
 		Vector n = intersection.normal;
@@ -246,6 +277,14 @@ public class SimpleRayTracer extends RayTracerBase {
 			r = v.subtract(n.scale(2 * vn)).normalize();// n*2*vn
 		return new Ray(intersection.point, r, n); // new Ray{point,v-2*(v*n)*n}
 	}
+
+	/**
+	 * Constructs a transparency ray based on the intersection point, the direction
+	 * vector, and the normal vector.
+	 * 
+	 * @param intersection the intersection point
+	 * @return the transparency ray
+	 */
 
 	private Ray constructTransparencydRay(Intersection intersection) {
 		return new Ray(intersection.point, intersection.v, intersection.normal);

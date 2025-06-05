@@ -114,6 +114,12 @@ class ReflectionRefractionTests {
 				.writeToImage("refractionShadow");
 	}
 
+	/**
+	 * Test for transparency, reflection, and shadow with a complex scene. This test
+	 * includes a transparent polygon, a blue sphere that casts a shadow, a
+	 * reflective triangle, and a shiny plane.
+	 */
+
 	@Test
 	void transparencyReflectionShadow1Test() {
 		scene.geometries.add(
@@ -147,6 +153,10 @@ class ReflectionRefractionTests {
 				.writeToImage("transparencyReflectionShadow");
 	}
 
+	/**
+	 * Test for transparency, reflection, and shadow with subtle changes to the
+	 * materials and lighting.
+	 */
 	@Test
 	void transparencyReflectionShadowTest() {
 		scene.geometries.add(
@@ -195,6 +205,11 @@ class ReflectionRefractionTests {
 				.setVpSize(200, 200).setResolution(600, 600).build().renderImage()
 				.writeToImage("transparencyReflectionShadow_subtle_changes");
 	}
+
+	/**
+	 * Test for transparency, reflection, and shadow with improved transparency
+	 * settings.
+	 */
 
 	@Test
 	void transparencyReflectionShadow2Test() {
