@@ -11,6 +11,7 @@ import java.util.MissingResourceException;
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
 import scene.Scene;
 
@@ -382,12 +383,22 @@ public class Camera implements Cloneable {
 		private static Vector rotateVector(Vector v, Vector u, double theta) {
 			double cos = Math.cos(theta);
 			double sin = Math.sin(theta);
+			Vector returnV = null; // Create a copy of the vector to avoid modifying the original
+			if (!Util.isZero(cos)) {
+				Vector term1 = v.scale(cos); // v * cosθ
+				returnV = term1;
+			}
+			if (v.dotProduct(u) != 1 && !Util.isZero(sin)) { // Check if v is not parallel to u
+				Vector term2 = u.crossProduct(v).scale(sin); // (u × v) * sinθ
+				returnV = returnV != null ? returnV.add(term2) : term2; // Add the cross product term
+			}
 
-			Vector term1 = v.scale(cos); // v * cosθ
-			Vector term2 = u.crossProduct(v).scale(sin); // (u × v) * sinθ
-			Vector term3 = u.scale(u.dotProduct(v) * (1 - cos));// u * (u • v)(1 - cosθ)
+			if (u.dotProduct(v) * (1 - cos) != 0) {
 
-			return term1.add(term2).add(term3); // חיבור כל שלושת האיברים
+				Vector term3 = u.scale(u.dotProduct(v) * (1 - cos));// u * (u • v)(1 - cosθ)
+				returnV = returnV != null ? returnV.add(term3) : term3;
+			}
+			return returnV != null ? returnV : u; // חיבור כל שלושת האיברים
 
 		}
 
@@ -433,9 +444,8 @@ public class Camera implements Cloneable {
 			if (!isZero(rotationAngleDegrees) && rotationAxis != null) {
 				double angleRad = Math.toRadians(rotationAngleDegrees);
 
-				camera.vTo = rotateVector(camera.vTo, rotationAxis, angleRad).normalize();
 				camera.vUp = rotateVector(camera.vUp, rotationAxis, angleRad).normalize();
-				camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
+				camera.vRight = rotateVector(camera.vRight, rotationAxis, angleRad).normalize();
 			}
 
 			camera.imageWriter = new ImageWriter(camera.nX, camera.nY);
