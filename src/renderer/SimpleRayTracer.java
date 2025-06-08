@@ -159,29 +159,6 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
-	 * Checks if the intersection point is unshaded by any geometry.
-	 * 
-	 * @param intersection the intersection point
-	 * @return true if the intersection point is unshaded, false otherwise
-	 */
-	private boolean unshaded(Intersection intersection) {
-		Ray shadowRay = new Ray(intersection.point, intersection.l.scale(-1), intersection.normal);
-		List<Intersection> intersections = scene.geometries.calculateIntersections(shadowRay,
-				intersection.light.getDistance(intersection.point));
-		if (intersections == null)
-			return true;
-
-		Double3 ktr = Double3.ONE;
-		for (Intersection inter : intersections) {
-			ktr = ktr.product(inter.material.kT);
-			if (ktr.lowerThan(MIN_CALC_COLOR_K))
-				return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Calculates the transparency at a given intersection point.
 	 * 
 	 * @param intersection the intersection point
@@ -290,5 +267,27 @@ public class SimpleRayTracer extends RayTracerBase {
 		return new Ray(intersection.point, intersection.v, intersection.normal);
 
 	}
+	/**
+	 * Checks if the intersection point is unshaded by any geometry.
+	 * 
+	 * @param intersection the intersection point
+	 * @return true if the intersection point is unshaded, false otherwise
+	 */
+//	private boolean unshaded(Intersection intersection) {
+//		Ray shadowRay = new Ray(intersection.point, intersection.l.scale(-1), intersection.normal);
+//		List<Intersection> intersections = scene.geometries.calculateIntersections(shadowRay,
+//				intersection.light.getDistance(intersection.point));
+//		if (intersections == null)
+//			return true;
+//
+//		Double3 ktr = Double3.ONE;
+//		for (Intersection inter : intersections) {
+//			ktr = ktr.product(inter.material.kT);
+//			if (ktr.lowerThan(MIN_CALC_COLOR_K))
+//				return false;
+//		}
+//
+//		return true;
+//	}
 
 }
