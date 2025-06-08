@@ -194,6 +194,32 @@ public class Camera implements Cloneable {
 		private Vector rotationAxis = null;
 
 		/**
+		 * Creates a new Builder instance for constructing a Camera.
+		 */
+		public Builder() {
+
+		}
+
+		/**
+		 * Creates a new Builder instance using an existing Camera object.
+		 * 
+		 * @param camera the Camera object to copy properties from
+		 */
+		public Builder(Camera camera) {
+			this.camera.location = camera.location;
+			this.camera.vTo = camera.vTo;
+			this.camera.vUp = camera.vUp;
+			this.camera.vRight = camera.vRight;
+			this.camera.distance = camera.distance;
+			this.camera.height = camera.height;
+			this.camera.length = camera.length;
+			this.camera.imageWriter = camera.imageWriter;
+			this.camera.rayTracer = camera.rayTracer;
+			this.camera.nX = camera.nX;
+			this.camera.nY = camera.nY;
+		}
+
+		/**
 		 * Sets the translation vector for the camera.
 		 * 
 		 * @param translation the translation vector to apply

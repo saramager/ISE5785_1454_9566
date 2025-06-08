@@ -719,16 +719,17 @@ class ReflectionRefractionTests {
 				.setKl(0.0005).setKq(0.00005).setNarrowBeam(15));
 
 		// --- הגדרת מצלמה ורינדור ---
-		cameraBuilder.setLocation(new Point(0, -140, 50)).setDirection(new Point(0, 0, 20), new Vector(0, 0, 1))
-				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).build().renderImage()
-				.writeToImage("complexRoomScenePolygonsAndCube"); //
-		cameraBuilder.setLocation(new Point(0, -140, 50)).setDirection(new Point(0, 0, 20), new Vector(0, 0, 1))
-				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setRotation(180).build().renderImage()
-				.writeToImage("complexRoomScenePolygonsAndCubeRO"); //
+		Camera c = cameraBuilder.setLocation(new Point(0, -140, 50))
+				.setDirection(new Point(0, 0, 20), new Vector(0, 0, 1)).setVpDistance(100).setVpSize(150, 150)
+				.setResolution(500, 500).build().renderImage().writeToImage("complexRoomScenePolygonsAndCube"); //
+		new Camera.Builder(c).setRotation(45).build().renderImage().writeToImage("complexRoomScenePolygonsAndCubeRO"); // ;
+		new Camera.Builder(c).setRotation(45).build().renderImage().writeToImage("complexRoomScenePolygonsAndCubeRO_Y"); // ;
 
-		cameraBuilder.setLocation(new Point(0, -140, 50)).setDirection(new Point(0, 0, 20), new Vector(0, 0, 1))
-				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setTranslation(new Vector(5, 7, 10))
-				.build().renderImage().writeToImage("complexRoomScenePolygonsAndCubeMOVE"); // שם קובץ חדש
+		new Camera.Builder(c).setTranslation(new Vector(30, 0, 0)).build().renderImage()
+				.writeToImage("complexRoomScenePolygonsAndCubeMOVE"); // ;
+		new Camera.Builder(c).setTranslation(new Vector(0, 0, 30)).build().renderImage()
+				.writeToImage("complexRoomScenePolygonsAndCubeMOVE1");
+
 	}
 
 	/**
