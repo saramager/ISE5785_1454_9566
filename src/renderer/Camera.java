@@ -180,10 +180,7 @@ public class Camera implements Cloneable {
 		 * Camera builder
 		 */
 		private final Camera camera = new Camera();
-		/**
-		 * The translation vector for the camera.
-		 */
-		private Vector translation = null;
+
 		/**
 		 * The rotation angle in degrees for the camera.
 		 */
@@ -226,7 +223,10 @@ public class Camera implements Cloneable {
 		 * @return the builder instance
 		 */
 		public Builder setTranslation(Vector translation) {
-			this.translation = translation;
+			camera.location = camera.location.add(translation);
+//			if (camera.vTo == null)
+//				throw new IllegalArgumentException("Camera direction vector 'vTo' must be set before translation");
+//			camera.vTo = camera.vTo.add(translation).normalize();
 			return this;
 		}
 
@@ -241,6 +241,11 @@ public class Camera implements Cloneable {
 		public Builder setRotation(double angleDegrees, Vector axis) {
 			this.rotationAngleDegrees = angleDegrees;
 			this.rotationAxis = axis.normalize();
+			double angleRad = Math.toRadians(rotationAngleDegrees);
+			if (camera.vTo == null || camera.vUp == null || camera.vRight == null)
+				throw new IllegalArgumentException("Camera direction vectors must be set before rotation");
+			camera.vUp = rotateVector(camera.vUp, rotationAxis, angleRad).normalize();
+			camera.vRight = rotateVector(camera.vRight, rotationAxis, angleRad).normalize();
 			return this;
 		}
 
@@ -252,9 +257,8 @@ public class Camera implements Cloneable {
 		 * @return the builder instance wtith Y axis.
 		 */
 		public Builder setRotation(double angleDegreess) {
-			rotationAngleDegrees = angleDegreess;
-			rotationAxis = camera.vTo;
-			return this;
+
+			return setRotation(angleDegreess, camera.vTo);
 		}
 
 		/**
@@ -462,17 +466,6 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, RESOLUTIONX_FIELD);
 			if (camera.nY <= 0)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, RESOLUTIONY_FIELD);
-
-			if (translation != null) {
-				camera.location = camera.location.add(translation);
-			}
-
-			if (!isZero(rotationAngleDegrees) && rotationAxis != null) {
-				double angleRad = Math.toRadians(rotationAngleDegrees);
-
-				camera.vUp = rotateVector(camera.vUp, rotationAxis, angleRad).normalize();
-				camera.vRight = rotateVector(camera.vRight, rotationAxis, angleRad).normalize();
-			}
 
 			camera.imageWriter = new ImageWriter(camera.nX, camera.nY);
 			if (camera.rayTracer == null)
