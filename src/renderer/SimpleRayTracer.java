@@ -247,11 +247,7 @@ public class SimpleRayTracer extends RayTracerBase {
 		Vector n = intersection.normal;
 		double vn = alignZero(v.dotProduct(n)); // v*n
 		Vector r;
-		if (isZero(vn)) {
-			// r = v.normalize();
-			return null;
-		} else
-			r = v.subtract(n.scale(2 * vn)).normalize();// n*2*vn
+		r = v.subtract(n.scale(2 * vn)).normalize();// n*2*vn
 		return new Ray(intersection.point, r, n); // new Ray{point,v-2*(v*n)*n}
 	}
 
@@ -267,27 +263,5 @@ public class SimpleRayTracer extends RayTracerBase {
 		return new Ray(intersection.point, intersection.v, intersection.normal);
 
 	}
-	/**
-	 * Checks if the intersection point is unshaded by any geometry.
-	 * 
-	 * @param intersection the intersection point
-	 * @return true if the intersection point is unshaded, false otherwise
-	 */
-//	private boolean unshaded(Intersection intersection) {
-//		Ray shadowRay = new Ray(intersection.point, intersection.l.scale(-1), intersection.normal);
-//		List<Intersection> intersections = scene.geometries.calculateIntersections(shadowRay,
-//				intersection.light.getDistance(intersection.point));
-//		if (intersections == null)
-//			return true;
-//
-//		Double3 ktr = Double3.ONE;
-//		for (Intersection inter : intersections) {
-//			ktr = ktr.product(inter.material.kT);
-//			if (ktr.lowerThan(MIN_CALC_COLOR_K))
-//				return false;
-//		}
-//
-//		return true;
-//	}
 
 }

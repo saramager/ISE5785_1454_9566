@@ -394,8 +394,4 @@ class ReflectionRefractionTests {
 
 	}
 
-	/**
-	 * Builds and renders a complex scene with various geometries and lighting
-	 * effects.
-	 */
 }
