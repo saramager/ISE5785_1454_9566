@@ -7,11 +7,6 @@ import primitives.Color;
  */
 public class AmbientLight extends Light {
 	/**
-	 * The intensity of the ambient light (immutable).
-	 */
-//	private final Color intensity;
-
-	/**
 	 * A constant representing no ambient light (black color).
 	 */
 	public static final AmbientLight NONE = new AmbientLight(Color.BLACK);

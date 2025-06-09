@@ -39,18 +39,15 @@ public class Ray {
 	 * issues.
 	 *
 	 * @param head      the starting point of the ray
-	 * @param direction the direction vector of the ray (will be normalized)
+	 * @param direction the direction vector of the ray (must be normalized)
 	 * @param normal    the normal vector at the surface point (used to adjust the
 	 *                  head)
 	 */
 	public Ray(Point head, Vector direction, Vector normal) {
-		this.direction = direction.normalize();
+		this.direction = direction;
 		double nv = normal.dotProduct(this.direction);
-
-		// Add a small delta to the ray's origin to avoid floating-point precision
-		// issues
-
-		this.head = !Util.isZero(nv) ? head.add(normal.scale(nv > 0 ? DELTA : -DELTA)) : head;
+		// Add a small delta to the ray's origin to avoid precision issues
+		this.head = head.add(normal.scale(nv > 0 ? DELTA : -DELTA));
 	}
 
 	/**

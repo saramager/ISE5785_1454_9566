@@ -9,7 +9,7 @@ import primitives.Vector;
 
 /**
  * The DirectionalLight class represents a directional light source in a 3D
- * sence.
+ * scene.
  */
 public class DirectionalLight extends Light implements LightSource {
 	/**

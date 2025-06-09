@@ -257,7 +257,6 @@ public class Camera implements Cloneable {
 		 * @return the builder instance wtith Y axis.
 		 */
 		public Builder setRotation(double angleDegreess) {
-
 			return setRotation(angleDegreess, camera.vTo);
 		}
 
@@ -268,7 +267,6 @@ public class Camera implements Cloneable {
 		 * @return the current {@code Builder} instance for method chaining
 		 */
 		public Builder setLocation(Point location) {
-
 			camera.location = location;
 			return this;
 		}
@@ -283,7 +281,6 @@ public class Camera implements Cloneable {
 		 * @return the camera builder after set direction
 		 */
 		public Builder setDirection(Vector to, Vector up) {
-
 			if (!isZero(to.dotProduct(up)))
 				throw new IllegalArgumentException("Vectors 'to' and 'up' must be orthogonal");
 
@@ -371,11 +368,11 @@ public class Camera implements Cloneable {
 		}
 
 		/**
-		 * set the ray trycer for camera
+		 * set the ray tracer for camera
 		 * 
-		 * @param scene- the sence object for the ray tracer
-		 * @param type   - type for ray tracer from emum RayTracerType
-		 * @return the camera builder after apdute
+		 * @param scene- the scene object for the ray tracer
+		 * @param type   - type for ray tracer from ENUM RayTracerType
+		 * @return the camera builder after update
 		 */
 
 		public Builder setRayTracer(Scene scene, RayTracerType type) {

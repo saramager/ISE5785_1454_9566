@@ -90,8 +90,7 @@ public class Polygon extends Geometry {
 
 	@Override
 	protected List<Intersection> calculateIntersectionsHelper(Ray ray, double maxDistance) {
-		// List<Point> planeIntersections = plane.findIntersections(ray);
-		List<Intersection> planeIntersections = plane.calculateIntersections(ray, maxDistance);
+		var planeIntersections = plane.calculateIntersections(ray, maxDistance);
 		// check intersections with the plane
 		if (planeIntersections == null)
 			return null;
@@ -103,26 +102,21 @@ public class Polygon extends Geometry {
 
 		boolean positive = true;
 
-		for (int i = 0; i < vertices.size(); ++i) {
+		for (int i = 0; i < size; ++i) {
 			Point currentVertex = vertices.get(i);
-			Point nextVertex = vertices.get((i + 1) % vertices.size()); // זה יתחבר בצורה מחזורית
+			Point nextVertex = vertices.get((i + 1) % size);
 			Vector cross;
 			try {
 				Vector v1 = currentVertex.subtract(p);
 				Vector v2 = nextVertex.subtract(p);
-
 				cross = v1.crossProduct(v2);
 			} catch (IllegalArgumentException ex) {
 				return null;
 			}
+
 			double sign = alignZero(cross.dotProduct(n));
-
-			if (isZero(sign))
+			if (isZero(sign) || (i != 0 && (sign > 0) != positive))
 				return null;
-
-			if (i != 0 && (sign > 0) != positive)
-				return null;
-
 			positive = sign > 0;
 		}
 
