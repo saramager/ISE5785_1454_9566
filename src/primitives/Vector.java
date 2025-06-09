@@ -137,4 +137,16 @@ public class Vector extends Point {
 	public Vector normalize() {
 		return new Vector(this.xyz.reduce(this.length()));
 	}
+
+	/**
+	 * Computes the angle in radians between this vector and another vector.
+	 *
+	 * @param vec the other vector to compute the angle with
+	 * @return the angle in radians between the two vectors
+	 */
+	public Vector createOrthogonalVector() {
+
+		Vector u = Math.abs(this.xyz.d2()) < 0.9 ? AXIS_Y : AXIS_X;
+		return this.crossProduct(u).normalize();
+	}
 }

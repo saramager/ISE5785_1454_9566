@@ -31,6 +31,14 @@ public class Material {
 	 * The reflection coefficient.
 	 */
 	public Double3 kR = Double3.ZERO;
+	/**
+	 * The angle of opening the cone of the beam of the beams of transparency
+	 */
+	public double tAngle = 0.0;
+	/**
+	 * The angle of opening the cone of the beam of the beams of transparency
+	 */
+	public double rAngle = 0.0;
 
 	/**
 	 * set the diffuse coefficient
@@ -150,6 +158,32 @@ public class Material {
 	 */
 	public Material setKT(double kT) {
 		this.kT = new Double3(kT);
+		return this;
+	}
+
+	/**
+	 * set the angle of opening the cone of the beam of the beams of transparency
+	 * 
+	 * @param tAngle= the angle of opening the cone of the beam of the beams of
+	 *                transparency
+	 * @return the material after setting the angle of opening the cone of the beam
+	 *         of the beams of transparency
+	 */
+	public Material setTAngle(double tAngle) {
+		this.tAngle = tAngle;
+		return this;
+	}
+
+	/**
+	 * set the angle of opening the cone of the beam of the beams of reflection
+	 * 
+	 * @param rAngle= the angle of opening the cone of the beam of the beams of
+	 *                reflection
+	 * @return the material after setting the angle of opening the cone of the beam
+	 *         of the beams of reflection
+	 */
+	public Material setRAngle(double rAngle) {
+		this.rAngle = rAngle;
 		return this;
 	}
 

@@ -71,7 +71,7 @@ public class Plane extends Geometry {
 			return null;
 
 		double t = alignZero(normal.dotProduct(vecP0P) / denominator);
-		return t <= 0 || alignZero(t - maxDistance) <= 0 ? null //
+		return t <= 0 || alignZero(t - maxDistance) > 0 ? null //
 				: List.of(new Intersection(this, ray.getPoint(t)));
 	}
 

@@ -3,6 +3,9 @@ package renderer;
 
 import static primitives.Util.alignZero;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import geometries.Intersectable.Intersection;
 import lighting.LightSource;
 import primitives.Color;
@@ -206,8 +209,12 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the color resulting from global effects
 	 */
 	private Color calcGlobalEffects(Intersection intersection, int level, Double3 k) {
-		return calcGlobalEffect(constructTransparencydRay(intersection), level, k, intersection.material.kT)
-				.add(calcGlobalEffect(constructReflectedRay(intersection), level, k, intersection.material.kR));
+		return calcRayBeamColor(level, k, intersection.material.kT, //
+				constructBeamdRays(constructTransparencydRay(intersection), intersection.material.tAngle,
+						intersection.normal)) //
+				.add(calcRayBeamColor(level, k, intersection.material.kR, //
+						constructBeamdRays(constructReflectedRay(intersection), intersection.material.rAngle,
+								intersection.normal)));
 	}
 
 	/**
@@ -219,10 +226,10 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the color at the intersection point
 	 */
 	private Color calcColor(Intersection intersection, int level, Double3 k) {
-		Color color = calcColorLocalEffects(intersection, k)
-				// TODO fix - missing stop condition for recursion
-				.add(calcGlobalEffects(intersection, level, k));
-		return color;
+		Color color = calcColorLocalEffects(intersection, k);
+		// TODO fix - missing stop condition for recursion
+
+		return level == 1 ? color : color.add(calcGlobalEffects(intersection, level, k));
 	}
 
 	/**
@@ -244,9 +251,45 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param intersection the intersection point
 	 * @return the transparency ray
 	 */
-
 	private Ray constructTransparencydRay(Intersection intersection) {
 		return new Ray(intersection.point, intersection.v, intersection.normal);
+	}
+
+	/**
+	 * Constructs a list of reflected rays based on the given ray, reflection
+	 * coefficient, and normal vector.
+	 * 
+	 * @param ray    the original ray
+	 * @param k      the reflection coefficient
+	 * @param normal the normal vector at the intersection point
+	 * @return a list of reflected rays
+	 */
+	private List<Ray> constructBeamdRays(Ray ray, double k, Vector normal) {
+		double res = ray.getDir().dotProduct(normal);
+		return k == 0 ? List.of(ray) : new Blackboard(ray, k).constructRayBeamGrid().stream().//
+				filter(r -> r.getDir().dotProduct(normal) * res > 0).collect(Collectors.toList());
+	}
+
+	/**
+	 * Calculates the color of a ray beam based on the reflection coefficient and
+	 * the normal vector.
+	 * 
+	 * @param level the current recursion level
+	 * @param k     the recursion coefficient
+	 * @param kX    the transparency or reflection coefficient
+	 * @param rays  the list of rays in the beam
+	 * @return the color of the ray beam
+	 */
+	private Color calcRayBeamColor(int level, Double3 k, Double3 kX, List<Ray> rays) {
+		if (rays.size() == 1) {
+			return calcGlobalEffect(rays.get(0), level, k, kX);
+		}
+		Color color = Color.BLACK;
+		int size = rays.size();
+		for (Ray rT : rays)
+			color = color.add(calcGlobalEffect(rT, level, k, kX).reduce(size));
+		return color;
+		// TODO:לבדוק אם החילוק טוב או לעשות ממוצע
 	}
 
 }
