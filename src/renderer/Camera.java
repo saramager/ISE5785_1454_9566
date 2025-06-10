@@ -13,7 +13,6 @@ import java.util.stream.IntStream;
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
-import primitives.Util;
 import primitives.Vector;
 import renderer.PixelManager.Pixel;
 import scene.Scene;
@@ -259,6 +258,10 @@ public class Camera implements Cloneable {
 		 * The rotation axis for the camera.
 		 */
 		private Vector rotationAxis = null;
+		/**
+		 * The target point for the camera, used to set the direction of the camera.
+		 */
+		private Point target = null;
 
 		/**
 		 * Creates a new Builder instance for constructing a Camera.
@@ -332,9 +335,13 @@ public class Camera implements Cloneable {
 		 */
 		public Builder setTranslation(Vector translation) {
 			camera.location = camera.location.add(translation);
-//			if (camera.vTo == null)
-//				throw new IllegalArgumentException("Camera direction vector 'vTo' must be set before translation");
-//			camera.vTo = camera.vTo.add(translation).normalize();
+			if (target != null)
+				setDirection(target, translation);
+			else if (camera.distance != 0 && camera.location != null) {
+				target = camera.location.add(camera.vTo.scale(camera.distance));
+				setDirection(target, camera.vUp);
+			}
+
 			return this;
 		}
 
@@ -352,8 +359,8 @@ public class Camera implements Cloneable {
 			double angleRad = Math.toRadians(rotationAngleDegrees);
 			if (camera.vTo == null || camera.vUp == null || camera.vRight == null)
 				throw new IllegalArgumentException("Camera direction vectors must be set before rotation");
-			camera.vUp = rotateVector(camera.vUp, rotationAxis, angleRad).normalize();
-			camera.vRight = rotateVector(camera.vRight, rotationAxis, angleRad).normalize();
+			camera.vUp = camera.vUp.rotateVector(rotationAxis, angleRad);
+			camera.vRight = camera.vRight.rotateVector(rotationAxis, angleRad);
 			return this;
 		}
 
@@ -394,6 +401,7 @@ public class Camera implements Cloneable {
 
 			camera.vTo = to.normalize();
 			camera.vUp = up.normalize();
+
 			return this;
 		}
 
@@ -416,7 +424,7 @@ public class Camera implements Cloneable {
 				throw new IllegalArgumentException("Camera location must be set before setting direction");
 			if (target.equals(camera.location))
 				throw new IllegalArgumentException("Target point cannot be the same as camera location");
-
+			this.target = target;
 			Vector to = target.subtract(camera.location).normalize();
 			// If up and to are almost parallel, choose a different up vector (Z axis)
 			if (alignZero(to.dotProduct(up) - 1) == 0 || alignZero(to.dotProduct(up) + 1) == 0) {
@@ -504,36 +512,6 @@ public class Camera implements Cloneable {
 				throw new IllegalArgumentException("View plane distance must be positive");
 			camera.nY = nY;
 			return this;
-
-		}
-
-		/**
-		 * Rotates a vector around a given axis by a specified angle in radians.
-		 * 
-		 * @param v     the vector to rotate
-		 * @param u     the axis of rotation (must be normalized)
-		 * @param theta the angle of rotation in radians
-		 * @return the rotated vector
-		 */
-		private static Vector rotateVector(Vector v, Vector u, double theta) {
-			double cos = Math.cos(theta);
-			double sin = Math.sin(theta);
-			Vector returnV = null; // Create a copy of the vector to avoid modifying the original
-			if (!Util.isZero(cos)) {
-				Vector term1 = v.scale(cos); // v * cosθ
-				returnV = term1;
-			}
-			if (v.dotProduct(u) != 1 && !Util.isZero(sin)) { // Check if v is not parallel to u
-				Vector term2 = u.crossProduct(v).scale(sin); // (u × v) * sinθ
-				returnV = returnV != null ? returnV.add(term2) : term2; // Add the cross product term
-			}
-
-			if (u.dotProduct(v) * (1 - cos) != 0) {
-
-				Vector term3 = u.scale(u.dotProduct(v) * (1 - cos));// u * (u • v)(1 - cosθ)
-				returnV = returnV != null ? returnV.add(term3) : term3;
-			}
-			return returnV != null ? returnV : u; // חיבור כל שלושת האיברים
 
 		}
 

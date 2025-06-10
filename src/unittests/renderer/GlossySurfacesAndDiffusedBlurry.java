@@ -3,6 +3,7 @@ package unittests.renderer;
 import org.junit.jupiter.api.Test;
 
 import geometries.Plane;
+import geometries.Polygon;
 import geometries.Sphere;
 import lighting.AmbientLight;
 import lighting.DirectionalLight;
@@ -14,7 +15,6 @@ import primitives.Point;
 import primitives.Vector;
 import renderer.Camera;
 import renderer.RayTracerType;
-import renderer.SimpleRayTracer;
 import scene.Scene;
 
 class GlossySurfacesAndDiffusedBlurry {
@@ -109,9 +109,6 @@ class GlossySurfacesAndDiffusedBlurry {
 	public void testBlurryGlass() {
 
 		Vector vTo = new Vector(0, 1, 0);
-		Camera.Builder camera = Camera.getBuilder().setLocation(new Point(0, -230, 0).add(vTo.scale(-13)))
-				.setDirection(vTo, new Vector(0, 0, 1)).setVpSize(200d, 200).setVpDistance(1000);
-		;
 
 		scene.setAmbientLight(new AmbientLight(new Color(150, 150, 150).reduce(2)));
 
@@ -128,7 +125,7 @@ class GlossySurfacesAndDiffusedBlurry {
 					new Polygon(new Point(5 * i - 4, -5, -11), new Point(5 * i - 4, -5, 5), new Point(5 * i + 4, -5, 5),
 							new Point(5 * i + 4, -5, -11)).setEmission(new Color(250, 235, 215).reduce(2))
 							.setMaterial(new Material().setKD(0.001).setKS(0.002).setShininess(1).setKT(0.95)
-									.setTAngle(i == 4 ? 1 : 1000, 0.9 * (i + 15), 17))
+									.setTAngle(i * 10 + 80))
 
 			);
 		}
@@ -144,12 +141,9 @@ class GlossySurfacesAndDiffusedBlurry {
 		scene.lights.add(new DirectionalLight(new Color(255, 255, 255).reduce(1), new Vector(-0.4, 1, 0)));
 		scene.lights.add(new SpotLight(new Color(255, 255, 255).reduce(2), new Point(20.43303, -7.37104, 13.77329),
 				new Vector(-20.43, 7.37, -13.77)).setKl(0.6));
-
-		ImageWriter imageWriter = new ImageWriter("blurryGlass2", 500, 500);
-		camera.setImageWriter(imageWriter) //
-				.setRayTracer(new SimpleRayTracer(scene)) //
-				.setMultithreading(12).setNumberOfRays(17).setAdaptive(true).build() //
-				.renderImage().writeToImage();
+		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))
+				.setVpSize(200d, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
+				.setMultithreading(2).setDebugPrint(1).build().renderImage().writeToImage("blurryGlass2");
 
 	}
 }

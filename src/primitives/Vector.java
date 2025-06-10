@@ -149,4 +149,35 @@ public class Vector extends Point {
 		Vector u = Math.abs(this.xyz.d2()) < 0.9 ? AXIS_Y : AXIS_X;
 		return this.crossProduct(u).normalize();
 	}
+
+	/**
+	 * Rotates a vector around a given axis by a specified angle in radians.
+	 * 
+	 * @param v     the vector to rotate
+	 * @param u     the axis of rotation (must be normalized)
+	 * @param theta the angle of rotation in radians
+	 * @return the rotated vector
+	 */
+	public Vector rotateVector(Vector u, double theta) {
+		double cos = Math.cos(theta);
+		double sin = Math.sin(theta);
+		Vector returnV = null; // Create a copy of the vector to avoid modifying the original
+		if (!Util.isZero(cos)) {
+			Vector term1 = scale(cos); // v * cosθ
+			returnV = term1;
+		}
+		if (dotProduct(u) != 1 && !Util.isZero(sin)) { // Check if v is not parallel to u
+			Vector term2 = u.crossProduct(this).scale(sin); // (u × v) * sinθ
+			returnV = returnV != null ? returnV.add(term2) : term2; // Add the cross product term
+		}
+
+		if (u.dotProduct(this) * (1 - cos) != 0) {
+
+			Vector term3 = u.scale(u.dotProduct(this) * (1 - cos));// u * (u • v)(1 - cosθ)
+			returnV = returnV != null ? returnV.add(term3) : term3;
+		}
+		return returnV != null ? returnV.normalize() : u.normalize(); // חיבור כל שלושת האיברים
+
+	}
+
 }

@@ -21,7 +21,7 @@ public class Blackboard {
 	private double width;
 	private double height;
 	private double size;
-	private static int resolution = 9;
+	private static int resolution = 17;
 
 //for testing
 	public Blackboard(Ray ray, double size) {
