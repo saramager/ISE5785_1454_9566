@@ -14,6 +14,7 @@ import primitives.Point;
 import primitives.Vector;
 import renderer.Camera;
 import renderer.RayTracerType;
+import renderer.SimpleRayTracer;
 import scene.Scene;
 
 class GlossySurfacesAndDiffusedBlurry {
@@ -22,49 +23,6 @@ class GlossySurfacesAndDiffusedBlurry {
 	/** Camera builder for the tests with triangles */
 	private final Camera.Builder cameraBuilder = Camera.getBuilder() //
 			.setRayTracer(scene, RayTracerType.SIMPLE);
-
-//	@Test
-//	void transparencyReflectionShadow2Test() {
-//
-//		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
-//				.setMaterial(new Material().setKD(0.3).setKS(0.5).setShininess(50).setKR(0.8)));
-//
-//		scene.geometries.add(new Plane(new Point(0, 0, -80), new Vector(0, 0, 1)).setEmission(new Color(60, 60, 60))
-//				.setMaterial(new Material().setKD(0.6).setKS(0.2).setShininess(30)));
-//
-//		scene.geometries.add(new Plane(new Point(0, 0, 100), new Vector(0, 0, -1)).setEmission(new Color(50, 50, 50))
-//				.setMaterial(new Material().setKD(0.5).setKS(0.3).setShininess(20)));
-//
-//		scene.geometries.add(
-//				// Transparent polygon – we turn it into glass with higher transparency and less
-//				// "light emission"ר
-//
-//				new Sphere(new Point(0, 30, -20), 20d).setEmission(new Color(BLUE)) // The sphere is blue because of its
-//																					// color
-//						.setMaterial(new Material().setKD(0.6) // Diffuses blue light
-//								.setKS(0.5).setShininess(100).setKT(0.0))); // Completely opaque– no light passes
-//																			// through
-//
-//		// Reflective triangle – more like a real mirror
-//		// mirror
-//		// reflection
-//
-//		// hiny plane – polished floor
-//
-//		// Additional green sphere – to emphasize transparency behind the polygon
-//
-//		scene.setAmbientLight(new AmbientLight(new Color(40, 40, 40)));
-//
-//		// Spot light – with a bit more attenuation
-//		scene.lights.add(new SpotLight(new Color(1000, 600, 600), new Point(0, 100, 200), new Vector(0, -1, -1))
-//				.setKl(0.001).setKq(0.0001)); // Slightly higher attenuation coefficients – the light fades faster,
-//		// making it more concentrated around the source.
-//
-//		cameraBuilder.setLocation(new Point(0, 300, 0)).setDirection(Point.ZERO, new Vector(0, 0, -1)) // תיקון כיוון
-//				.setVpDistance(300).setVpSize(200, 200).setResolution(600, 600).build().renderImage()
-//				.writeToImage("transparency");
-//
-//	}
 
 	/**
 	 * Builds and renders a scene with a single large sphere and a reflective plane.
@@ -116,9 +74,9 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		// 1. מישור מחזיר אור (לצורך ההשתקפות) - נחזיר רצפה פשוטה עם חומר מראה
 		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
-				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(4))); // חומר
-																												// מחזיר
-																												// אור
+				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(100))); // חומר
+																													// מחזיר
+																													// אור
 
 		// 2. הספרה (עיגול) - מוגדלת ומוצבת במרכז
 		// מיקום: קרוב למרכז הבמה וקצת מעל הרצפה (Z=30)
@@ -143,8 +101,55 @@ class GlossySurfacesAndDiffusedBlurry {
 		// נמקם את המצלמה כך שתתמקד בספרה וברצפה כדי לראות את ההשתקפות
 		cameraBuilder.setLocation(new Point(0, -120, 40)) // קרובה יותר, קצת מעל
 				.setDirection(new Point(0, 0, 20), new Vector(0, 0, 1)) // כיוון מבט אל מרכז הספרה
-				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).build().renderImage()
-				.writeToImage("si"); // שם קובץ חדש
+				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setMultithreading(2).setDebugPrint(1)
+				.build().renderImage().writeToImage("si"); // שם קובץ חדש
 	}
 
+	@Test
+	public void testBlurryGlass() {
+
+		Vector vTo = new Vector(0, 1, 0);
+		Camera.Builder camera = Camera.getBuilder().setLocation(new Point(0, -230, 0).add(vTo.scale(-13)))
+				.setDirection(vTo, new Vector(0, 0, 1)).setVpSize(200d, 200).setVpDistance(1000);
+		;
+
+		scene.setAmbientLight(new AmbientLight(new Color(150, 150, 150).reduce(2)));
+
+		for (int i = -4; i < 6; i += 2) {
+			scene.geometries.add(
+					new Sphere(new Point(5 * i, -1.50, -3), 3.0).setEmission(new Color(0, 275, 0).reduce(4).reduce(2))
+							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0d)),
+
+					new Sphere(new Point(5 * i, 5, 3), 3.0).setEmission(new Color(40, 80, 230).reduce(2))
+							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0d)),
+					new Sphere(new Point(5 * i, -8, -8), 3.0).setEmission(new Color(230, 40, 200).reduce(2))
+							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0d)),
+
+					new Polygon(new Point(5 * i - 4, -5, -11), new Point(5 * i - 4, -5, 5), new Point(5 * i + 4, -5, 5),
+							new Point(5 * i + 4, -5, -11)).setEmission(new Color(250, 235, 215).reduce(2))
+							.setMaterial(new Material().setKD(0.001).setKS(0.002).setShininess(1).setKT(0.95)
+									.setTAngle(i == 4 ? 1 : 1000, 0.9 * (i + 15), 17))
+
+			);
+		}
+
+		scene.geometries.add(new Plane(new Point(1, 10, 1), new Point(2, 10, 1), new Point(5, 10, 0))
+				.setEmission(new Color(255, 255, 255).reduce(3))
+				.setMaterial(new Material().setKD(0.2).setKS(0).setShininess(0).setKT(0d))
+
+		);
+
+		// scene.lights.add(new PointLight(new Color(100, 100, 150), new Point(0, 6,
+		// 0)));
+		scene.lights.add(new DirectionalLight(new Color(255, 255, 255).reduce(1), new Vector(-0.4, 1, 0)));
+		scene.lights.add(new SpotLight(new Color(255, 255, 255).reduce(2), new Point(20.43303, -7.37104, 13.77329),
+				new Vector(-20.43, 7.37, -13.77)).setKl(0.6));
+
+		ImageWriter imageWriter = new ImageWriter("blurryGlass2", 500, 500);
+		camera.setImageWriter(imageWriter) //
+				.setRayTracer(new SimpleRayTracer(scene)) //
+				.setMultithreading(12).setNumberOfRays(17).setAdaptive(true).build() //
+				.renderImage().writeToImage();
+
+	}
 }
