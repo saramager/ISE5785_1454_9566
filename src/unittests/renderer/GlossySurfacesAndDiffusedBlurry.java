@@ -27,7 +27,7 @@ class GlossySurfacesAndDiffusedBlurry {
 	/**
 	 * Builds and renders a scene with a single large sphere and a reflective plane.
 	 */
-	@Test
+//	@Test
 	void renderSingleSphereReflection() {
 		// --- הגדרות סצנה בסיסיות ---
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
@@ -65,7 +65,7 @@ class GlossySurfacesAndDiffusedBlurry {
 				.writeToImage("singleSphereReflection"); // שם קובץ חדש
 	}
 
-	@Test
+	// @Test
 	void renderSingleSphereReflectionWith() {
 		// --- הגדרות סצנה בסיסיות ---
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
@@ -110,26 +110,26 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		Vector vTo = new Vector(0, 1, 0);
 
-		scene.setAmbientLight(new AmbientLight(new Color(150, 150, 150).reduce(2)));
+		scene.setAmbientLight(new AmbientLight(new Color(100, 100, 100).reduce(2)));
 
 		for (int i = -4; i < 6; i += 4) {
 			scene.geometries.add(
 					// Red sphere - closest to camera, lowest height
 					new Sphere(new Point(5 * i, -8, -9), 3.0).setEmission(new Color(255, 0, 0).reduce(2))
-							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0d)),
+							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0.4)),
 
 					// Green sphere - behind polygon, middle height
 					new Sphere(new Point(5 * i, 0, -3), 3.0).setEmission(new Color(0, 255, 0).reduce(4).reduce(2))
-							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0d)),
+							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0)),
 
 					// Blue sphere - furthest from camera, highest
 					new Sphere(new Point(5 * i, 5, 3), 3.0).setEmission(new Color(0, 0, 255).reduce(2))
-							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0d)),
+							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0)),
 
 					// Polygon remains at Y = -5
 					new Polygon(new Point(5 * i - 4, -5, -12), new Point(5 * i - 4, -5, 6), new Point(5 * i + 4, -5, 6),
-							new Point(5 * i + 4, -5, -12)).setEmission(new Color(250, 235, 215).reduce(2))
-							.setMaterial(new Material().setKD(0.001).setKS(0.002).setShininess(1).setKT(0.95)
+							new Point(5 * i + 4, -5, -12)).setEmission(new Color(230, 250, 215).reduce(2))
+							.setMaterial(new Material().setKD(0.001).setKS(0.002).setShininess(1).setKT(0.98)
 									.setTAngle(i * 5 + 20)));
 		}
 
