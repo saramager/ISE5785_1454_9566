@@ -30,16 +30,8 @@ public class Blackboard {
 		vRight = vTo.createOrthogonalVector();
 		vUp = vRight.crossProduct(vTo);
 		this.size = size;
-		width = size;
-		height = size;
-	}
-
-//for camera
-	public Blackboard(Point p0, Vector vTo, Vector vUp) {
-		this.vTo = vTo.normalize();
-		this.vUp = vUp.normalize();
-		this.vRight = vTo.crossProduct(vUp);
-		this.p0 = p0;
+		width = size * 2;
+		height = size * 2;
 	}
 
 	public void setSize(double size) {
