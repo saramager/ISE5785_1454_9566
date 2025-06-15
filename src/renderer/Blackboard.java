@@ -18,36 +18,27 @@ public class Blackboard {
 	private Vector vRight;
 	private Vector vTo;
 	private static double distance = 100;
-	private double width;
-	private double height;
-	private double size;
-	private static int resolution = 17;
+	private double lenght;
+	private static int resolution = 9;
 
-//for testing
 	public Blackboard(Ray ray, double size) {
 		p0 = ray.getHead();
 		vTo = ray.getDir();
 		vRight = vTo.createOrthogonalVector();
 		vUp = vRight.crossProduct(vTo);
-		this.size = size;
-		width = size * 2;
-		height = size * 2;
+		lenght = size * 2;
 	}
 
-	public void setSize(double size) {
-		this.size = size;
-		width = size;
-		height = size;
-	}
+//	public void setSize(double size) {
+//		lenght = size;
+//	}
 
 	public void setDistance(double distance) {
-		this.size = distance;
-		width = distance;
-		height = distance;
+		lenght = distance;
 	}
 
-	public void setResolution(int resolution) {
-		this.resolution = resolution;
+	public static void setResolution(int resolution) {
+		Blackboard.resolution = resolution;
 	}
 
 	private Ray constructRay(int j, int i) {
@@ -55,8 +46,8 @@ public class Blackboard {
 		double jitterX = Math.random() - 0.5;
 		double jitterY = Math.random() - 0.5;
 		// Calculate distance on x,y axes to the designated point
-		double yI = (((resolution - 1) / 2.0) - i + jitterY) * (height / resolution);
-		double xJ = (j - ((resolution - 1) / 2.0 + jitterX)) * (width / resolution);
+		double yI = (((resolution - 1) / 2.0) - i + jitterY) * (lenght / resolution);
+		double xJ = (j - ((resolution - 1) / 2.0 + jitterX)) * (lenght / resolution);
 		// Avoiding creation of zero vector (which is unnecessary anyway)
 		if (!isZero(xJ))
 			pIJ = pIJ.add(vRight.scale(xJ));
@@ -77,5 +68,4 @@ public class Blackboard {
 				rays.add(constructRay(j, i));
 		return rays;
 	}
-
 }
