@@ -29,80 +29,46 @@ class GlossySurfacesAndDiffusedBlurry {
 	 */
 //	@Test
 	void renderSingleSphereReflection() {
-		// --- הגדרות סצנה בסיסיות ---
+
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
-
-		// --- הוספת גופים ---
-
-		// 1. מישור מחזיר אור (לצורך ההשתקפות) - נחזיר רצפה פשוטה עם חומר מראה
+//mirror plane
 		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
-				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7))); // חומר מחזיר אור
+				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7)));
+//Sphere in center
+		scene.geometries.add(new Sphere(new Point(0, 0, 25), 25d).setEmission(new Color(0, 100, 200))
+				.setMaterial(new Material().setKD(0.2).setKS(0.8).setShininess(150).setKR(0.9)));
 
-		// 2. הספרה (עיגול) - מוגדלת ומוצבת במרכז
-		// מיקום: קרוב למרכז הבמה וקצת מעל הרצפה (Z=30)
-		// רדיוס: מוגדל ל-25 יחידות (היה 10)
-		scene.geometries.add(new Sphere(new Point(0, 0, 25), 25d) // מוגדל וממוקם במרכז
-				.setEmission(new Color(0, 100, 200)) // כחול יפה
-				.setMaterial(new Material().setKD(0.2).setKS(0.8).setShininess(150).setKR(0.9))); // חומר מראה חזק
+		scene.lights.add(new PointLight(new Color(600, 400, 0), new Point(0, -50, 70)).setKl(0.0008).setKq(0.00008));
 
-		// --- כל שאר הגופים (קובייה, פירמידה, ספרות נוספות, מצולעים נוספים) - הוסרו ---
-
-		// --- הוספת תאורה ---
-		// נשמור על תאורה שמתאימה להדגשת השתקפויות
-		scene.lights.add(new PointLight(new Color(600, 400, 0), new Point(0, -50, 70)).setKl(0.0008).setKq(0.00008)); // אור
-																														// נקודתי
-																														// חזק
-																														// יותר
 		scene.lights.add(new DirectionalLight(new Color(150, 150, 150), new Vector(0.5, -1, -0.7)));
 		scene.lights.add(new SpotLight(new Color(250, 100, 100), new Point(40, 40, 40), new Vector(-0.5, -0.5, -0.8))
 				.setKl(0.0005).setKq(0.00005).setNarrowBeam(15));
 
-		// --- הגדרת מצלמה ורינדור ---
-		// נמקם את המצלמה כך שתתמקד בספרה וברצפה כדי לראות את ההשתקפות
-		cameraBuilder.setLocation(new Point(0, -120, 40)) // קרובה יותר, קצת מעל
-				.setDirection(new Point(0, 0, 20), new Vector(0, 0, 1)) // כיוון מבט אל מרכז הספרה
+		cameraBuilder.setLocation(new Point(0, -120, 40)).setDirection(new Point(0, 0, 20), new Vector(0, 0, 1))
 				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).build().renderImage()
-				.writeToImage("singleSphereReflection"); // שם קובץ חדש
+				.writeToImage("singleSphereReflection");
 	}
 
 	// @Test
 	void renderSingleSphereReflectionWith() {
-		// --- הגדרות סצנה בסיסיות ---
+
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
 
-		// --- הוספת גופים ---
-
-		// 1. מישור מחזיר אור (לצורך ההשתקפות) - נחזיר רצפה פשוטה עם חומר מראה
 		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
-				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(100))); // חומר
-																													// מחזיר
-																													// אור
+				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(100)));
 
-		// 2. הספרה (עיגול) - מוגדלת ומוצבת במרכז
-		// מיקום: קרוב למרכז הבמה וקצת מעל הרצפה (Z=30)
-		// רדיוס: מוגדל ל-25 יחידות (היה 10)
-		scene.geometries.add(new Sphere(new Point(0, 0, 25), 25d) // מוגדל וממוקם במרכז
-				.setEmission(new Color(0, 100, 200)) // כחול יפה
-				.setMaterial(new Material().setKD(0.2).setKS(0.8).setShininess(150).setKR(0.9))); // חומר מראה חזק
+		scene.geometries.add(new Sphere(new Point(0, 0, 25), 25d).setEmission(new Color(0, 100, 200))
+				.setMaterial(new Material().setKD(0.2).setKS(0.8).setShininess(150).setKR(0.9)));
 
-		// --- כל שאר הגופים (קובייה, פירמידה, ספרות נוספות, מצולעים נוספים) - הוסרו ---
+		scene.lights.add(new PointLight(new Color(600, 400, 0), new Point(0, -50, 70)).setKl(0.0008).setKq(0.00008));
 
-		// --- הוספת תאורה ---
-		// נשמור על תאורה שמתאימה להדגשת השתקפויות
-		scene.lights.add(new PointLight(new Color(600, 400, 0), new Point(0, -50, 70)).setKl(0.0008).setKq(0.00008)); // אור
-																														// נקודתי
-																														// חזק
-																														// יותר
 		scene.lights.add(new DirectionalLight(new Color(150, 150, 150), new Vector(0.5, -1, -0.7)));
 		scene.lights.add(new SpotLight(new Color(250, 100, 100), new Point(40, 40, 40), new Vector(-0.5, -0.5, -0.8))
 				.setKl(0.0005).setKq(0.00005).setNarrowBeam(15));
 
-		// --- הגדרת מצלמה ורינדור ---
-		// נמקם את המצלמה כך שתתמקד בספרה וברצפה כדי לראות את ההשתקפות
-		cameraBuilder.setLocation(new Point(0, -120, 40)) // קרובה יותר, קצת מעל
-				.setDirection(new Point(0, 0, 20), new Vector(0, 0, 1)) // כיוון מבט אל מרכז הספרה
+		cameraBuilder.setLocation(new Point(0, -120, 40)).setDirection(new Point(0, 0, 20), new Vector(0, 0, 1))
 				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setMultithreading(2).setDebugPrint(1)
-				.build().renderImage().writeToImage("si"); // שם קובץ חדש
+				.build().renderImage().writeToImage("si");
 	}
 
 	@Test
@@ -136,13 +102,12 @@ class GlossySurfacesAndDiffusedBlurry {
 		scene.geometries.add(
 				new Plane(new Point(1, 10, 1), new Point(2, 10, 1), new Point(5, 10, 0))
 						.setEmission(new Color(255, 255, 255).reduce(3))
-						.setMaterial(new Material().setKD(0.2).setKS(0).setShininess(0).setKT(0d)), // המישור החדש
-																									// שהכדורים ירחפו
-																									// מעליו
+						.setMaterial(new Material().setKD(0.2).setKS(0).setShininess(0).setKT(0d)),
+
 				new Plane(new Point(0, 0, -12), new Point(1, 0, -12), new Point(0, 1, -12))
 						.setEmission(new Color(100, 100, 100))
 						.setMaterial(new Material().setKD(0.5).setKS(0.3).setShininess(20).setKT(0d)),
-				// מראה מרובעת על המישור התחתון - הועברה קדימה יותר לכיון המצלמה
+				// the mirror
 				new Polygon(new Point(-8, -23, -11.9), new Point(8, -23, -11.9), new Point(8, -5, -11.9),
 						new Point(-8, -5, -11.9)).setEmission(new Color(50, 50, 50))
 						.setMaterial(new Material().setKD(0.1).setKS(1).setShininess(100).setKR(0.8)));
@@ -151,17 +116,13 @@ class GlossySurfacesAndDiffusedBlurry {
 //		scene.lights.add(new SpotLight(new Color(255, 255, 255).reduce(2), new Point(20.43303, -7.37104, 13.77329),
 //				new Vector(-20.43, 7.37, -13.77)).setKl(0.6));
 
-		// תאורת Point מהצד הימני - תיצור צללים חדים
 		scene.lights.add(new PointLight(new Color(255, 200, 200), new Point(20, -5, 8)).setKl(0.05).setKq(0.01));
 
-		// תאורת Point מהצד השמאלי - תיצור צללים מהכיוון הנגדי
 		scene.lights.add(new PointLight(new Color(200, 255, 200), new Point(-20, -5, 8)).setKl(0.05).setKq(0.01));
 
-		// תאורת ספוט מלמעלה - להדגשת המראה
 		scene.lights.add(new SpotLight(new Color(255, 255, 255).reduce(2), new Point(0, 15, 0), new Vector(0, -1, 0))
 				.setKl(0.1).setKc(0.1));
 
-		// תאורת Point נוספת מאחור - להאיר את החלק האחורי
 		scene.lights.add(new PointLight(new Color(200, 200, 255), new Point(0, -5, -15)).setKl(0.08).setKq(0.015));
 
 		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))

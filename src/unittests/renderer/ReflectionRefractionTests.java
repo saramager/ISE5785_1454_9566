@@ -289,31 +289,27 @@ class ReflectionRefractionTests {
 		Color cubeEmissionColor = new Color(0, 0, 40);
 
 		scene.geometries
-				.add(new Polygon(r1, r2, r3, r4).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial)); // פאה
-																													// תחתונה
+				.add(new Polygon(r1, r2, r3, r4).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial));
+
 		scene.geometries
-				.add(new Polygon(r5, r6, r7, r8).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial)); // פאה
-																													// עליונה
+				.add(new Polygon(r5, r6, r7, r8).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial));
 		scene.geometries
-				.add(new Polygon(r1, r2, r6, r5).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial)); // פאה
-																													// קדמית
+				.add(new Polygon(r1, r2, r6, r5).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial));
+
 		scene.geometries
-				.add(new Polygon(r4, r3, r7, r8).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial)); // פאה
-																													// אחורית
+				.add(new Polygon(r4, r3, r7, r8).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial));
+
 		scene.geometries
-				.add(new Polygon(r1, r4, r8, r5).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial)); // פאה
-																													// שמאלית
+				.add(new Polygon(r1, r4, r8, r5).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial));
 		scene.geometries
-				.add(new Polygon(r2, r3, r7, r6).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial)); // פאה
-																													// ימנית
+				.add(new Polygon(r2, r3, r7, r6).setEmission(cubeEmissionColor).setMaterial(cubeMirrorMaterial));
 
 		int moveY = -66;
 		int moveX = 10;
 
 		Material baseMaterial = new Material().setKD(0.5).setKS(0.3).setShininess(60);
-		Material transparentMaterial = new Material().setKD(0.2).setKS(0.2).setShininess(30).setKT(0.8); // חומר שקוף
-		Material shinyMaterial = new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.5); // חומר מבריק/מחזיר
-																									// אור חלקית
+		Material transparentMaterial = new Material().setKD(0.2).setKS(0.2).setShininess(30).setKT(0.8);
+		Material shinyMaterial = new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.5);
 
 		// points for the base of the sculpture
 		Point pb1 = new Point(-20 + moveX, 0 + moveY, 0);
@@ -357,12 +353,12 @@ class ReflectionRefractionTests {
 				new Point(0 + moveX, 0 + moveY, 50)).setEmission(new Color(50, 50, 0)).setMaterial(shinyMaterial));
 
 		scene.geometries.add(
-				new Sphere(new Point(-20 + moveX + 5, 0 + moveY + 5, 15 + 2), 2d).setEmission(new Color(255, 100, 0)) // כתום
-																														// זוהר
+				new Sphere(new Point(-20 + moveX + 5, 0 + moveY + 5, 15 + 2), 2d).setEmission(new Color(255, 100, 0))
+
 						.setMaterial(new Material().setKD(0.1).setKS(0.1).setShininess(10)));
 		scene.geometries.add(
-				new Sphere(new Point(25 + moveX - 5, 10 + moveY - 5, 15 + 2), 2d).setEmission(new Color(0, 200, 200)) // טורקיז
-																														// זוהר
+				new Sphere(new Point(25 + moveX - 5, 10 + moveY - 5, 15 + 2), 2d).setEmission(new Color(0, 200, 200))
+
 						.setMaterial(new Material().setKD(0.1).setKS(0.1).setShininess(10)));
 		scene.geometries.add(new Sphere(new Point(45, 15, 10), 4d).setEmission(new Color(200, 150, 0))
 				.setMaterial(new Material().setKD(0.1).setKS(0.1).setShininess(10).setKT(0.3)));
@@ -381,12 +377,12 @@ class ReflectionRefractionTests {
 		Camera c = cameraBuilder.setLocation(new Point(0, -140, 50))
 				.setDirection(new Point(0, 0, 20), new Vector(0, 0, 1)).setVpDistance(100).setVpSize(150, 150)
 				.setResolution(500, 500).build().renderImage().writeToImage("complexRoomScenePolygonsAndCube");
-		new Camera.Builder(c).setRotation(45).build().renderImage().writeToImage("complexRoomScenePolygonsAndCubeRO"); // ;
+		new Camera.Builder(c).setRotation(45).build().renderImage().writeToImage("complexRoomScenePolygonsAndCubeRO");
 		new Camera.Builder(c).setRotation(135).build().renderImage()
-				.writeToImage("complexRoomScenePolygonsAndCubeRO_Y"); // ;
+				.writeToImage("complexRoomScenePolygonsAndCubeRO_Y");
 
 		new Camera.Builder(c).setTranslation(new Vector(30, 0, 0)).build().renderImage()
-				.writeToImage("complexRoomScenePolygonsAndCubeMOVE"); // ;
+				.writeToImage("complexRoomScenePolygonsAndCubeMOVE");
 		new Camera.Builder(c).setTranslation(new Vector(0, 0, 30)).build().renderImage()
 				.writeToImage("complexRoomScenePolygonsAndCubeMOVE1");
 		new Camera.Builder(c).setTranslation(new Vector(0, 0, 30)).setRotation(32).build().renderImage()

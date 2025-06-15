@@ -141,7 +141,6 @@ public class Vector extends Point {
 	/**
 	 * Computes the angle in radians between this vector and another vector.
 	 *
-	 * @param vec the other vector to compute the angle with
 	 * @return the angle in radians between the two vectors
 	 */
 	public Vector createOrthogonalVector() {
@@ -153,7 +152,7 @@ public class Vector extends Point {
 	/**
 	 * Rotates a vector around a given axis by a specified angle in radians.
 	 * 
-	 * @param v     the vector to rotate
+	 * 
 	 * @param u     the axis of rotation (must be normalized)
 	 * @param theta the angle of rotation in radians
 	 * @return the rotated vector
