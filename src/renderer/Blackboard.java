@@ -31,21 +31,20 @@ public class Blackboard {
 	/**
 	 * The distance from the origin to the target area, default is 100
 	 */
-	private static double distance = 100;
+	private double distance = 100;
 	/**
 	 * The length of the grid,
 	 */
-	private double lenght;
+	private double length;
 	/**
 	 * The resolution of the grid, default is 9
 	 */
-	private static int resolution = 9;
+	private int resolution = 9;
 
 	/**
 	 * Default constructor initializes the blackboard with default values.
 	 */
 	public Blackboard() {
-
 	}
 
 	/**
@@ -54,9 +53,7 @@ public class Blackboard {
 	 * @param numOfBeam the number of beams to create in the grid
 	 */
 	public Blackboard(int numOfBeam) {
-
 		resolution = (int) Math.sqrt(numOfBeam);
-
 	}
 
 	/**
@@ -65,7 +62,7 @@ public class Blackboard {
 	 * @param distance the resolution of the grid
 	 */
 	public void setDistance(double distance) {
-		lenght = distance;
+		length = distance;
 	}
 
 	/**
@@ -73,8 +70,8 @@ public class Blackboard {
 	 * 
 	 * @param resolution the distance to set
 	 */
-	public static void setResolution(int resolution) {
-		Blackboard.resolution = resolution;
+	public void setResolution(int resolution) {
+		this.resolution = resolution;
 	}
 
 	/**
@@ -90,8 +87,8 @@ public class Blackboard {
 		double jitterX = Math.random() - 0.5;
 		double jitterY = Math.random() - 0.5;
 		// Calculate distance on x,y axes to the designated point
-		double yI = (((resolution - 1) / 2.0) - i + jitterY) * (lenght / resolution);
-		double xJ = (j - ((resolution - 1) / 2.0 + jitterX)) * (lenght / resolution);
+		double yI = (((resolution - 1) / 2.0) - i + jitterY) * (length / resolution);
+		double xJ = (j - ((resolution - 1) / 2.0 + jitterX)) * (length / resolution);
 		// Avoiding creation of zero vector (which is unnecessary anyway)
 		if (!isZero(xJ))
 			pIJ = pIJ.add(vRight.scale(xJ));
@@ -114,7 +111,7 @@ public class Blackboard {
 		vTo = ray.getDir();
 		vRight = vTo.createOrthogonalVector();
 		vUp = vRight.crossProduct(vTo);
-		lenght = size * 2;
+		length = size * 2;
 		List<Ray> rays = new LinkedList<>();
 		for (int i = 0; i < resolution; ++i)
 			for (int j = 0; j < resolution; j++)

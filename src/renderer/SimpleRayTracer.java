@@ -41,8 +41,7 @@ public class SimpleRayTracer extends RayTracerBase {
 
 	@Override
 	public Color traceRay(Ray ray) {
-
-		var rays = scene.blackboard.constructRayBeamGrid(ray, scene.antiAliasing);
+		var rays = new Blackboard().constructRayBeamGrid(ray, scene.antiAliasing);
 		Color color = Color.BLACK;
 		int size = rays.size();
 		for (Ray secondRay : rays) {
@@ -200,7 +199,7 @@ public class SimpleRayTracer extends RayTracerBase {
 			return Color.BLACK;
 		Intersection intersection = findClosestIntersection(ray);
 		if (intersection == null)
-			return scene.background.scale(kx);
+			return Color.BLACK.scale(kx);
 		return preprocessIntersection(intersection, ray.getDir()) ? calcColor(intersection, level - 1, kkx).scale(kx)
 				: Color.BLACK;
 	}
@@ -270,7 +269,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private List<Ray> constructBeamdRays(Ray ray, double k, Vector normal) {
 		double res = ray.getDir().dotProduct(normal);
-		return k == 0 ? List.of(ray) : scene.blackboard.constructRayBeamGrid(ray, k).stream().//
+		return k == 0 ? List.of(ray) : new Blackboard().constructRayBeamGrid(ray, k).stream().//
 				filter(r -> r.getDir().dotProduct(normal) * res > 0).collect(Collectors.toList());
 	}
 

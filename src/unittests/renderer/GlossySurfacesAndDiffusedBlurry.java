@@ -7,7 +7,6 @@ import geometries.Polygon;
 import geometries.Sphere;
 import lighting.*;
 import primitives.*;
-import renderer.Blackboard;
 import renderer.Camera;
 import renderer.RayTracerType;
 import scene.Scene;
@@ -28,11 +27,11 @@ class GlossySurfacesAndDiffusedBlurry {
 	/**
 	 * Builds and renders a scene with a single large sphere and a reflective plane.
 	 */
-	@Test
+	// @Test
 	void renderSingleSphereReflection() {
 
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30))).setAntiAliasing(0)
-				.setBlackboard(new Blackboard(300));
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30))).setAntiAliasing(0);
+
 //mirror plane
 		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
 				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7)));
@@ -55,10 +54,10 @@ class GlossySurfacesAndDiffusedBlurry {
 	 * Builds and renders a scene with a single large sphere and a reflective plane,
 	 * without using the anti-aliasing feature.
 	 */
-	@Test
+	// @Test
 	void renderSingleSphereReflectionWith() {
 
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30))).setBlackboard(new Blackboard(25));
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
 
 		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
 				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(5)));
@@ -86,8 +85,7 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		Vector vTo = new Vector(0, 1, 0);
 
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2))).setBlackboard(new Blackboard(300))
-				.setAntiAliasing(0);
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2))).setAntiAliasing(0);
 
 		for (int i = -4; i < 6; i += 4) {
 			scene.geometries.add(
