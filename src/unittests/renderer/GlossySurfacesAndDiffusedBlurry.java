@@ -18,6 +18,12 @@ import renderer.Camera;
 import renderer.RayTracerType;
 import scene.Scene;
 
+/**
+ * Tests for rendering scenes with glossy surfaces and diffused blurry
+ * reflections. This class contains tests for rendering scenes with spheres,
+ * planes, and polygons, focusing on glossy surfaces and diffused blurry
+ * reflections.
+ */
 class GlossySurfacesAndDiffusedBlurry {
 	/** Scene for the tests */
 	private final Scene scene = new Scene("Test scene");
@@ -51,6 +57,10 @@ class GlossySurfacesAndDiffusedBlurry {
 				.build().renderImage().writeToImage("singleSphereReflection");
 	}
 
+	/**
+	 * Builds and renders a scene with a single large sphere and a reflective plane,
+	 * without using the anti-aliasing feature.
+	 */
 	@Test
 	void renderSingleSphereReflectionWith() {
 
@@ -73,6 +83,10 @@ class GlossySurfacesAndDiffusedBlurry {
 				.build().renderImage().writeToImage("si");
 	}
 
+	/**
+	 * Builds and renders a scene with multiple spheres and a polygon, with a
+	 * reflective plane.
+	 */
 	@Test
 	public void testBlurryGlass() {
 
@@ -131,6 +145,10 @@ class GlossySurfacesAndDiffusedBlurry {
 				.setMultithreading(2).setDebugPrint(1).build().renderImage().writeToImage("blurryGlass2");
 	}
 
+	/**
+	 * Test for rendering a scene with blurry glass without using the anti-aliasing
+	 * feature.
+	 */
 	@Test
 	public void testBlurryGlassWithout() {
 

@@ -12,33 +12,79 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+/**
+ * Class representing a blackboard for ray tracing, which generates a grid of
+ * rays in a specified area.
+ * 
+ * The grid is defined by a resolution and can be adjusted to create a specific
+ * number of rays.
+ */
 public class Blackboard {
+	/** The origin point of the grid */
 	private Point p0;
+	/** The up vector of the grid */
 	private Vector vUp;
+	/** The right vector of the grid */
 	private Vector vRight;
+	/** The direction vector of the grid */
 	private Vector vTo;
+	/**
+	 * The distance from the origin to the target area, default is 100
+	 */
 	private static double distance = 100;
+	/**
+	 * The length of the grid,
+	 */
 	private double lenght;
+	/**
+	 * The resolution of the grid, default is 9
+	 */
 	private static int resolution = 9;
 
+	/**
+	 * Default constructor initializes the blackboard with default values.
+	 */
 	public Blackboard() {
 
 	}
 
+	/**
+	 * Constructor that initializes the blackboard with a specified number of beams.
+	 * 
+	 * @param numOfBeam the number of beams to create in the grid
+	 */
 	public Blackboard(int numOfBeam) {
 
 		resolution = (int) Math.sqrt(numOfBeam);
 
 	}
 
+	/**
+	 * Constructor that initializes the blackboard with a specified resolution.
+	 * 
+	 * @param distance the resolution of the grid
+	 */
 	public void setDistance(double distance) {
 		lenght = distance;
 	}
 
+	/**
+	 * Sets the distance from the origin to the target area.
+	 * 
+	 * @param resolution the distance to set
+	 */
 	public static void setResolution(int resolution) {
 		Blackboard.resolution = resolution;
 	}
 
+	/**
+	 * Constructs a ray from the origin point to a specific point in the grid.
+	 * 
+	 * @param j the column index of the grid
+	 * @param i the row index of the grid
+	 * @return a Ray object representing the ray from the origin to the specified
+	 *         point
+	 */
 	private Ray constructRay(int j, int i) {
 		Point pIJ = p0.add(vTo.scale(distance));
 		double jitterX = Math.random() - 0.5;
@@ -55,9 +101,11 @@ public class Blackboard {
 	}
 
 	/**
-	 * Constructs a grid of rays in the target area
+	 * Constructs a grid of rays based on the specified ray and size.
 	 * 
-	 * @return list of rays
+	 * @param ray  the base ray from which to construct the grid
+	 * @param size the size of the grid area
+	 * @return a list of Ray objects representing the rays in the grid
 	 */
 	public List<Ray> constructRayBeamGrid(Ray ray, double size) {
 		if (resolution <= 1 || size == 0)
