@@ -94,7 +94,7 @@ public class Scene {
 
 	/**
 	 * Adds a light sources to the scene.
-	 *
+	 * 
 	 * @param lights the lights sources list to add
 	 * @return the scene object itself (for method chaining)
 	 */
