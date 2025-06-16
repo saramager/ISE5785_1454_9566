@@ -42,9 +42,11 @@ public class Scene {
 	/**
 	 * Blackboard used for rendering improvements
 	 */
+
 	public Blackboard blackboard = new Blackboard();
+
 	/**
-	 * The anti-aliasing factor for the scene. Defaults to 0 (no anti-aliasing).
+	 * premeter for antiAliasing -0 there is no anti aiasing
 	 */
 	public double antiAliasing = 0;
 
@@ -102,11 +104,12 @@ public class Scene {
 	}
 
 	/**
-	 * Adds a light source to the scene.
+	 * Sets the blackboard used for rendering improvements.
 	 *
-	 * @param blackboard the blackboard to use for rendering improvements
+	 * @param blackboard the blackboard to use
 	 * @return the scene object itself (for method chaining)
 	 */
+
 	public Scene setBlackboard(Blackboard blackboard) {
 		this.blackboard = blackboard;
 		return this;
@@ -114,11 +117,12 @@ public class Scene {
 	}
 
 	/**
-	 * Sets the anti-aliasing factor for the scene.
-	 *
-	 * @param antiAliasing the anti-aliasing factor to set
+	 * Sets the AntiAliasingused for rendering improvements.
+	 * 
+	 * @param antiAliasing double represent if there is a anti aliasing
 	 * @return the scene object itself (for method chaining)
 	 */
+
 	public Scene setAntiAliasing(double antiAliasing) {
 		this.antiAliasing = antiAliasing;
 		return this;
