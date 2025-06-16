@@ -28,10 +28,11 @@ class GlossySurfacesAndDiffusedBlurry {
 	/**
 	 * Builds and renders a scene with a single large sphere and a reflective plane.
 	 */
-//	@Test
+	@Test
 	void renderSingleSphereReflection() {
 
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30))).setAntiAliasing(0)
+				.setBlackboard(new Blackboard(300));
 //mirror plane
 		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
 				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7)));
@@ -46,17 +47,17 @@ class GlossySurfacesAndDiffusedBlurry {
 				.setKl(0.0005).setKq(0.00005).setNarrowBeam(15));
 
 		cameraBuilder.setLocation(new Point(0, -120, 40)).setDirection(new Point(0, 0, 20), new Vector(0, 0, 1))
-				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).build().renderImage()
-				.writeToImage("singleSphereReflection");
+				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setMultithreading(2).setDebugPrint(1)
+				.build().renderImage().writeToImage("singleSphereReflection");
 	}
 
-	// @Test
+	@Test
 	void renderSingleSphereReflectionWith() {
 
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30))).setBlackboard(new Blackboard(25));
 
 		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
-				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(100)));
+				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(5)));
 
 		scene.geometries.add(new Sphere(new Point(0, 0, 25), 25d).setEmission(new Color(0, 100, 200))
 				.setMaterial(new Material().setKD(0.2).setKS(0.8).setShininess(150).setKR(0.9)));
@@ -77,7 +78,8 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		Vector vTo = new Vector(0, 1, 0);
 
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2)));
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2))).setBlackboard(new Blackboard(300))
+				.setAntiAliasing(0);
 
 		for (int i = -4; i < 6; i += 4) {
 			scene.geometries.add(
@@ -111,7 +113,7 @@ class GlossySurfacesAndDiffusedBlurry {
 				// the mirror
 				new Polygon(new Point(-8, -23, -11.9), new Point(8, -23, -11.9), new Point(8, -5, -11.9),
 						new Point(-8, -5, -11.9)).setEmission(new Color(50, 50, 50))
-						.setMaterial(new Material().setKD(0.1).setKS(1).setShininess(100).setKR(0.8).setRAngle(20)));
+						.setMaterial(new Material().setKD(0.1).setKS(1).setShininess(100).setKR(0.8).setRAngle(10)));
 
 		scene.lights.add(new DirectionalLight(new Color(255, 255, 255).reduce(1), new Vector(-0.4, 1, 0)));
 
@@ -155,7 +157,6 @@ class GlossySurfacesAndDiffusedBlurry {
 							new Point(5 * i + 4, -5, -12)).setEmission(new Color(230, 250, 215).reduce(2))
 							.setMaterial(new Material().setKD(0.001).setKS(0.002).setShininess(1).setKT(0.98)));
 		}
-		Blackboard.setResolution(10);
 		scene.geometries.add(
 				new Plane(new Point(1, 10, 1), new Point(2, 10, 1), new Point(5, 10, 0))
 						.setEmission(new Color(0, 0, 0).reduce(3))
