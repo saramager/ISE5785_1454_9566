@@ -45,8 +45,17 @@ public class SimpleRayTracer extends RayTracerBase {
 	@Override
 	public Color traceRay(Ray ray) {
 
-		Intersection intersections = findClosestIntersection(ray);
-		return intersections == null ? scene.background : calcColor(intersections, ray);
+		var rays = scene.blackboard.constructRayBeamGrid(ray, scene.antiAliasing);
+		Color color = Color.BLACK;
+		int size = rays.size();
+		for (Ray secondRay : rays) {
+			Intersection intersections = findClosestIntersection(secondRay);
+			color = color
+					.add(intersections == null ? scene.background : calcColor(intersections, secondRay).reduce(size));
+
+		}
+		return color;
+
 	}
 
 	/**
@@ -227,8 +236,6 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private Color calcColor(Intersection intersection, int level, Double3 k) {
 		Color color = calcColorLocalEffects(intersection, k);
-		// TODO fix - missing stop condition for recursion
-
 		return level == 1 ? color : color.add(calcGlobalEffects(intersection, level, k));
 	}
 
@@ -266,7 +273,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private List<Ray> constructBeamdRays(Ray ray, double k, Vector normal) {
 		double res = ray.getDir().dotProduct(normal);
-		return k == 0 ? List.of(ray) : new Blackboard(ray, k).constructRayBeamGrid().stream().//
+		return k == 0 ? List.of(ray) : scene.blackboard.constructRayBeamGrid(ray, k).stream().//
 				filter(r -> r.getDir().dotProduct(normal) * res > 0).collect(Collectors.toList());
 	}
 
@@ -281,6 +288,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the color of the ray beam
 	 */
 	private Color calcRayBeamColor(int level, Double3 k, Double3 kX, List<Ray> rays) {
+
 		if (rays.size() == 1) {
 			return calcGlobalEffect(rays.get(0), level, k, kX);
 		}
@@ -289,7 +297,6 @@ public class SimpleRayTracer extends RayTracerBase {
 		for (Ray rT : rays)
 			color = color.add(calcGlobalEffect(rT, level, k, kX).reduce(size));
 		return color;
-		// TODO:לבדוק אם החילוק טוב או לעשות ממוצע
 	}
 
 }

@@ -7,6 +7,7 @@ import geometries.Geometries;
 import lighting.AmbientLight;
 import lighting.LightSource;
 import primitives.Color;
+import renderer.Blackboard;
 
 /**
  * Represents a 3D scene containing background color, ambient lighting, and
@@ -38,6 +39,13 @@ public class Scene {
 	 * The list of light sources in the scene. Defaults to an empty collection.
 	 */
 	public List<LightSource> lights = new LinkedList<>();
+	/**
+	 * Blackboard used for rendering improvements
+	 */
+
+	public Blackboard blackboard = new Blackboard();
+
+	public double antiAliasing = 0;
 
 	/**
 	 * Constructs a Scene with the given name.
@@ -90,5 +98,17 @@ public class Scene {
 	public Scene setLights(List<LightSource> lights) {
 		this.lights = lights;
 		return this;
+	}
+
+	public Scene setBlackboard(Blackboard blackboard) {
+		this.blackboard = blackboard;
+		return this;
+
+	}
+
+	public Scene setAntiAliasing(double antiAliasing) {
+		this.antiAliasing = antiAliasing;
+		return this;
+
 	}
 }

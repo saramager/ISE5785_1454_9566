@@ -21,17 +21,15 @@ public class Blackboard {
 	private double lenght;
 	private static int resolution = 9;
 
-	public Blackboard(Ray ray, double size) {
-		p0 = ray.getHead();
-		vTo = ray.getDir();
-		vRight = vTo.createOrthogonalVector();
-		vUp = vRight.crossProduct(vTo);
-		lenght = size * 2;
+	public Blackboard() {
+
 	}
 
-//	public void setSize(double size) {
-//		lenght = size;
-//	}
+	public Blackboard(int numOfBeam) {
+
+		resolution = (int) Math.sqrt(numOfBeam);
+
+	}
 
 	public void setDistance(double distance) {
 		lenght = distance;
@@ -61,7 +59,14 @@ public class Blackboard {
 	 * 
 	 * @return list of rays
 	 */
-	public List<Ray> constructRayBeamGrid() {
+	public List<Ray> constructRayBeamGrid(Ray ray, double size) {
+		if (resolution <= 1 || size == 0)
+			return List.of(ray);
+		p0 = ray.getHead();
+		vTo = ray.getDir();
+		vRight = vTo.createOrthogonalVector();
+		vUp = vRight.crossProduct(vTo);
+		lenght = size * 2;
 		List<Ray> rays = new LinkedList<>();
 		for (int i = 0; i < resolution; ++i)
 			for (int j = 0; j < resolution; j++)
