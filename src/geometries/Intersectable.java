@@ -6,10 +6,7 @@ package geometries;
 import java.util.List;
 
 import lighting.LightSource;
-import primitives.Material;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 /**
  * interface help with all the intersection

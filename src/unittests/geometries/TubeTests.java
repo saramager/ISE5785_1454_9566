@@ -3,10 +3,14 @@
  */
 package unittests.geometries;
 
-import static org.junit.jupiter.api.Assertions.*;
-import primitives.*;
-import geometries.Tube;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
+
+import geometries.Tube;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 /***
  * Test Junit for geometries.Tube

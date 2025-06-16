@@ -10,26 +10,11 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
-import geometries.Geometries;
-import geometries.Geometry;
-import geometries.Intersectable;
-import geometries.Plane;
-import geometries.Sphere;
-import geometries.Triangle;
-import lighting.AmbientLight;
-import lighting.DirectionalLight;
-import lighting.LightSource;
-import lighting.PointLight;
-import lighting.SpotLight;
-import primitives.Color;
-import primitives.Double3;
-import primitives.Point;
-import primitives.Vector;
+import geometries.*;
+import lighting.*;
+import primitives.*;
 
 /**
  * LoaderXml is responsible for parsing an XML file and constructing a Scene

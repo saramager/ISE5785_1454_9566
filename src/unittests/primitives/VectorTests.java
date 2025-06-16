@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import primitives.*;
+import primitives.Double3;
+import primitives.Point;
+import primitives.Vector;
 
 /***
  * 

@@ -1,7 +1,6 @@
 package geometries;
 
-import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
+import static primitives.Util.*;
 
 import java.util.List;
 

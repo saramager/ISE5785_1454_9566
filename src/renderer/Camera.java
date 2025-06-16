@@ -3,17 +3,13 @@
  */
 package renderer;
 
-import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
+import static primitives.Util.*;
 
 import java.util.LinkedList;
 import java.util.MissingResourceException;
 import java.util.stream.IntStream;
 
-import primitives.Color;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 import renderer.PixelManager.Pixel;
 import scene.Scene;
 

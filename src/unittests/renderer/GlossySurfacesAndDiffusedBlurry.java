@@ -5,14 +5,8 @@ import org.junit.jupiter.api.Test;
 import geometries.Plane;
 import geometries.Polygon;
 import geometries.Sphere;
-import lighting.AmbientLight;
-import lighting.DirectionalLight;
-import lighting.PointLight;
-import lighting.SpotLight;
-import primitives.Color;
-import primitives.Material;
-import primitives.Point;
-import primitives.Vector;
+import lighting.*;
+import primitives.*;
 import renderer.Blackboard;
 import renderer.Camera;
 import renderer.RayTracerType;
@@ -53,7 +47,7 @@ class GlossySurfacesAndDiffusedBlurry {
 				.setKl(0.0005).setKq(0.00005).setNarrowBeam(15));
 
 		cameraBuilder.setLocation(new Point(0, -120, 40)).setDirection(new Point(0, 0, 20), new Vector(0, 0, 1))
-				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setMultithreading(2).setDebugPrint(1)
+				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setMultithreading(-1).setDebugPrint(0.1)
 				.build().renderImage().writeToImage("singleSphereReflection");
 	}
 
@@ -79,7 +73,7 @@ class GlossySurfacesAndDiffusedBlurry {
 				.setKl(0.0005).setKq(0.00005).setNarrowBeam(15));
 
 		cameraBuilder.setLocation(new Point(0, -120, 40)).setDirection(new Point(0, 0, 20), new Vector(0, 0, 1))
-				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setMultithreading(2).setDebugPrint(1)
+				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setMultithreading(-1).setDebugPrint(0.1)
 				.build().renderImage().writeToImage("si");
 	}
 
@@ -141,8 +135,8 @@ class GlossySurfacesAndDiffusedBlurry {
 		scene.lights.add(new PointLight(new Color(200, 200, 255), new Point(0, -5, -15)).setKl(0.08).setKq(0.015));
 
 		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))
-				.setVpSize(200d, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
-				.setMultithreading(2).setDebugPrint(1).build().renderImage().writeToImage("blurryGlass2");
+				.setVpSize(200, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
+				.setMultithreading(-1).setDebugPrint(0.1).build().renderImage().writeToImage("blurryGlass2");
 	}
 
 	/**
@@ -201,6 +195,6 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))
 				.setVpSize(200d, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
-				.setMultithreading(2).setDebugPrint(1).build().renderImage().writeToImage("blurryGlassWithout");
+				.setMultithreading(-1).setDebugPrint(0.1).build().renderImage().writeToImage("blurryGlassWithout");
 	}
 }

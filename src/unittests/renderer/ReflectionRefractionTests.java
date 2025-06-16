@@ -1,23 +1,12 @@
 package unittests.renderer;
 
-import static java.awt.Color.BLUE;
-import static java.awt.Color.RED;
+import static java.awt.Color.*;
 
 import org.junit.jupiter.api.Test;
 
-import geometries.Plane;
-import geometries.Polygon;
-import geometries.Sphere;
-import geometries.Triangle;
-import lighting.AmbientLight;
-import lighting.DirectionalLight;
-import lighting.PointLight;
-import lighting.SpotLight;
-import primitives.Color;
-import primitives.Double3;
-import primitives.Material;
-import primitives.Point;
-import primitives.Vector;
+import geometries.*;
+import lighting.*;
+import primitives.*;
 import renderer.Camera;
 import renderer.RayTracerType;
 import scene.Scene;

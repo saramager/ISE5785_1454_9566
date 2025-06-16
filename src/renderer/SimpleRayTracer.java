@@ -8,10 +8,7 @@ import java.util.stream.Collectors;
 
 import geometries.Intersectable.Intersection;
 import lighting.LightSource;
-import primitives.Color;
-import primitives.Double3;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 import scene.Scene;
 
 /**
