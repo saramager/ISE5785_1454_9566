@@ -39,7 +39,7 @@ public class Blackboard {
 	/**
 	 * The resolution of the grid, default is 9
 	 */
-	private int resolution = 9;
+	private int resolution;
 
 	/**
 	 * Default constructor initializes the blackboard with default values.
@@ -52,8 +52,14 @@ public class Blackboard {
 	 * 
 	 * @param numOfBeam the number of beams to create in the grid
 	 */
-	public Blackboard(int numOfBeam) {
+	public Blackboard(Ray ray, double size, int numOfBeam) {
+		p0 = ray.getHead();
+		vTo = ray.getDir();
+		vRight = vTo.createOrthogonalVector();
+		vUp = vRight.crossProduct(vTo);
+		length = size * 2;
 		resolution = (int) Math.sqrt(numOfBeam);
+
 	}
 
 	/**
@@ -104,14 +110,9 @@ public class Blackboard {
 	 * @param size the size of the grid area
 	 * @return a list of Ray objects representing the rays in the grid
 	 */
-	public List<Ray> constructRayBeamGrid(Ray ray, double size) {
-		if (resolution <= 1 || size == 0)
-			return List.of(ray);
-		p0 = ray.getHead();
-		vTo = ray.getDir();
-		vRight = vTo.createOrthogonalVector();
-		vUp = vRight.crossProduct(vTo);
-		length = size * 2;
+	public List<Ray> constructRayBeamGrid() {
+		if (resolution <= 1 || isZero(length))
+			return List.of(new Ray(p0, vTo));
 		List<Ray> rays = new LinkedList<>();
 		for (int i = 0; i < resolution; ++i)
 			for (int j = 0; j < resolution; j++)

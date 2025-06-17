@@ -30,7 +30,7 @@ class GlossySurfacesAndDiffusedBlurry {
 	// @Test
 	void renderSingleSphereReflection() {
 
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30))).setAntiAliasing(0);
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
 
 //mirror plane
 		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
@@ -85,7 +85,7 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		Vector vTo = new Vector(0, 1, 0);
 
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2))).setAntiAliasing(0);
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2)));
 
 		for (int i = -4; i < 6; i += 4) {
 			scene.geometries.add(
@@ -134,7 +134,8 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))
 				.setVpSize(200, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
-				.setMultithreading(-1).setDebugPrint(0.1).build().renderImage().writeToImage("blurryGlass2");
+				.setGlossyAndDiffuseRays(300).setMultithreading(-1).setDebugPrint(0.1).build().renderImage()
+				.writeToImage("blurryGlass2");
 	}
 
 	/**
@@ -193,6 +194,7 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))
 				.setVpSize(200d, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
-				.setMultithreading(-1).setDebugPrint(0.1).build().renderImage().writeToImage("blurryGlassWithout");
+				.setAntiAlasing(true).setGlossyAndDiffuseRays(300).setMultithreading(-1).setDebugPrint(0.1).build()
+				.renderImage().writeToImage("blurryGlassWithout");
 	}
 }

@@ -29,6 +29,44 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private static final Double3 INITIAL_K = Double3.ONE;
 
+	public int antiAlasingNumOfRays = 81;
+
+	public double antiAlasingSize = 0;
+
+	public int glossyAndDiffuseNumOfRay = 81;
+
+	/**
+	 * Sets the number of rays to be used for ray tracing.
+	 *
+	 * @param numOfRays the number of rays to be used
+	 * @return the updated RayTracerBasic object
+	 */
+	public SimpleRayTracer AntiAlassingSetRays(int numOfRays) {
+		antiAlasingNumOfRays = numOfRays;
+		return this;
+	}
+
+	/**
+	 * Sets the size of the rays to be used for ray tracing.
+	 *
+	 * @param size the size of the rays
+	 * @return the updated RayTracerBasic object
+	 */
+	public SimpleRayTracer setSize(boolean isAnitalassing) {
+		if (isAnitalassing) {
+			this.antiAlasingSize = 0.1;
+		} else {
+			this.antiAlasingSize = 0;
+		}
+		return this;
+
+	}
+
+	public SimpleRayTracer glossyAndDiffuseSetRays(int numOfRays) {
+		glossyAndDiffuseNumOfRay = numOfRays;
+		return this;
+	}
+
 	/**
 	 * Constructor - initializes the ray tracer with a given scene.
 	 * 
@@ -41,7 +79,7 @@ public class SimpleRayTracer extends RayTracerBase {
 
 	@Override
 	public Color traceRay(Ray ray) {
-		var rays = new Blackboard().constructRayBeamGrid(ray, scene.antiAliasing);
+		var rays = new Blackboard(ray, antiAlasingSize, antiAlasingNumOfRays).constructRayBeamGrid();
 		Color color = Color.BLACK;
 		int size = rays.size();
 		for (Ray secondRay : rays) {
@@ -269,7 +307,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private List<Ray> constructBeamdRays(Ray ray, double k, Vector normal) {
 		double res = ray.getDir().dotProduct(normal);
-		return k == 0 ? List.of(ray) : new Blackboard().constructRayBeamGrid(ray, k).stream().//
+		return k == 0 ? List.of(ray) : new Blackboard(ray, k, glossyAndDiffuseNumOfRay).constructRayBeamGrid().stream().//
 				filter(r -> r.getDir().dotProduct(normal) * res > 0).collect(Collectors.toList());
 	}
 

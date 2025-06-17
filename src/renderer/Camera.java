@@ -512,6 +512,59 @@ public class Camera implements Cloneable {
 		}
 
 		/**
+		 * Enables anti-aliasing for the camera. This method sets the ray tracer to
+		 * SimpleRayTracer and configures it for anti-aliasing.
+		 * 
+		 * @param antiAliasing true to enable anti-aliasing, false to disable
+		 * @return the builder instance
+		 * @throws IllegalStateException    if the ray tracer is not set before enabling
+		 *                                  anti-aliasing
+		 * @throws IllegalArgumentException if the ray tracer is not an instance of
+		 *                                  SimpleRayTracer
+		 */
+
+		public Builder setAntiAlasing(boolean antiAliasing) {
+			if (camera.rayTracer == null)
+				throw new IllegalStateException("Ray tracer must be set before enabling anti-aliasing");
+			if (!(camera.rayTracer instanceof SimpleRayTracer))
+				throw new IllegalArgumentException("Anti-aliasing is only supported with SimpleRayTracer");
+
+			((SimpleRayTracer) camera.rayTracer).setSize(antiAliasing);
+			return this;
+		}
+
+		/**
+		 * Sets the number of rays for anti-aliasing in the camera.
+		 * 
+		 * @param numOfRays the number of rays to use for anti-aliasing
+		 * @return the builder instance
+		 * @throws IllegalStateException    if the ray tracer is not set before enabling
+		 *                                  anti-aliasing
+		 * @throws IllegalArgumentException if the ray tracer is not an instance of
+		 *                                  SimpleRayTracer
+		 */
+		public Builder setAntiAlasingRays(int numOfRays) {
+			if (camera.rayTracer == null)
+				throw new IllegalStateException("Ray tracer must be set before enabling anti-aliasing");
+			if (!(camera.rayTracer instanceof SimpleRayTracer))
+				throw new IllegalArgumentException("Anti-aliasing is only supported with SimpleRayTracer");
+
+			((SimpleRayTracer) camera.rayTracer).AntiAlassingSetRays(numOfRays);
+			return this;
+		}
+
+		public Builder setGlossyAndDiffuseRays(int numOfRays) {
+			if (camera.rayTracer == null)
+				throw new IllegalStateException("Ray tracer must be set before enabling anti-aliasing");
+			if (!(camera.rayTracer instanceof SimpleRayTracer))
+				throw new IllegalArgumentException("Anti-aliasing is only supported with SimpleRayTracer");
+
+			((SimpleRayTracer) camera.rayTracer).glossyAndDiffuseSetRays(numOfRays);
+			return this;
+
+		}
+
+		/**
 		 * Camera build
 		 * 
 		 * @return camera

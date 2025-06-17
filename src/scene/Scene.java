@@ -40,11 +40,6 @@ public class Scene {
 	public List<LightSource> lights = new LinkedList<>();
 
 	/**
-	 * premeter for antiAliasing -0 there is no anti aiasing
-	 */
-	public double antiAliasing = 0;
-
-	/**
 	 * Constructs a Scene with the given name.
 	 *
 	 * @param name the name of the scene
@@ -97,16 +92,4 @@ public class Scene {
 		return this;
 	}
 
-	/**
-	 * Sets the AntiAliasingused for rendering improvements.
-	 * 
-	 * @param antiAliasing double represent if there is a anti aliasing
-	 * @return the scene object itself (for method chaining)
-	 */
-
-	public Scene setAntiAliasing(double antiAliasing) {
-		this.antiAliasing = antiAliasing;
-		return this;
-
-	}
 }
