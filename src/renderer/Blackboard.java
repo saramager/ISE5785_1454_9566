@@ -48,9 +48,12 @@ public class Blackboard {
 	}
 
 	/**
-	 * Constructor that initializes the blackboard with a specified number of beams.
+	 * Constructor that initializes the blackboard with a specified ray, size, and
+	 * number of beams.
 	 * 
-	 * @param numOfBeam the number of beams to create in the grid
+	 * @param ray       the ray defining the direction and origin of the grid
+	 * @param size      the size of the grid area
+	 * @param numOfBeam the number of beams to be generated in the grid
 	 */
 	public Blackboard(Ray ray, double size, int numOfBeam) {
 		p0 = ray.getHead();
@@ -106,8 +109,6 @@ public class Blackboard {
 	/**
 	 * Constructs a grid of rays based on the specified ray and size.
 	 * 
-	 * @param ray  the base ray from which to construct the grid
-	 * @param size the size of the grid area
 	 * @return a list of Ray objects representing the rays in the grid
 	 */
 	public List<Ray> constructRayBeamGrid() {

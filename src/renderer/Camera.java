@@ -553,6 +553,18 @@ public class Camera implements Cloneable {
 			return this;
 		}
 
+		/**
+		 * Sets the number of rays for glossy and diffuse anti-aliasing in the camera.
+		 * 
+		 * @param numOfRays the number of rays to use for glossy and diffuse
+		 *                  anti-aliasing
+		 * @return the builder instance
+		 * @throws IllegalStateException    if the ray tracer is not set before enabling
+		 *                                  anti-aliasing
+		 * @throws IllegalArgumentException if the ray tracer is not an instance of
+		 *                                  SimpleRayTracer
+		 */
+
 		public Builder setGlossyAndDiffuseRays(int numOfRays) {
 			if (camera.rayTracer == null)
 				throw new IllegalStateException("Ray tracer must be set before enabling anti-aliasing");

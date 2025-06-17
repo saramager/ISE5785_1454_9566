@@ -29,10 +29,21 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private static final Double3 INITIAL_K = Double3.ONE;
 
+	/**
+	 * The number of rays used for anti-aliasing in the ray tracing. This value is
+	 * set to 81 for anti-aliasing and 1 for non-anti-aliasing.
+	 */
 	public int antiAlasingNumOfRays = 81;
 
+	/**
+	 * The size of the anti-aliasing rays used in the ray tracing. This value is set
+	 * to 0.1 for anti-aliasing and 0 for non-anti-aliasing.
+	 */
 	public double antiAlasingSize = 0;
 
+	/**
+	 * The number of rays used for glossy and diffuse reflections.
+	 */
 	public int glossyAndDiffuseNumOfRay = 81;
 
 	/**
@@ -47,9 +58,9 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
-	 * Sets the size of the rays to be used for ray tracing.
+	 * Sets the size of the anti-aliasing rays.
 	 *
-	 * @param size the size of the rays
+	 * @param isAnitalassing true if anti-aliasing is enabled, false otherwise
 	 * @return the updated RayTracerBasic object
 	 */
 	public SimpleRayTracer setSize(boolean isAnitalassing) {
@@ -61,6 +72,13 @@ public class SimpleRayTracer extends RayTracerBase {
 		return this;
 
 	}
+
+	/**
+	 * Sets the number of rays to be used for glossy and diffuse reflections.
+	 *
+	 * @param numOfRays the number of rays to be used
+	 * @return the updated RayTracerBasic object
+	 */
 
 	public SimpleRayTracer glossyAndDiffuseSetRays(int numOfRays) {
 		glossyAndDiffuseNumOfRay = numOfRays;
