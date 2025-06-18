@@ -134,7 +134,7 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))
 				.setVpSize(200, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
-				.setGlossyAndDiffuseRays(300).setMultithreading(-1).setDebugPrint(0.1).build().renderImage()
+				.setGlossyAndDiffuseRays(289).setMultithreading(-1).setDebugPrint(0.1).build().renderImage()
 				.writeToImage("blurryGlass2");
 	}
 
@@ -194,7 +194,7 @@ class GlossySurfacesAndDiffusedBlurry {
 
 		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))
 				.setVpSize(200d, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
-				.setAntiAlasing(true).setGlossyAndDiffuseRays(300).setMultithreading(-1).setDebugPrint(0.1).build()
-				.renderImage().writeToImage("blurryGlassWithout");
+				.setAntiAlasing(true).setMultithreading(-1).setDebugPrint(0.1).build().renderImage()
+				.writeToImage("blurryGlassWithout");
 	}
 }

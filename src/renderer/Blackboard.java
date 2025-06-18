@@ -62,7 +62,6 @@ public class Blackboard {
 		vUp = vRight.crossProduct(vTo);
 		length = size * 2;
 		resolution = (int) Math.sqrt(numOfBeam);
-
 	}
 
 	/**

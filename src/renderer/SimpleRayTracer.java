@@ -70,7 +70,6 @@ public class SimpleRayTracer extends RayTracerBase {
 			this.antiAlasingSize = 0;
 		}
 		return this;
-
 	}
 
 	/**
@@ -340,7 +339,6 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the color of the ray beam
 	 */
 	private Color calcRayBeamColor(int level, Double3 k, Double3 kX, List<Ray> rays) {
-
 		if (rays.size() == 1) {
 			return calcGlobalEffect(rays.get(0), level, k, kX);
 		}
