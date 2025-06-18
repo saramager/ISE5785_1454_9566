@@ -12,6 +12,12 @@ import primitives.*;
  * interface help with all the intersection
  */
 public abstract class Intersectable {
+	/**
+	 * the edges of the geometry, used to calculate the bounding box initialized to
+	 * positive and negative infinity to ensure that any point will be within the
+	 * bounds
+	 */
+	public List<Double3> edges = List.of(new Double3(Double.POSITIVE_INFINITY), new Double3(Double.NEGATIVE_INFINITY));
 
 	/**
 	 * inner class to help with the intersection
@@ -93,14 +99,6 @@ public abstract class Intersectable {
 	}
 
 	/**
-	 * help method to find the intersections point between an geometry and ray
-	 * 
-	 * @param ray -check intersection for ray
-	 * @return list of Intersections that intersection
-	 */
-//	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray);
-
-	/**
 	 * find the intersections point between an geometry and ray
 	 * 
 	 * @param ray - check intersection for ray
@@ -129,5 +127,4 @@ public abstract class Intersectable {
 	 * @return list of Intersections that intersection
 	 */
 	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray, double maxDistance);
-
 }

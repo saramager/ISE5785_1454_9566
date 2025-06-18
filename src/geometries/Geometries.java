@@ -6,6 +6,7 @@ package geometries;
 import java.util.LinkedList;
 import java.util.List;
 
+import primitives.Double3;
 import primitives.Ray;
 
 /**
@@ -14,6 +15,7 @@ import primitives.Ray;
  * that can be intersected by a ray.
  */
 public class Geometries extends Intersectable {
+
 	/**
 	 * A private, immutable list of intersectable geometries. The list is
 	 * initialized as an empty LinkedList at declaration.
@@ -44,6 +46,19 @@ public class Geometries extends Intersectable {
 	 */
 	public void add(Intersectable... geometries) {
 		this.geometries.addAll(List.of(geometries));
+		Double3 globalMin = new Double3(Double.POSITIVE_INFINITY);
+		Double3 globalMax = new Double3(Double.NEGATIVE_INFINITY);
+		for (Intersectable element : geometries) {
+			List<Double3> edges = element.edges;
+			Double3 min = edges.get(0);
+			Double3 max = edges.get(1);
+			globalMin = new Double3(Math.min(globalMin.d1(), min.d1()), Math.min(globalMin.d2(), min.d2()),
+					Math.min(globalMin.d3(), min.d3()));
+
+			globalMax = new Double3(Math.max(globalMax.d1(), max.d1()), Math.max(globalMax.d2(), max.d2()),
+					Math.max(globalMax.d3(), max.d3()));
+		}
+
 	}
 
 	@Override

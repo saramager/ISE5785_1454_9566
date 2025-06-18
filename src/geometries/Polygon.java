@@ -4,9 +4,7 @@ import static primitives.Util.*;
 
 import java.util.List;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 /**
  * Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
@@ -47,6 +45,16 @@ public class Polygon extends Geometry {
 		if (vertices.length < 3)
 			throw new IllegalArgumentException("A polygon can't have less than 3 vertices");
 		this.vertices = List.of(vertices);
+		Double3 min = Double3.POSITIVE_INFINITY;
+		Double3 max = Double3.NEGATIVE_INFINITY;
+		for (Point p : vertices) {
+			min = p.min(min); // Find the minimum coordinates of all vertices
+			max = p.max(max); // Find the maximum coordinates of all vertices
+		}
+		min = min.subtract(Double3.DELTA); // Add a small value to avoid
+		max = max.add(Double3.DELTA); // floating point errors
+		edges = List.of(min, max);
+
 		size = vertices.length;
 
 		// Generate the plane according to the first three vertices and associate the

@@ -3,6 +3,7 @@
  */
 package renderer;
 
+import static java.lang.Math.*;
 import static primitives.Util.*;
 
 import java.util.LinkedList;
@@ -72,7 +73,7 @@ public class Camera implements Cloneable {
 	/**
 	 * The width (length) of the view plane.
 	 */
-	private double length = 0.0;
+	private double width = 0.0;
 	/**
 	 * the image writer for the camera
 	 */
@@ -94,6 +95,8 @@ public class Camera implements Cloneable {
 	 * location, direction, and distance to the view plane.
 	 */
 	private Point centerViewPlane;
+	public double rX;
+	public double rY;
 
 	/**
 	 * Empty constructor
@@ -212,7 +215,7 @@ public class Camera implements Cloneable {
 	public Ray constructRay(int nX, int nY, int j, int i) {
 		centerViewPlane = location.add(vTo.scale(distance));
 		double rY = height / nY;
-		double rX = length / nX;
+		double rX = width / nX;
 		double xJ = (j - (nX - 1) / 2.0) * rX;
 		double yI = -(i - (nY - 1) / 2.0) * rY;
 		Point pIJ = centerViewPlane;
@@ -231,7 +234,7 @@ public class Camera implements Cloneable {
 	 */
 	private void castRay(int i, int j) {
 		Ray rayPixel = constructRay(nX, nY, i, j);
-		Color colorPixel = rayTracer.traceRay(rayPixel);
+		Color colorPixel = rayTracer.traceRayHelper(rayPixel);
 		imageWriter.writePixel(i, j, colorPixel);
 		pixelManager.pixelDone();
 
@@ -259,6 +262,10 @@ public class Camera implements Cloneable {
 		 */
 		private Point target = null;
 
+		private int antiALiasNumOfRays = 1;
+
+		private int diffusiveNumOfRays = 1;
+
 		/**
 		 * Creates a new Builder instance for constructing a Camera.
 		 */
@@ -278,7 +285,7 @@ public class Camera implements Cloneable {
 			this.camera.vRight = camera.vRight;
 			this.camera.distance = camera.distance;
 			this.camera.height = camera.height;
-			this.camera.length = camera.length;
+			this.camera.width = camera.width;
 			this.camera.imageWriter = camera.imageWriter;
 			this.camera.rayTracer = camera.rayTracer;
 			this.camera.nX = camera.nX;
@@ -352,7 +359,7 @@ public class Camera implements Cloneable {
 		public Builder setRotation(double angleDegrees, Vector axis) {
 			this.rotationAngleDegrees = angleDegrees;
 			this.rotationAxis = axis.normalize();
-			double angleRad = Math.toRadians(rotationAngleDegrees);
+			double angleRad = toRadians(rotationAngleDegrees);
 			if (camera.vTo == null || camera.vUp == null || camera.vRight == null)
 				throw new IllegalArgumentException("Camera direction vectors must be set before rotation");
 			camera.vUp = camera.vUp.rotateVector(rotationAxis, angleRad);
@@ -459,7 +466,7 @@ public class Camera implements Cloneable {
 		public Builder setVpSize(double width, double height) {
 			if (width < 0 || isZero(width) || height < 0 || isZero(height))
 				throw new IllegalArgumentException("View plane size must be positive");
-			camera.length = width;
+			camera.width = width;
 			camera.height = height;
 			return this;
 		}
@@ -512,44 +519,13 @@ public class Camera implements Cloneable {
 		}
 
 		/**
-		 * Enables anti-aliasing for the camera. This method sets the ray tracer to
-		 * SimpleRayTracer and configures it for anti-aliasing.
-		 * 
-		 * @param antiAliasing true to enable anti-aliasing, false to disable
-		 * @return the builder instance
-		 * @throws IllegalStateException    if the ray tracer is not set before enabling
-		 *                                  anti-aliasing
-		 * @throws IllegalArgumentException if the ray tracer is not an instance of
-		 *                                  SimpleRayTracer
-		 */
-
-		public Builder setAntiAlasing(boolean antiAliasing) {
-			if (camera.rayTracer == null)
-				throw new IllegalStateException("Ray tracer must be set before enabling anti-aliasing");
-			if (!(camera.rayTracer instanceof SimpleRayTracer))
-				throw new IllegalArgumentException("Anti-aliasing is only supported with SimpleRayTracer");
-
-			((SimpleRayTracer) camera.rayTracer).setSize(antiAliasing);
-			return this;
-		}
-
-		/**
 		 * Sets the number of rays for anti-aliasing in the camera.
 		 * 
 		 * @param numOfRays the number of rays to use for anti-aliasing
 		 * @return the builder instance
-		 * @throws IllegalStateException    if the ray tracer is not set before enabling
-		 *                                  anti-aliasing
-		 * @throws IllegalArgumentException if the ray tracer is not an instance of
-		 *                                  SimpleRayTracer
 		 */
-		public Builder setAntiAlasingRays(int numOfRays) {
-			if (camera.rayTracer == null)
-				throw new IllegalStateException("Ray tracer must be set before enabling anti-aliasing");
-			if (!(camera.rayTracer instanceof SimpleRayTracer))
-				throw new IllegalArgumentException("Anti-aliasing is only supported with SimpleRayTracer");
-
-			((SimpleRayTracer) camera.rayTracer).AntiAlassingSetRays(numOfRays);
+		public Builder setAntiAliasingRays(int numOfRays) {
+			antiALiasNumOfRays = numOfRays;
 			return this;
 		}
 
@@ -559,19 +535,10 @@ public class Camera implements Cloneable {
 		 * @param numOfRays the number of rays to use for glossy and diffuse
 		 *                  anti-aliasing
 		 * @return the builder instance
-		 * @throws IllegalStateException    if the ray tracer is not set before enabling
-		 *                                  anti-aliasing
-		 * @throws IllegalArgumentException if the ray tracer is not an instance of
-		 *                                  SimpleRayTracer
 		 */
 
 		public Builder setGlossyAndDiffuseRays(int numOfRays) {
-			if (camera.rayTracer == null)
-				throw new IllegalStateException("Ray tracer must be set before enabling anti-aliasing");
-			if (!(camera.rayTracer instanceof SimpleRayTracer))
-				throw new IllegalArgumentException("Anti-aliasing is only supported with SimpleRayTracer");
-
-			((SimpleRayTracer) camera.rayTracer).glossyAndDiffuseSetRays(numOfRays);
+			diffusiveNumOfRays = numOfRays;
 			return this;
 
 		}
@@ -596,15 +563,28 @@ public class Camera implements Cloneable {
 			// Check required fields
 			if (camera.location == null)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, LOCATION_FIELD);
+
 			if (camera.vTo == null)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, VTO_FIELD);
 			if (camera.vUp == null)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, VUP_FIELD);
-			if (isZero(camera.distance))
+			if (!isZero(camera.vTo.dotProduct(camera.vUp)))
+				throw new IllegalArgumentException("vTo and vUp vectors must be orthogonal");
+			if (!isZero(camera.vTo.length() - 1))
+				camera.vTo = camera.vTo.normalize();
+			if (!isZero(camera.vUp.length() - 1))
+				camera.vUp = camera.vUp.normalize();
+			// Compute vRight if not already set
+			if (camera.vRight == null)
+				camera.vRight = camera.vTo.crossProduct(camera.vUp);
+			if (!isZero(camera.vRight.length() - 1))
+				camera.vRight = camera.vRight.normalize();
+
+			if (alignZero(camera.distance) <= 0)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, DISTANCE_FIELD);
-			if (isZero(camera.height))
+			if (alignZero(camera.height) <= 0)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, HEIGHT_FIELD);
-			if (isZero(camera.length))
+			if (alignZero(camera.width) <= 0)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, LENGTH_FIELD);
 			if (camera.nX <= 0)
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, RESOLUTIONX_FIELD);
@@ -615,17 +595,16 @@ public class Camera implements Cloneable {
 			if (camera.rayTracer == null)
 				setRayTracer(null, RayTracerType.SIMPLE);
 
-			if (camera.vTo.length() != 1)
-				camera.vTo = camera.vTo.normalize();
-			if (camera.vUp.length() != 1)
-				camera.vUp = camera.vUp.normalize();
+			camera.rX = camera.width / camera.nX;
+			camera.rY = camera.height / camera.nY;
 
-			if (!isZero(camera.vTo.dotProduct(camera.vUp)))
-				throw new IllegalArgumentException("vTo and vUp vectors must be orthogonal");
+			if (antiALiasNumOfRays > 1) {
+				camera.rayTracer.antiAlassingSetRays(antiALiasNumOfRays);
+				camera.rayTracer.setSize(min(camera.rX, camera.rY));
+			}
 
-			// Compute vRight if not already set
-			if (camera.vRight == null || camera.vRight.dotProduct(camera.vRight) == 1)
-				camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
+			if (diffusiveNumOfRays > 1)
+				camera.rayTracer.glossyAndDiffuseSetRays(diffusiveNumOfRays);
 
 			// Return a copy of the camera object
 			try {

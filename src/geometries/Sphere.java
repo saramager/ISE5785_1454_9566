@@ -4,9 +4,7 @@ import static primitives.Util.alignZero;
 
 import java.util.List;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 /**
  * Represents a sphere in 3D space, defined by a center point and a radius.
@@ -27,6 +25,12 @@ public class Sphere extends RadialGeometry {
 	public Sphere(Point p, Double radius) {
 		super(radius);
 		this.center = p;
+
+		Double3 radiusVector = new Double3(radius, radius, radius);
+		Double3 centerXYZ = new Double3(p.d1(), p.d2(), p.d3());
+
+		Double3 min = radiusVector.subtract(center);
+		Double3 max = center.add(radiusVector);
 	}
 
 	@Override

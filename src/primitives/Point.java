@@ -24,6 +24,25 @@ public class Point {
 	}
 
 	/**
+	 * Constructs a point with given x, y, and z coordinates.
+	 *
+	 * @param other to find minimum
+	 * 
+	 */
+	public Double3 min(Double3 other) {
+		return xyz.min(other);
+	}
+
+	/**
+	 * 
+	 * @param other
+	 * @return
+	 */
+	public Double3 max(Double3 other) {
+		return xyz.max(other);
+	}
+
+	/**
 	 * Constructs a point from a {@link Double3} object.
 	 *
 	 * @param d3 the {@link Double3} containing the coordinates

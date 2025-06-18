@@ -4,7 +4,6 @@ package renderer;
 import static primitives.Util.alignZero;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import geometries.Intersectable.Intersection;
 import lighting.LightSource;
@@ -30,61 +29,6 @@ public class SimpleRayTracer extends RayTracerBase {
 	private static final Double3 INITIAL_K = Double3.ONE;
 
 	/**
-	 * The number of rays used for anti-aliasing in the ray tracing. This value is
-	 * set to 81 for anti-aliasing and 1 for non-anti-aliasing.
-	 */
-	public int antiAlasingNumOfRays = 81;
-
-	/**
-	 * The size of the anti-aliasing rays used in the ray tracing. This value is set
-	 * to 0.1 for anti-aliasing and 0 for non-anti-aliasing.
-	 */
-	public double antiAlasingSize = 0;
-
-	/**
-	 * The number of rays used for glossy and diffuse reflections.
-	 */
-	public int glossyAndDiffuseNumOfRay = 81;
-
-	/**
-	 * Sets the number of rays to be used for ray tracing.
-	 *
-	 * @param numOfRays the number of rays to be used
-	 * @return the updated RayTracerBasic object
-	 */
-	public SimpleRayTracer AntiAlassingSetRays(int numOfRays) {
-		antiAlasingNumOfRays = numOfRays;
-		return this;
-	}
-
-	/**
-	 * Sets the size of the anti-aliasing rays.
-	 *
-	 * @param isAnitalassing true if anti-aliasing is enabled, false otherwise
-	 * @return the updated RayTracerBasic object
-	 */
-	public SimpleRayTracer setSize(boolean isAnitalassing) {
-		if (isAnitalassing) {
-			this.antiAlasingSize = 0.1;
-		} else {
-			this.antiAlasingSize = 0;
-		}
-		return this;
-	}
-
-	/**
-	 * Sets the number of rays to be used for glossy and diffuse reflections.
-	 *
-	 * @param numOfRays the number of rays to be used
-	 * @return the updated RayTracerBasic object
-	 */
-
-	public SimpleRayTracer glossyAndDiffuseSetRays(int numOfRays) {
-		glossyAndDiffuseNumOfRay = numOfRays;
-		return this;
-	}
-
-	/**
 	 * Constructor - initializes the ray tracer with a given scene.
 	 * 
 	 * @param scene the scene to be used for ray tracing
@@ -95,18 +39,9 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	@Override
-	public Color traceRay(Ray ray) {
-		var rays = new Blackboard(ray, antiAlasingSize, antiAlasingNumOfRays).constructRayBeamGrid();
-		Color color = Color.BLACK;
-		int size = rays.size();
-		for (Ray secondRay : rays) {
-			Intersection intersections = findClosestIntersection(secondRay);
-			color = color
-					.add(intersections == null ? scene.background : calcColor(intersections, secondRay).reduce(size));
-
-		}
-		return color;
-
+	protected Color traceRayHelper(Ray ray) {
+		Intersection intersections = findClosestIntersection(ray);
+		return intersections == null ? scene.background : calcColor(intersections, ray);
 	}
 
 	/**
@@ -324,8 +259,11 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private List<Ray> constructBeamdRays(Ray ray, double k, Vector normal) {
 		double res = ray.getDir().dotProduct(normal);
-		return k == 0 ? List.of(ray) : new Blackboard(ray, k, glossyAndDiffuseNumOfRay).constructRayBeamGrid().stream().//
-				filter(r -> r.getDir().dotProduct(normal) * res > 0).collect(Collectors.toList());
+		return k == 0 ? List.of(ray)//
+				: new Blackboard(ray, k, glossyAndDiffuseNumOfRay)//
+						.constructRayBeamGrid()//
+						.stream().filter(r -> r.getDir().dotProduct(normal) * res > 0)//
+						.toList();
 	}
 
 	/**
@@ -339,14 +277,14 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the color of the ray beam
 	 */
 	private Color calcRayBeamColor(int level, Double3 k, Double3 kX, List<Ray> rays) {
-		if (rays.size() == 1) {
-			return calcGlobalEffect(rays.get(0), level, k, kX);
-		}
-		Color color = Color.BLACK;
 		int size = rays.size();
+		if (size == 1)
+			return calcGlobalEffect(rays.getFirst(), level, k, kX);
+
+		Color color = Color.BLACK;
 		for (Ray rT : rays)
-			color = color.add(calcGlobalEffect(rT, level, k, kX).reduce(size));
-		return color;
+			color = color.add(calcGlobalEffect(rT, level, k, kX));
+		return color.reduce(size);
 	}
 
 }

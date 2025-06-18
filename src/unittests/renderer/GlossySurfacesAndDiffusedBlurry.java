@@ -1,5 +1,6 @@
 package unittests.renderer;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import geometries.Plane;
@@ -8,6 +9,7 @@ import geometries.Sphere;
 import lighting.*;
 import primitives.*;
 import renderer.Camera;
+import renderer.Camera.Builder;
 import renderer.RayTracerType;
 import scene.Scene;
 
@@ -27,7 +29,8 @@ class GlossySurfacesAndDiffusedBlurry {
 	/**
 	 * Builds and renders a scene with a single large sphere and a reflective plane.
 	 */
-	// @Test
+	@Test
+	@Disabled("This test is disabled because it takes a long time to run")
 	void renderSingleSphereReflection() {
 
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
@@ -77,14 +80,9 @@ class GlossySurfacesAndDiffusedBlurry {
 	}
 
 	/**
-	 * Builds and renders a scene with multiple spheres and a polygon, with a
-	 * reflective plane.
+	 * 
 	 */
-	@Test
-	public void testBlurryGlass() {
-
-		Vector vTo = new Vector(0, 1, 0);
-
+	private void setSceneForDiffusiveTest() {
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2)));
 
 		for (int i = -4; i < 6; i += 4) {
@@ -108,17 +106,19 @@ class GlossySurfacesAndDiffusedBlurry {
 									.setTAngle(i * 5 + 20)));
 		}
 
-		scene.geometries.add(
-				new Plane(new Point(1, 10, 1), new Point(2, 10, 1), new Point(5, 10, 0))
-						.setEmission(new Color(0, 0, 0).reduce(3))
-						.setMaterial(new Material().setKD(0.2).setKS(0).setShininess(0).setKT(0d)),
-
-				new Plane(new Point(0, 0, -12), new Point(1, 0, -12), new Point(0, 1, -12))
-						.setEmission(new Color(100, 100, 100))
-						.setMaterial(new Material().setKD(0.5).setKS(0.3).setShininess(20).setKT(0d)),
+		scene.geometries.add(//
+				// The wall
+				new Plane(new Point(0, 10, 0), Vector.AXIS_Y)//
+						.setEmission(Color.BLACK)//
+						.setMaterial(new Material().setKD(0.2).setKT(0d)),
+				// The floor
+				new Plane(new Point(0, -5, -12.1), new Vector(0, -0.5, 1))//
+						.setEmission(new Color(100, 100, 100))//
+						.setMaterial(new Material().setKD(0.5).setKS(0.3).setShininess(20)),
 				// the mirror
-				new Polygon(new Point(-8, -23, -11.9), new Point(8, -23, -11.9), new Point(8, -5, -11.9),
-						new Point(-8, -5, -11.9)).setEmission(new Color(50, 50, 50))
+				new Polygon(new Point(-12, -55, -37), new Point(12, -55, -37), //
+						new Point(12, -5, -12), new Point(-12, -5, -12))//
+						.setEmission(new Color(50, 50, 50))
 						.setMaterial(new Material().setKD(0.1).setKS(1).setShininess(100).setKR(0.8).setRAngle(10)));
 
 		scene.lights.add(new DirectionalLight(new Color(255, 255, 255).reduce(1), new Vector(-0.4, 1, 0)));
@@ -131,11 +131,33 @@ class GlossySurfacesAndDiffusedBlurry {
 				.setKl(0.1).setKc(0.1));
 
 		scene.lights.add(new PointLight(new Color(200, 200, 255), new Point(0, -5, -15)).setKl(0.08).setKq(0.015));
+	}
 
-		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))
-				.setVpSize(200, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
-				.setGlossyAndDiffuseRays(289).setMultithreading(-1).setDebugPrint(0.1).build().renderImage()
-				.writeToImage("blurryGlass2");
+	/**
+	 * @return
+	 */
+	private Builder updateCameraBuilderForDiffusiveTest() {
+		return cameraBuilder//
+				.setResolution(500, 500)//
+				.setLocation(new Point(0, -1000, 0))//
+				.setDirection(new Point(0, 0, -12), Vector.AXIS_Z)//
+				.setVpDistance(1000).setVpSize(70, 50)//
+				.setResolution(700, 500)//
+		;
+	}
+
+	/**
+	 * Builds and renders a scene with multiple spheres and a polygon, with a
+	 * reflective plane.
+	 */
+	@Test
+	public void testBlurryGlass() {
+		setSceneForDiffusiveTest();
+		updateCameraBuilderForDiffusiveTest()//
+				.setGlossyAndDiffuseRays(25)// 289
+				.setAntiAliasingRays(9)//
+				.setMultithreading(-1).setDebugPrint(0.1)//
+				.build().renderImage().writeToImage("blurryGlass2");
 	}
 
 	/**
@@ -144,57 +166,10 @@ class GlossySurfacesAndDiffusedBlurry {
 	 */
 	@Test
 	public void testBlurryGlassWithout() {
-
-		Vector vTo = new Vector(0, 1, 0);
-
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2)));
-
-		for (int i = -4; i < 6; i += 4) {
-			scene.geometries.add(
-					// Red sphere - closest to camera, lowest height
-					new Sphere(new Point(5 * i, -8, -9), 3.0).setEmission(new Color(255, 0, 0).reduce(2))
-							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0.4)),
-
-					// Green sphere - behind polygon, middle height
-					new Sphere(new Point(5 * i, 0, -3), 3.0).setEmission(new Color(0, 255, 0).reduce(4).reduce(2))
-							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0)),
-
-					// Blue sphere - furthest from camera, highest
-					new Sphere(new Point(5 * i, 5, 3), 3.0).setEmission(new Color(0, 0, 255).reduce(2))
-							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0)),
-
-					// Polygon remains at Y = -5
-					new Polygon(new Point(5 * i - 4, -5, -12), new Point(5 * i - 4, -5, 6), new Point(5 * i + 4, -5, 6),
-							new Point(5 * i + 4, -5, -12)).setEmission(new Color(230, 250, 215).reduce(2))
-							.setMaterial(new Material().setKD(0.001).setKS(0.002).setShininess(1).setKT(0.98)));
-		}
-		scene.geometries.add(
-				new Plane(new Point(1, 10, 1), new Point(2, 10, 1), new Point(5, 10, 0))
-						.setEmission(new Color(0, 0, 0).reduce(3))
-						.setMaterial(new Material().setKD(0.2).setKS(0).setShininess(0).setKT(0d)),
-
-				new Plane(new Point(0, 0, -12), new Point(1, 0, -12), new Point(0, 1, -12))
-						.setEmission(new Color(100, 100, 100))
-						.setMaterial(new Material().setKD(0.5).setKS(0.3).setShininess(20).setKT(0d)),
-				// the mirror
-				new Polygon(new Point(-8, -23, -11.9), new Point(8, -23, -11.9), new Point(8, -5, -11.9),
-						new Point(-8, -5, -11.9)).setEmission(new Color(50, 50, 50))
-						.setMaterial(new Material().setKD(0.1).setKS(1).setShininess(100).setKR(0.8)));
-
-		scene.lights.add(new DirectionalLight(new Color(255, 255, 255).reduce(1), new Vector(-0.4, 1, 0)));
-
-		scene.lights.add(new PointLight(new Color(255, 200, 200), new Point(20, -5, 8)).setKl(0.05).setKq(0.01));
-
-		scene.lights.add(new PointLight(new Color(200, 255, 200), new Point(-20, -5, 8)).setKl(0.05).setKq(0.01));
-
-		scene.lights.add(new SpotLight(new Color(255, 255, 255).reduce(2), new Point(0, 15, 0), new Vector(0, -1, 0))
-				.setKl(0.1).setKc(0.1));
-
-		scene.lights.add(new PointLight(new Color(200, 200, 255), new Point(0, -5, -15)).setKl(0.08).setKq(0.015));
-
-		cameraBuilder.setResolution(500, 500).setLocation(new Point(0, -50, 0)).setDirection(vTo, new Vector(0, 0, 1))
-				.setVpSize(200d, 200).setVpDistance(1000).setVpDistance(100).setVpSize(150, 150).setResolution(500, 500)
-				.setAntiAlasing(true).setMultithreading(-1).setDebugPrint(0.1).build().renderImage()
-				.writeToImage("blurryGlassWithout");
+		setSceneForDiffusiveTest();
+		updateCameraBuilderForDiffusiveTest()//
+				.setAntiAliasingRays(9)//
+				.setMultithreading(-1).setDebugPrint(0.1)//
+				.build().renderImage().writeToImage("blurryGlassWithout");
 	}
 }

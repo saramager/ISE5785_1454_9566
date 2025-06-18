@@ -20,6 +20,22 @@ public record Double3(double d1, double d2, double d3) {
 
 	/** One's triad (1,1,1) */
 	public static final Double3 ONE = new Double3(1, 1, 1);
+	/**
+	 * Positive infinity triad (Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
+	 * Double.POSITIVE_INFINITY)
+	 */
+	public static final Double3 POSITIVE_INFINITY = new Double3(Double.POSITIVE_INFINITY);
+
+	/**
+	 * Negative infinity triad (Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY,
+	 * Double.NEGATIVE_INFINITY)
+	 */
+	public static final Double3 NEGATIVE_INFINITY = new Double3(Double.NEGATIVE_INFINITY);
+	/**
+	 * A small value triad (0.00001, 0.00001, 0.00001) used for comparisons to avoid
+	 * floating point errors
+	 */
+	public static final Double3 DELTA = new Double3(0.00001);
 
 	/**
 	 * Constructor to initialize Double3 based object the same number values
@@ -28,6 +44,21 @@ public record Double3(double d1, double d2, double d3) {
 	 */
 	public Double3(double value) {
 		this(value, value, value);
+	}
+
+	/**
+	 * Constructor to initialize Double3 based object with two numbers and the third
+	 * one is zero
+	 * 
+	 * @param d1 first number
+	 * @param d2 second number
+	 */
+	public Double3 min(Double3 other) {
+		return new Double3(Math.min(d1, other.d1), Math.min(d2, other.d2), Math.min(d3, other.d3));
+	}
+
+	public Double3 max(Double3 other) {
+		return new Double3(Math.max(d1, other.d1), Math.max(d2, other.d2), Math.max(d3, other.d3));
 	}
 
 	@Override
