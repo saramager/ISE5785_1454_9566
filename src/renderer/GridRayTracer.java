@@ -4,7 +4,6 @@
 package renderer;
 
 import primitives.Color;
-import primitives.Double3;
 import primitives.Ray;
 import scene.Scene;
 
@@ -18,10 +17,9 @@ public class GridRayTracer extends RayTracerBase {
 	}
 
 	@Override
-	protected Color traceRayHelper(Ray ray) {
+	public Color traceRay(Ray ray) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-p
-}}
+}

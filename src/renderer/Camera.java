@@ -7,6 +7,7 @@ import static java.lang.Math.*;
 import static primitives.Util.*;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.MissingResourceException;
 import java.util.stream.IntStream;
 
@@ -97,6 +98,16 @@ public class Camera implements Cloneable {
 	private Point centerViewPlane;
 	public double rX;
 	public double rY;
+	/**
+	 * The number of rays used for anti-aliasing in the ray tracing.
+	 */
+	public int antiAlasingNumOfRays = 1;
+
+	/**
+	 * The size of the anti-aliasing rays used in the ray tracing. This value is set
+	 * to 0.1 for anti-aliasing and 0 for non-anti-aliasing.
+	 */
+	public double antiAlasingSize = 0;
 
 	/**
 	 * Empty constructor
@@ -234,10 +245,25 @@ public class Camera implements Cloneable {
 	 */
 	private void castRay(int i, int j) {
 		Ray rayPixel = constructRay(nX, nY, i, j);
-		Color colorPixel = rayTracer.traceRayHelper(rayPixel);
+		Color colorPixel;
+		if (antiAlasingNumOfRays > 1)
+			colorPixel = CastBeamRay(rayPixel);
+		else
+			colorPixel = rayTracer.traceRay(rayPixel);
 		imageWriter.writePixel(i, j, colorPixel);
 		pixelManager.pixelDone();
 
+	}
+
+	private Color CastBeamRay(Ray ray) {
+		List<Ray> rays = new Blackboard(ray, antiAlasingSize / 10, antiAlasingNumOfRays).constructRayBeamGrid();
+		int size = rays.size();
+		if (size == 1)
+			return rayTracer.traceRay(ray);
+		Color color = Color.BLACK;
+		for (Ray r : rays)
+			color = color.add(rayTracer.traceRay(r));
+		return color.reduce(size);
 	}
 
 	/**
@@ -261,8 +287,9 @@ public class Camera implements Cloneable {
 		 * The target point for the camera, used to set the direction of the camera.
 		 */
 		private Point target = null;
-
-		private int antiALiasNumOfRays = 1;
+		/**
+		 * The number of rays used for anti-aliasing.
+		 */
 
 		private int diffusiveNumOfRays = 1;
 
@@ -290,6 +317,13 @@ public class Camera implements Cloneable {
 			this.camera.rayTracer = camera.rayTracer;
 			this.camera.nX = camera.nX;
 			this.camera.nY = camera.nY;
+			this.camera.threadsCount = camera.threadsCount;
+			this.camera.printInterval = camera.printInterval;
+			this.camera.pixelManager = camera.pixelManager;
+			this.camera.centerViewPlane = camera.centerViewPlane;
+			this.camera.antiAlasingSize = camera.antiAlasingSize;
+			this.camera.antiAlasingNumOfRays = camera.antiAlasingNumOfRays;
+
 		}
 
 		/**
@@ -525,7 +559,7 @@ public class Camera implements Cloneable {
 		 * @return the builder instance
 		 */
 		public Builder setAntiAliasingRays(int numOfRays) {
-			antiALiasNumOfRays = numOfRays;
+			camera.antiAlasingNumOfRays = numOfRays;
 			return this;
 		}
 
@@ -595,16 +629,15 @@ public class Camera implements Cloneable {
 			if (camera.rayTracer == null)
 				setRayTracer(null, RayTracerType.SIMPLE);
 
+			if (diffusiveNumOfRays > 1)
+				camera.rayTracer.glossyAndDiffuseSetRays(diffusiveNumOfRays);
 			camera.rX = camera.width / camera.nX;
 			camera.rY = camera.height / camera.nY;
 
-			if (antiALiasNumOfRays > 1) {
-				camera.rayTracer.antiAlassingSetRays(antiALiasNumOfRays);
-				camera.rayTracer.setSize(min(camera.rX, camera.rY));
-			}
+			if (camera.antiAlasingNumOfRays > 1) {
+				camera.antiAlasingSize = min(camera.rX, camera.rY);
 
-			if (diffusiveNumOfRays > 1)
-				camera.rayTracer.glossyAndDiffuseSetRays(diffusiveNumOfRays);
+			}
 
 			// Return a copy of the camera object
 			try {

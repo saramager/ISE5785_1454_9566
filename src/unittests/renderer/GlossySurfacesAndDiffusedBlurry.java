@@ -154,8 +154,8 @@ class GlossySurfacesAndDiffusedBlurry {
 	public void testBlurryGlass() {
 		setSceneForDiffusiveTest();
 		updateCameraBuilderForDiffusiveTest()//
-				.setGlossyAndDiffuseRays(25)// 289
-				.setAntiAliasingRays(9)//
+				.setGlossyAndDiffuseRays(289)// 289
+				.setAntiAliasingRays(81)//
 				.setMultithreading(-1).setDebugPrint(0.1)//
 				.build().renderImage().writeToImage("blurryGlass2");
 	}

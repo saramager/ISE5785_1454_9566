@@ -27,9 +27,7 @@ public class Sphere extends RadialGeometry {
 		this.center = p;
 
 		Double3 radiusVector = new Double3(radius, radius, radius);
-		Double3 centerXYZ = new Double3(p.d1(), p.d2(), p.d3());
-
-		Double3 min = radiusVector.subtract(center);
+		Double3 min = center.subtract(radiusVector);
 		Double3 max = center.add(radiusVector);
 	}
 

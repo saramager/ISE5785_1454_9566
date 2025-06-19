@@ -109,4 +109,28 @@ public class Point {
 		return (dX * dX) + (dY * dY) + (dZ * dZ);
 	}
 
+	/**
+	 * Subtracts another Double3 from this point and returns a new Double3.
+	 *
+	 * @param other the Double3 to subtract
+	 * @return a new point resulting from the subtraction
+	 */
+
+	public Double3 subtract(Double3 other) {
+		return xyz.subtract(other);
+
+	}
+
+	/**
+	 * Adds another Double3 to this point and returns a new Double3.
+	 *
+	 * @param other the Double3 to add
+	 * @return a new point resulting from the addition
+	 */
+
+	public Double3 add(Double3 other) {
+		return xyz.add(other);
+
+	}
+
 }
