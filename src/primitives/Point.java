@@ -133,4 +133,8 @@ public class Point {
 
 	}
 
+	public boolean lowerThan(Point other) {
+		return xyz.lowerThan(other.xyz);
+	}
+
 }

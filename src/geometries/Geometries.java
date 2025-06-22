@@ -52,13 +52,19 @@ public class Geometries extends Intersectable {
 			List<Double3> edges = element.edges;
 			Double3 min = edges.get(0);
 			Double3 max = edges.get(1);
+			if (min.d1() == Double.NEGATIVE_INFINITY || min.d2() == Double.NEGATIVE_INFINITY
+					|| min.d3() == Double.NEGATIVE_INFINITY)
+				break;
+			if (max.d1() == Double.POSITIVE_INFINITY || max.d2() == Double.POSITIVE_INFINITY
+					|| max.d3() == Double.POSITIVE_INFINITY)
+				break;
 			globalMin = new Double3(Math.min(globalMin.d1(), min.d1()), Math.min(globalMin.d2(), min.d2()),
 					Math.min(globalMin.d3(), min.d3()));
 
 			globalMax = new Double3(Math.max(globalMax.d1(), max.d1()), Math.max(globalMax.d2(), max.d2()),
 					Math.max(globalMax.d3(), max.d3()));
 		}
-
+		this.edges = List.of(globalMin, globalMax);
 	}
 
 	@Override
@@ -76,4 +82,9 @@ public class Geometries extends Intersectable {
 		}
 		return intersections;
 	}
+
+	public List<Intersectable> getGeometries() {
+		return geometries;
+	}
+
 }

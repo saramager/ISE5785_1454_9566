@@ -45,18 +45,6 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
-	 * Finds the closest intersection point between a ray and the geometries in the
-	 * scene.
-	 * 
-	 * @param ray the ray to be traced
-	 * @return the closest intersection point, or null if no intersection is found
-	 */
-
-	private Intersection findClosestIntersection(Ray ray) {
-		return ray.findClosestIntersection(scene.geometries.calculateIntersections(ray));
-	}
-
-	/**
 	 * Calculates the color at a given intersection point.
 	 * 
 	 * @param intersection the intersection point
