@@ -531,6 +531,8 @@ public class Camera implements Cloneable {
 		public Builder setRayTracer(Scene scene, RayTracerType type) {
 			if (type == RayTracerType.SIMPLE)
 				camera.rayTracer = new SimpleRayTracer(scene);
+			if (type == RayTracerType.GRID)
+				camera.rayTracer = new GridRayTracer(scene, 10);
 			return this;
 		}
 

@@ -7,15 +7,13 @@ import java.util.List;
 
 import geometries.Geometries;
 import geometries.Intersectable.Intersection;
-import primitives.Color;
-import primitives.Point;
-import primitives.Ray;
+import primitives.*;
 import scene.Scene;
 
 /**
  * 
  */
-public class GridRayTracer extends RayTracerBase {
+public class GridRayTracer extends SimpleRayTracer {
 
 	private Grid grid;
 
@@ -25,9 +23,15 @@ public class GridRayTracer extends RayTracerBase {
 	 * @param scene
 	 * @param density
 	 */
+
 	public GridRayTracer(Scene scene, int density) {
 		super(scene);
 		grid = new Grid(scene.geometries, density);
+	}
+
+	@Override
+	public Color traceRay(Ray ray) {
+		return super.traceRay(ray);
 	}
 
 	@Override
@@ -35,14 +39,14 @@ public class GridRayTracer extends RayTracerBase {
 		Geometries infinities = grid.getInfinityGeometries();
 		Intersection closestPoint = null;
 		var points = infinities.calculateIntersections(ray);
-		if (infinities != null && !points.isEmpty())
+		if (infinities != null && points != null)
 			closestPoint = ray.findClosestIntersection(points);
 		double result = grid.cutsGrid(ray);
 		if (result == Double.POSITIVE_INFINITY)
 			return null;
 
 		double distanceToOuterGeometries = closestPoint == null ? Double.POSITIVE_INFINITY
-				: closestPoint.point.distance(ray.getPoint());
+				: closestPoint.point.distance(ray.getHead());
 		if (distanceToOuterGeometries < result)
 			return closestPoint;
 
@@ -55,12 +59,34 @@ public class GridRayTracer extends RayTracerBase {
 		return closestPoint;
 	}
 
-	}
-
 	@Override
-	protected Color calcColor(Intersection intersection, Ray ray) {
-		// TODO Auto-generated method stub
-		return null;
-	}@Override
+	protected Double3 transparency(Intersection inter) {
+		Vector lightDir = inter.l.scale(-1);
+		Ray lightRay = new Ray(inter.point, lightDir, inter.normal);
+
+		List<Intersection> intersections;
+		double res = grid.cutsGrid(lightRay);
+
+		if (res == Double.POSITIVE_INFINITY) {
+			intersections = grid.getInfinityGeometries().calculateIntersections(lightRay).stream()
+					.map(gp -> new Intersection(gp.geometry, gp.point)).toList();
+		} else {
+			intersections = grid.traverse(lightRay, true);
+		}
+
+		Double3 ktr = Double3.ONE;
+		if (intersections == null)
+			return ktr;
+
+		for (Intersection p : intersections) {
+			if (p.material == null)
+				continue;
+			ktr = ktr.product(p.material.kT);
+			if (ktr.lowerThan(MIN_CALC_COLOR_K))
+				return Double3.ZERO;
+		}
+
+		return ktr;
+	}
 
 }

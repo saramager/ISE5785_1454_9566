@@ -1,6 +1,5 @@
 package renderer;
 
-import geometries.Intersectable.Intersection;
 import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
@@ -37,10 +36,7 @@ public abstract class RayTracerBase {
 	 * @param ray the ray to be traced
 	 * @return the color resulting from tracing the ray
 	 */
-	public Color traceRay(Ray ray) {
-		Intersection intersections = findClosestIntersection(ray);
-		return intersections == null ? scene.background : calcColor(intersections, ray);
-	}
+	public abstract Color traceRay(Ray ray);
 
 	/**
 	 * Sets the number of rays to be used for glossy and diffuse reflections.
@@ -61,9 +57,9 @@ public abstract class RayTracerBase {
 	 * @return the closest intersection, or null if no intersection is found
 	 */
 
-	protected Intersection findClosestIntersection(Ray ray) {
-		return ray.findClosestIntersection(scene.geometries.calculateIntersections(ray));
-	}
+//	protected Intersection findClosestIntersection(Ray ray) {
+//		return ray.findClosestIntersection(scene.geometries.calculateIntersections(ray));
+//	}
 
 	/**
 	 * Calculates the color resulting from the intersection of the ray with the
@@ -73,6 +69,6 @@ public abstract class RayTracerBase {
 	 * @param ray          the ray that was traced
 	 * @return the color resulting from the intersection
 	 */
-	protected abstract Color calcColor(Intersection intersection, Ray ray);
+	// protected abstract Color calcColor(Intersection intersection, Ray ray);
 
 }

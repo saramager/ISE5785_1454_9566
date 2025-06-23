@@ -22,7 +22,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	/**
 	 * The minimum color level used in the calculation.
 	 */
-	private static final double MIN_CALC_COLOR_K = 0.001;
+	protected static final double MIN_CALC_COLOR_K = 0.001;
 	/**
 	 * The initial color level used in the calculation.
 	 */
@@ -42,6 +42,10 @@ public class SimpleRayTracer extends RayTracerBase {
 	public Color traceRay(Ray ray) {
 		Intersection intersections = findClosestIntersection(ray);
 		return intersections == null ? scene.background : calcColor(intersections, ray);
+	}
+
+	protected Intersection findClosestIntersection(Ray ray) {
+		return ray.findClosestIntersection(scene.geometries.calculateIntersections(ray));
 	}
 
 	/**
@@ -143,7 +147,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param intersection the intersection point
 	 * @return the transparency factor at the intersection point
 	 */
-	private Double3 transparency(Intersection intersection) {
+	protected Double3 transparency(Intersection intersection) {
 		Double3 ktr = Double3.ONE;
 		Ray shadowRay = new Ray(intersection.point, intersection.l.scale(-1), intersection.normal);
 		var intersections = scene.geometries.calculateIntersections(shadowRay,
