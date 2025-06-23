@@ -34,13 +34,15 @@ public class Grid {
 	 * @param gridMin   the minimal corner of the grid
 	 * @param gridMax   the maximal corner of the grid
 	 */
-	public Grid(Double3 voxelSize, Double3 gridMin, Double3 gridMax) {
-		this.voxelSize = voxelSize;
-		this.gridMin = gridMin;
-		this.gridMax = gridMax;
-		this.grid = new HashMap<>();
-		this.infinityGeometries = new Geometries();
-	}
+//	public Grid(Double3 voxelSize, Double3 gridMin, Double3 gridMax) {
+//
+//		this.voxelSize = voxelSize;
+//		this.gridMin = gridMin;
+//		this.gridMax = gridMax;
+//		this.grid = new HashMap<>();
+//		this.infinityGeometries = new Geometries();
+//
+//	}
 
 	/**
 	 * Constructs a grid by subdividing the bounding box of the given geometries
@@ -149,9 +151,8 @@ public class Grid {
 		// compute intersection t with each slab
 		for (int i = 0; i < 3; i++) {
 			if (isZero(d[i])) {
-				if (o[i] < mins[i] || o[i] > maxs[i]) {
+				if (o[i] < mins[i] || o[i] > maxs[i])
 					return null;
-				}
 				tMin[i] = Double.NEGATIVE_INFINITY;
 				tMax[i] = Double.POSITIVE_INFINITY;
 			} else {
@@ -164,12 +165,12 @@ public class Grid {
 
 		double entryT = Math.max(tMin[0], Math.max(tMin[1], tMin[2]));
 		double exitT = Math.min(tMax[0], Math.min(tMax[1], tMax[2]));
-		if (entryT > exitT || exitT < 0) {
+		if (entryT > exitT || exitT < 0)
 			return null; // no valid overlap
-		}
 
 		Point entry = ray.getPoint(entryT);
 		return inGrid(entry) || onEdge(entry) ? entry : null;
+
 	}
 
 	/**
@@ -290,5 +291,7 @@ public class Grid {
 	public double cutsGrid(Ray ray) {
 		Point entry = gridEntryPoint(ray);
 		return entry == null ? Double.POSITIVE_INFINITY : ray.getHead().distance(entry);
+
 	}
+
 }

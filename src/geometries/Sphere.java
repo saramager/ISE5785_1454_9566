@@ -26,7 +26,7 @@ public class Sphere extends RadialGeometry {
 		super(radius);
 		this.center = p;
 
-		Double3 radiusVector = new Double3(radius, radius, radius);
+		Double3 radiusVector = new Double3(radius);
 		Double3 min = center.subtract(radiusVector);
 		Double3 max = center.add(radiusVector);
 		this.edges = List.of(min, max);

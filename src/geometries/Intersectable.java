@@ -127,4 +127,5 @@ public abstract class Intersectable {
 	 * @return list of Intersections that intersection
 	 */
 	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray, double maxDistance);
+
 }

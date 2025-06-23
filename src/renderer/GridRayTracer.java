@@ -42,13 +42,15 @@ public class GridRayTracer extends SimpleRayTracer {
 		if (infinities != null && points != null)
 			closestPoint = ray.findClosestIntersection(points);
 		double result = grid.cutsGrid(ray);
-		if (result == Double.POSITIVE_INFINITY)
+		if (result == Double.POSITIVE_INFINITY) {
 			return null;
+		}
 
 		double distanceToOuterGeometries = closestPoint == null ? Double.POSITIVE_INFINITY
 				: closestPoint.point.distance(ray.getHead());
-		if (distanceToOuterGeometries < result)
+		if (distanceToOuterGeometries < result) {
 			return closestPoint;
+		}
 
 		var intersections = grid.traverse(ray, false);
 		Intersection point = ray.findClosestIntersection(intersections);
