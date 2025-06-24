@@ -48,16 +48,16 @@ public class Geometries extends Intersectable {
 		this.geometries.addAll(List.of(geometries));
 		Double3 globalMin = new Double3(Double.POSITIVE_INFINITY);
 		Double3 globalMax = new Double3(Double.NEGATIVE_INFINITY);
-		for (Intersectable element : geometries) {
+		for (Intersectable element : this.geometries) {
 			List<Double3> edges = element.edges;
 			Double3 min = edges.get(0);
 			Double3 max = edges.get(1);
 			if (min.d1() == Double.NEGATIVE_INFINITY || min.d2() == Double.NEGATIVE_INFINITY
 					|| min.d3() == Double.NEGATIVE_INFINITY)
-				break;
+				continue;
 			if (max.d1() == Double.POSITIVE_INFINITY || max.d2() == Double.POSITIVE_INFINITY
 					|| max.d3() == Double.POSITIVE_INFINITY)
-				break;
+				continue;
 			globalMin = new Double3(Math.min(globalMin.d1(), min.d1()), Math.min(globalMin.d2(), min.d2()),
 					Math.min(globalMin.d3(), min.d3()));
 

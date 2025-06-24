@@ -55,8 +55,7 @@ public class GridRayTracer extends SimpleRayTracer {
 		var intersections = grid.traverse(ray, false);
 		Intersection point = ray.findClosestIntersection(intersections);
 		if (point != null) {
-			return point.point.distance(ray.getPoint(distanceToOuterGeometries)) < distanceToOuterGeometries ? point
-					: closestPoint;
+			return point.point.distance(ray.getHead()) < distanceToOuterGeometries ? point : closestPoint;
 		}
 		return closestPoint;
 	}
@@ -70,8 +69,10 @@ public class GridRayTracer extends SimpleRayTracer {
 		double res = grid.cutsGrid(lightRay);
 
 		if (res == Double.POSITIVE_INFINITY) {
-			intersections = grid.getInfinityGeometries().calculateIntersections(lightRay).stream()
-					.map(gp -> new Intersection(gp.geometry, gp.point)).toList();
+			intersections = grid.getInfinityGeometries().calculateIntersections(lightRay);
+			intersections = intersections != null
+					? intersections.stream().map(gp -> new Intersection(gp.geometry, gp.point)).toList()
+					: null;
 		} else {
 			intersections = grid.traverse(lightRay, true);
 		}

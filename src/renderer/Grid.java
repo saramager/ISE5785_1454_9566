@@ -57,9 +57,9 @@ public class Grid {
 		List<Double3> edges = geometries.edges;
 		this.gridMin = edges.get(0);
 		this.gridMax = edges.get(1);
-		double dx = (gridMax.d1() - gridMin.d1()) / density;
-		double dy = (gridMax.d2() - gridMin.d2()) / density;
-		double dz = (gridMax.d3() - gridMin.d3()) / density;
+		double dx = Util.alignZero((gridMax.d1() - gridMin.d1()) / density);
+		double dy = Util.alignZero((gridMax.d2() - gridMin.d2()) / density);
+		double dz = Util.alignZero((gridMax.d3() - gridMin.d3()) / density);
 		this.voxelSize = new Double3(dx, dy, dz);
 		this.grid = new HashMap<>();
 		this.infinityGeometries = new Geometries();
@@ -68,9 +68,9 @@ public class Grid {
 		for (geometries.Intersectable geo : geometries.getGeometries()) {
 			List<Double3> e = geo.edges;
 			// infinite bounds → collect separately
-			if (e.get(0).d1() == Double.NEGATIVE_INFINITY || e.get(0).d2() == Double.NEGATIVE_INFINITY
-					|| e.get(0).d3() == Double.NEGATIVE_INFINITY || e.get(1).d1() == Double.POSITIVE_INFINITY
-					|| e.get(1).d2() == Double.POSITIVE_INFINITY || e.get(1).d3() == Double.POSITIVE_INFINITY) {
+			if (e.get(0).d1() == Double.POSITIVE_INFINITY || e.get(0).d2() == Double.POSITIVE_INFINITY
+					|| e.get(0).d3() == Double.POSITIVE_INFINITY || e.get(1).d1() == Double.NEGATIVE_INFINITY
+					|| e.get(1).d2() == Double.NEGATIVE_INFINITY || e.get(1).d3() == Double.NEGATIVE_INFINITY) {
 				infinityGeometries.add(geo);
 				continue;
 			}
@@ -91,6 +91,8 @@ public class Grid {
 				}
 			}
 		}
+		System.out.println("hi");
+
 	}
 
 	/**
@@ -100,9 +102,9 @@ public class Grid {
 	 * @return a Double3 of integer indices (ix, iy, iz)
 	 */
 	private Double3 coordinateToIndex(Double3 p) {
-		int ix = (int) floor((p.d1() - gridMin.d1()) / voxelSize.d1());
-		int iy = (int) floor((p.d2() - gridMin.d2()) / voxelSize.d2());
-		int iz = (int) floor((p.d3() - gridMin.d3()) / voxelSize.d3());
+		int ix = (int) floor(Util.alignZero((p.d1() - gridMin.d1()) / voxelSize.d1()));
+		int iy = (int) floor((Util.alignZero(p.d2() - gridMin.d2()) / voxelSize.d2()));
+		int iz = (int) floor((Util.alignZero(p.d3() - gridMin.d3()) / voxelSize.d3()));
 		return new Double3(ix, iy, iz);
 	}
 

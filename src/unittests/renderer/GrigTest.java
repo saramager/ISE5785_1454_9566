@@ -22,8 +22,9 @@ class GrigTest {
 	public void testBlurryGlassWithout() {
 		setSceneForDiffusiveTest();
 		updateCameraBuilderForDiffusiveTest()//
-				.setAntiAliasingRays(9)//
-				.setMultithreading(-1).setDebugPrint(0.1)//
+				// .setAntiAliasingRays(9)//
+				// .setMultithreading(-1)
+				.setDebugPrint(0.1)//
 				.build().renderImage().writeToImage("grid");
 	}
 
@@ -85,13 +86,13 @@ class GrigTest {
 				.setLocation(new Point(0, -1000, 0))//
 				.setDirection(new Point(0, 0, -12), Vector.AXIS_Z)//
 				.setVpDistance(1000).setVpSize(70, 50)//
-				.setResolution(700, 500)//
-		;
+				.setResolution(70, 50)//
+				.setRayTracer(scene, RayTracerType.GRID);
 	}
 
 	/** Scene for the tests */
 	private final Scene scene = new Scene("Test scene");
 	private final Camera.Builder cameraBuilder = Camera.getBuilder() //
-			.setRayTracer(scene, RayTracerType.GRID);
+	;
 
 }
