@@ -175,6 +175,10 @@ public class Grid {
 
 	}
 
+	public List<Intersection> traverse(Ray inputRay) {
+		return traverse(inputRay, false, Double.POSITIVE_INFINITY);
+	}
+
 	/**
 	 * Traverses the grid via 3D DDA, collecting intersections with contained
 	 * geometries.
@@ -184,7 +188,7 @@ public class Grid {
 	 *                             along the path
 	 * @return list of GeoPoints where the ray intersects geometries
 	 */
-	public List<Intersection> traverse(Ray inputRay, boolean multipleIntersection) {
+	public List<Intersection> traverse(Ray inputRay, boolean multipleIntersection, double maxDistance) {
 		Point entry = gridEntryPoint(inputRay);
 		// if completely outside, only test the infinite geometries
 		if (entry == null) {
@@ -226,17 +230,25 @@ public class Grid {
 		while (true) {
 			Double3 idx = new Double3(ix, iy, iz);
 			if (grid.containsKey(idx)) {
-				List<Intersection> hits = grid.get(idx).calculateIntersections(inputRay);
+
+				List<Intersection> hits = grid.get(idx).calculateIntersections(inputRay, maxDistance);
 				if (hits != null) {
-					intersections.addAll(hits);
-					if (!multipleIntersection) {
-						break;
+
+					for (Intersection inter : hits) {
+						if (inputRay.getHead().distance(inter.point) <= maxDistance) {
+							intersections.add(inter);
+							if (!multipleIntersection) {
+								break;
+							}
+						}
 					}
+
 				}
 			}
-
 			// step to the next voxel
-			if (tMaxX < tMaxY && tMaxX < tMaxZ) {
+			if (tMaxX < tMaxY && tMaxX < tMaxZ)
+
+			{
 				tMaxX += tDeltaX;
 				ix += stepX;
 				if (voxelOutOfBounds(ix, 0))
@@ -252,6 +264,11 @@ public class Grid {
 				if (voxelOutOfBounds(iz, 2))
 					break;
 			}
+
+			double nextT = Math.min(tMaxX, Math.min(tMaxY, tMaxZ));
+			if (nextT > maxDistance)
+				break;
+
 		}
 
 		// finally, test the infinity geometries as well

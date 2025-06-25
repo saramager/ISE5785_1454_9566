@@ -7,7 +7,9 @@ import java.util.List;
 
 import geometries.Geometries;
 import geometries.Intersectable.Intersection;
-import primitives.*;
+import primitives.Color;
+import primitives.Double3;
+import primitives.Ray;
 import scene.Scene;
 
 /**
@@ -52,7 +54,7 @@ public class GridRayTracer extends SimpleRayTracer {
 			return closestPoint;
 		}
 
-		var intersections = grid.traverse(ray, false);
+		var intersections = grid.traverse(ray);
 		Intersection point = ray.findClosestIntersection(intersections);
 		if (point != null) {
 			return point.point.distance(ray.getHead()) < distanceToOuterGeometries ? point : closestPoint;
@@ -61,35 +63,55 @@ public class GridRayTracer extends SimpleRayTracer {
 	}
 
 	@Override
-	protected Double3 transparency(Intersection inter) {
-		Vector lightDir = inter.l.scale(-1);
-		Ray lightRay = new Ray(inter.point, lightDir, inter.normal);
+	protected Double3 transparency(Intersection intersection) {
+		Ray shadowRay = new Ray(intersection.point, intersection.l.scale(-1), intersection.normal);
 
-		List<Intersection> intersections;
-		double res = grid.cutsGrid(lightRay);
+		double maxDist = intersection.light.getDistance(intersection.point);
 
-		if (res == Double.POSITIVE_INFINITY) {
-			intersections = grid.getInfinityGeometries().calculateIntersections(lightRay);
-			intersections = intersections != null
-					? intersections.stream().map(gp -> new Intersection(gp.geometry, gp.point)).toList()
-					: null;
-		} else {
-			intersections = grid.traverse(lightRay, true);
-		}
-
-		Double3 ktr = Double3.ONE;
+		// Find all intersections along the transparency ray
+		List<Intersection> intersections = grid.traverse(shadowRay, true, maxDist);
+		System.out.println(intersections);
 		if (intersections == null)
-			return ktr;
+			return Double3.ONE;
 
-		for (Intersection p : intersections) {
-			if (p.material == null)
-				continue;
-			ktr = ktr.product(p.material.kT);
+		Double3 ktr = Double3.ONE; // Transparency factor
+		for (Intersection inter : intersections) {
+			ktr = ktr.product(inter.material.kT); // Accumulate transparency factors
 			if (ktr.lowerThan(MIN_CALC_COLOR_K))
-				return Double3.ZERO;
+				return Double3.ZERO; // Stop if transparency is negligible
 		}
-
 		return ktr;
 	}
+//	@Override
+//	protected Double3 transparency(Intersection intersection) {
+//		Ray shadowRay = new Ray(intersection.point, intersection.l.scale(-1), intersection.normal);
+//
+//		List<Intersection> intersections;
+//		double res = grid.cutsGrid(shadowRay);
+//
+//		if (res == Double.POSITIVE_INFINITY) {
+//			intersections = grid.getInfinityGeometries().calculateIntersections(shadowRay,
+//					intersection.light.getDistance(intersection.point));
+//			intersections = intersections != null
+//					? intersections.stream().map(gp -> new Intersection(gp.geometry, gp.point)).toList()
+//					: null;
+//		} else {
+//			intersections = grid.traverse(shadowRay, true);
+//		}
+//
+//		Double3 ktr = Double3.ONE;
+//		if (intersections == null)
+//			return ktr;
+//
+//		for (Intersection p : intersections) {
+//			if (p.material == null)
+//				continue;
+//			ktr = ktr.product(p.material.kT);
+//			if (ktr.lowerThan(MIN_CALC_COLOR_K))
+//				return Double3.ZERO;
+//		}
+//
+//		return ktr;
+//	}
 
 }
