@@ -38,8 +38,8 @@ class GrigTest {
 		Scene scene = new Scene("Test scene");
 		Camera.Builder camera2 = Camera.getBuilder().setLocation(new Point(0, -1000, 0))//
 				.setDirection(new Point(0, 0, -12), Vector.AXIS_Z)//
-				.setVpDistance(1000).setVpSize(70, 50)//
-				.setRayTracer(scene, RayTracerType.GRID);
+				.setVpDistance(1000).setVpSize(70, 50);//
+		// .setRayTracer(scene, RayTracerType.GRID)
 
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2)));
 		for (int i = -4; i < 6; i += 4) {
@@ -68,7 +68,8 @@ class GrigTest {
 
 			scene.lights.add(new PointLight(new Color(200, 200, 255), new Point(0, -5, -15)).setKl(0.08).setKq(0.015));
 
-			camera2.setResolution(500, 500).build().renderImage().writeToImage("grid");
+			camera2.setRayTracer(scene, RayTracerType.GRID).setResolution(500, 500).build().renderImage()
+					.writeToImage("grid");
 		}
 	}
 
@@ -140,11 +141,6 @@ class GrigTest {
 		Scene scene1 = new Scene("Test scene");
 		scene1.geometries.add(new Sphere(new Point(0, 0, -50), 50.0).setEmission(new Color(BLUE).reduce(2))
 				.setMaterial(new Material().setKD(0.5).setKS(0.5).setShininess(301)));
-		Camera.Builder camera1 = Camera.getBuilder() //
-				.setRayTracer(scene1, RayTracerType.GRID) //
-				.setLocation(new Point(0, 0, 1000)) //
-				.setDirection(Point.ZERO, Vector.AXIS_Y) //
-				.setVpSize(150, 150).setVpDistance(1000);
 
 		/** Position of the light in tests with sphere */
 		Point sphereLightPosition = new Point(-50, -50, 25);
@@ -154,7 +150,13 @@ class GrigTest {
 		scene1.lights.add(new SpotLight(new Color(800, 500, 0), sphereLightPosition, sphereLightDirection) //
 				.setKl(0.001).setKq(0.0001));
 
-		camera1.setResolution(500, 500) //
+		Camera.getBuilder() //
+				.setRayTracer(scene1, RayTracerType.GRID) //
+				.setLocation(new Point(0, 0, 1000)) //
+				.setDirection(Point.ZERO, Vector.AXIS_Y) //
+				.setVpSize(150, 150).setVpDistance(1000) //
+				.setResolution(500, 500) //
+				.setDebugPrint(0.1)//
 				.build() //
 				.renderImage() //
 				.writeToImage("lightSphereDirectional222");
@@ -178,12 +180,9 @@ class GrigTest {
 				new Point(110, -110, -150),
 				// the left-top
 				new Point(-75, 78, 100) };
-		double KD = 0.5;
 		/** Diffusion attenuation factor for some of the geometries in the tests */
 		Double3 KD3 = new Double3(0.2, 0.6, 0.4);
 
-		/** Specular attenuation factor for some of the geometries in the tests */
-		double KS = 0.5;
 		/** Specular attenuation factor for some of the geometries in the tests */
 		Double3 KS3 = new Double3(0.2, 0.4, 0.3);
 
@@ -203,12 +202,13 @@ class GrigTest {
 		scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection) //
 				.setKl(0.001).setKq(0.00004).setNarrowBeam(10));
 
-		Camera.Builder camera2 = Camera.getBuilder() //
+		Camera.getBuilder() //
 				.setRayTracer(scene2, RayTracerType.GRID) //
 				.setLocation(new Point(0, 0, 1000)) //
 				.setDirection(Point.ZERO, Vector.AXIS_Y) //
-				.setVpSize(200, 200).setVpDistance(1000);
-		camera2.setResolution(500, 500) //
+				.setVpSize(200, 200).setVpDistance(1000) //
+				.setResolution(500, 500) //
+				.setDebugPrint(0.1)//
 				.build() //
 				.renderImage() //
 				.writeToImage("lightTrianglesSpotSharp222");
@@ -234,11 +234,10 @@ class GrigTest {
 		scene.lights //
 				.add(new SpotLight(new Color(700, 400, 400), new Point(40, 40, 115), new Vector(-1, -1, -4)) //
 						.setKl(4E-4).setKq(2E-5));
-		Camera.Builder camera = Camera.getBuilder().setLocation(new Point(0, 0, 1000))
-				.setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(1000).setVpSize(200, 200)
-				.setRayTracer(scene, RayTracerType.GRID);
-		camera//
+		Camera.getBuilder().setLocation(new Point(0, 0, 1000)).setDirection(Point.ZERO, Vector.AXIS_Y)
+				.setVpDistance(1000).setVpSize(200, 200).setRayTracer(scene, RayTracerType.GRID) //
 				.setResolution(600, 600) //
+				.setDebugPrint(0.1)//
 				.build() //
 				.renderImage() //
 				.writeToImage("shadowTrianglesSphere111");
@@ -262,10 +261,10 @@ class GrigTest {
 				.add(new SpotLight(new Color(400, 240, 0), spotLocation, new Vector(1, 1, -3)) //
 						.setKl(1E-5).setKq(1.5E-7));
 
-		Camera.Builder camera = Camera.getBuilder().setLocation(new Point(0, 0, 1000))
-				.setDirection(Point.ZERO, Vector.AXIS_Y).setVpDistance(1000).setVpSize(200, 200)
-				.setRayTracer(scene, RayTracerType.GRID);
-		camera.setResolution(400, 400) //
+		Camera.getBuilder().setLocation(new Point(0, 0, 1000)).setDirection(Point.ZERO, Vector.AXIS_Y)
+				.setVpDistance(1000).setVpSize(200, 200).setRayTracer(scene, RayTracerType.GRID) //
+				.setResolution(400, 400) //
+				.setDebugPrint(0.1)//
 				.build() //
 				.renderImage() //
 				.writeToImage("shadowSphereTriangleInitial222");
@@ -292,8 +291,9 @@ class GrigTest {
 
 		cameraBuilder.setLocation(new Point(0, 0, 1000)) //
 				.setDirection(Point.ZERO, Vector.AXIS_Y) //
-				.setVpDistance(10000).setVpSize(150, 150) //
+				.setVpDistance(1000).setVpSize(150, 150) //
 				.setResolution(1000, 1000) //
+				.setDebugPrint(0.1)//
 				.build() //
 				.renderImage() //
 				.writeToImage("refractionTwoSpheres222");
@@ -326,6 +326,7 @@ class GrigTest {
 				.setDirection(Point.ZERO, Vector.AXIS_Y) //
 				.setVpDistance(10000).setVpSize(2500, 2500) //
 				.setResolution(500, 500) //
+				.setDebugPrint(0.1)//
 				.build() //
 				.renderImage() //
 				.writeToImage("reflectionTwoSpheresMirrored333");

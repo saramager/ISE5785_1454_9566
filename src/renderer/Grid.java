@@ -1,13 +1,14 @@
 package renderer;
 
-import static java.lang.Math.floor;
+import static java.lang.Math.*;
 import static primitives.Util.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import geometries.Geometries;
+import geometries.Intersectable;
 import geometries.Intersectable.Intersection;
 import primitives.*;
 
@@ -21,28 +22,6 @@ public class Grid {
 	private final Double3 gridMax;
 	private final Geometries infinityGeometries;
 	private final HashMap<Double3, Geometries> grid;
-	private static final double EPS = 1e-7;
-
-	public Geometries getInfinityGeometries() {
-		return infinityGeometries;
-	}
-
-	/**
-	 * Constructs an empty grid with specified voxel size and bounds.
-	 *
-	 * @param voxelSize the size of each voxel (dx, dy, dz)
-	 * @param gridMin   the minimal corner of the grid
-	 * @param gridMax   the maximal corner of the grid
-	 */
-//	public Grid(Double3 voxelSize, Double3 gridMin, Double3 gridMax) {
-//
-//		this.voxelSize = voxelSize;
-//		this.gridMin = gridMin;
-//		this.gridMax = gridMax;
-//		this.grid = new HashMap<>();
-//		this.infinityGeometries = new Geometries();
-//
-//	}
 
 	/**
 	 * Constructs a grid by subdividing the bounding box of the given geometries
@@ -54,19 +33,19 @@ public class Grid {
 	 */
 	public Grid(Geometries geometries, int density) {
 		// initialize fields
-		List<Double3> edges = geometries.edges;
+		var edges = geometries.edges;
 		this.gridMin = edges.get(0);
 		this.gridMax = edges.get(1);
-		double dx = Util.alignZero((gridMax.d1() - gridMin.d1()) / density);
-		double dy = Util.alignZero((gridMax.d2() - gridMin.d2()) / density);
-		double dz = Util.alignZero((gridMax.d3() - gridMin.d3()) / density);
+		double dx = alignZero((gridMax.d1() - gridMin.d1()) / density);
+		double dy = alignZero((gridMax.d2() - gridMin.d2()) / density);
+		double dz = alignZero((gridMax.d3() - gridMin.d3()) / density);
 		this.voxelSize = new Double3(dx, dy, dz);
 		this.grid = new HashMap<>();
 		this.infinityGeometries = new Geometries();
 
 		// classify each geometry
-		for (geometries.Intersectable geo : geometries.getGeometries()) {
-			List<Double3> e = geo.edges;
+		for (Intersectable geo : geometries.getGeometries()) {
+			var e = geo.edges;
 			// infinite bounds → collect separately
 			if (e.get(0).d1() == Double.POSITIVE_INFINITY || e.get(0).d2() == Double.POSITIVE_INFINITY
 					|| e.get(0).d3() == Double.POSITIVE_INFINITY || e.get(1).d1() == Double.NEGATIVE_INFINITY
@@ -91,8 +70,7 @@ public class Grid {
 				}
 			}
 		}
-		System.out.println("hi");
-
+		System.out.print(""); // TODO to remove
 	}
 
 	/**
@@ -102,9 +80,9 @@ public class Grid {
 	 * @return a Double3 of integer indices (ix, iy, iz)
 	 */
 	private Double3 coordinateToIndex(Double3 p) {
-		int ix = (int) floor(Util.alignZero((p.d1() - gridMin.d1()) / voxelSize.d1()));
-		int iy = (int) floor((Util.alignZero(p.d2() - gridMin.d2()) / voxelSize.d2()));
-		int iz = (int) floor((Util.alignZero(p.d3() - gridMin.d3()) / voxelSize.d3()));
+		int ix = (int) (alignZero(p.d1() - gridMin.d1()) / voxelSize.d1());
+		int iy = (int) (alignZero(p.d2() - gridMin.d2()) / voxelSize.d2());
+		int iz = (int) (alignZero(p.d3() - gridMin.d3()) / voxelSize.d3());
 		return new Double3(ix, iy, iz);
 	}
 
@@ -160,13 +138,13 @@ public class Grid {
 			} else {
 				double t1 = (mins[i] - o[i]) / d[i];
 				double t2 = (maxs[i] - o[i]) / d[i];
-				tMin[i] = Math.min(t1, t2);
-				tMax[i] = Math.max(t1, t2);
+				tMin[i] = min(t1, t2);
+				tMax[i] = max(t1, t2);
 			}
 		}
 
-		double entryT = Math.max(tMin[0], Math.max(tMin[1], tMin[2]));
-		double exitT = Math.min(tMax[0], Math.min(tMax[1], tMax[2]));
+		double entryT = max(tMin[0], max(tMin[1], tMin[2]));
+		double exitT = min(tMax[0], min(tMax[1], tMax[2]));
 		if (entryT > exitT || exitT < 0)
 			return null; // no valid overlap
 
@@ -176,7 +154,7 @@ public class Grid {
 	}
 
 	public List<Intersection> traverse(Ray inputRay) {
-		return traverse(inputRay, false, Double.POSITIVE_INFINITY);
+		return traverse(inputRay, Double.POSITIVE_INFINITY);
 	}
 
 	/**
@@ -188,15 +166,14 @@ public class Grid {
 	 *                             along the path
 	 * @return list of GeoPoints where the ray intersects geometries
 	 */
-	public List<Intersection> traverse(Ray inputRay, boolean multipleIntersection, double maxDistance) {
+	public List<Intersection> traverse(Ray inputRay, double maxDistance) {
+		var infinityIntersections = infinityGeometries.calculateIntersections(inputRay, maxDistance);
 		Point entry = gridEntryPoint(inputRay);
 		// if completely outside, only test the infinite geometries
-		if (entry == null) {
-			return infinityGeometries.calculateIntersections(inputRay);
-		}
+		if (entry == null)
+			return infinityIntersections;
 
-		Ray ray = new Ray(entry, inputRay.getDir());
-		Vector dir = ray.getDir();
+		Vector dir = inputRay.getDir();
 		double dx = dir.getX(), dy = dir.getY(), dz = dir.getZ();
 
 		// compute starting voxel indices
@@ -204,9 +181,9 @@ public class Grid {
 		int ix = (int) startIdx.d1(), iy = (int) startIdx.d2(), iz = (int) startIdx.d3();
 
 		// steps along each axis
-		int stepX = (int) Math.signum(dx);
-		int stepY = (int) Math.signum(dy);
-		int stepZ = (int) Math.signum(dz);
+		int stepX = (int) signum(dx);
+		int stepY = (int) signum(dy);
+		int stepZ = (int) signum(dz);
 
 		// compute tMax and tDelta per axis
 		double voxelX = gridMin.d1() + ix * voxelSize.d1();
@@ -220,35 +197,27 @@ public class Grid {
 		double tMaxZ = dz != 0 ? ((stepZ > 0 ? voxelZ + voxelSize.d3() : voxelZ) - entry.getZ()) / dz
 				: Double.POSITIVE_INFINITY;
 
-		double tDeltaX = dx != 0 ? voxelSize.d1() / Math.abs(dx) : Double.POSITIVE_INFINITY;
-		double tDeltaY = dy != 0 ? voxelSize.d2() / Math.abs(dy) : Double.POSITIVE_INFINITY;
-		double tDeltaZ = dz != 0 ? voxelSize.d3() / Math.abs(dz) : Double.POSITIVE_INFINITY;
+		double tDeltaX = dx != 0 ? voxelSize.d1() / abs(dx) : Double.POSITIVE_INFINITY;
+		double tDeltaY = dy != 0 ? voxelSize.d2() / abs(dy) : Double.POSITIVE_INFINITY;
+		double tDeltaZ = dz != 0 ? voxelSize.d3() / abs(dz) : Double.POSITIVE_INFINITY;
 
-		List<Intersection> intersections = new ArrayList<>();
+		List<Intersection> intersections = infinityIntersections == null //
+				? new LinkedList<>() //
+				: new LinkedList<>(infinityIntersections);
 
 		// traverse until we exit the grid
 		while (true) {
 			Double3 idx = new Double3(ix, iy, iz);
 			if (grid.containsKey(idx)) {
-
-				List<Intersection> hits = grid.get(idx).calculateIntersections(inputRay, maxDistance);
+				var hits = grid.get(idx).calculateIntersections(inputRay, maxDistance);
 				if (hits != null) {
-
 					for (Intersection inter : hits) {
-						if (inputRay.getHead().distance(inter.point) <= maxDistance) {
-							intersections.add(inter);
-							if (!multipleIntersection) {
-								break;
-							}
-						}
+						intersections.add(inter);
 					}
-
 				}
 			}
 			// step to the next voxel
-			if (tMaxX < tMaxY && tMaxX < tMaxZ)
-
-			{
+			if (tMaxX < tMaxY && tMaxX < tMaxZ) {
 				tMaxX += tDeltaX;
 				ix += stepX;
 				if (voxelOutOfBounds(ix, 0))
@@ -265,16 +234,9 @@ public class Grid {
 					break;
 			}
 
-			double nextT = Math.min(tMaxX, Math.min(tMaxY, tMaxZ));
-			if (nextT > maxDistance)
+			if (min(tMaxX, min(tMaxY, tMaxZ)) > maxDistance)
 				break;
 
-		}
-
-		// finally, test the infinity geometries as well
-		List<Intersection> outerHits = infinityGeometries.calculateIntersections(inputRay);
-		if (outerHits != null) {
-			intersections.addAll(outerHits);
 		}
 
 		return intersections;
@@ -298,19 +260,6 @@ public class Grid {
 		default:
 			return true;
 		}
-	}
-
-	/**
-	 * Computes the distance from the ray origin to the point it first enters the
-	 * grid.
-	 *
-	 * @param ray the ray
-	 * @return distance to entry point, or +∞ if it misses
-	 */
-	public double cutsGrid(Ray ray) {
-		Point entry = gridEntryPoint(ray);
-		return entry == null ? Double.POSITIVE_INFINITY : ray.getHead().distance(entry);
-
 	}
 
 }

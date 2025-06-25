@@ -44,7 +44,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	protected Intersection findClosestIntersection(Ray ray) {
-		return ray.findClosestIntersection(scene.geometries.calculateIntersections(ray));
+		return ray.findClosestIntersection(calculateIntersections(ray, Double.POSITIVE_INFINITY));
 	}
 
 	/**
@@ -149,8 +149,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	protected Double3 transparency(Intersection intersection) {
 		Double3 ktr = Double3.ONE;
 		Ray shadowRay = new Ray(intersection.point, intersection.l.scale(-1), intersection.normal);
-		var intersections = scene.geometries.calculateIntersections(shadowRay,
-				intersection.light.getDistance(intersection.point));
+		var intersections = calculateIntersections(shadowRay, intersection.light.getDistance(intersection.point));
 		if (intersections == null)
 			return ktr;
 
@@ -276,6 +275,10 @@ public class SimpleRayTracer extends RayTracerBase {
 		for (Ray rT : rays)
 			color = color.add(calcGlobalEffect(rT, level, k, kX));
 		return color.reduce(size);
+	}
+
+	protected List<Intersection> calculateIntersections(Ray ray, double distance) {
+		return scene.geometries.calculateIntersections(ray, distance);
 	}
 
 }
