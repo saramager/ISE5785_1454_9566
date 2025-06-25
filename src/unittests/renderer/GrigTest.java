@@ -263,7 +263,7 @@ class GrigTest {
 
 		Camera.getBuilder().setLocation(new Point(0, 0, 1000)).setDirection(Point.ZERO, Vector.AXIS_Y)
 				.setVpDistance(1000).setVpSize(200, 200).setRayTracer(scene, RayTracerType.GRID) //
-				.setResolution(400, 400) //
+				.setResolution(10, 10) //
 				.setDebugPrint(0.1)//
 				.build() //
 				.renderImage() //
@@ -290,13 +290,17 @@ class GrigTest {
 				.setRayTracer(scene, RayTracerType.GRID);
 
 		cameraBuilder.setLocation(new Point(0, 0, 1000)) //
-				.setDirection(Point.ZERO, Vector.AXIS_Y) //
-				.setVpDistance(1000).setVpSize(150, 150) //
-				.setResolution(1000, 1000) //
+				.setDirection(new Point(25, 25, 0), Vector.AXIS_Y) //
+				.setVpDistance(10000).setVpSize(150, 150) //
+				.setResolution(300, 300) //
 				.setDebugPrint(0.1)//
 				.build() //
 				.renderImage() //
 				.writeToImage("refractionTwoSpheres222");
+
+		cameraBuilder.setRayTracer(scene, RayTracerType.SIMPLE).build() //
+				.renderImage() //
+				.writeToImage("refractionTwoSpheres111");
 	}
 
 	/** Produce a picture of a sphere lighted by a spot light */
