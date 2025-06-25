@@ -287,7 +287,7 @@ class GrigTest {
 						.setKl(0.0004).setKq(0.0000006));
 
 		Camera.Builder cameraBuilder = Camera.getBuilder() //
-				.setRayTracer(scene, RayTracerType.SIMPLE);
+				.setRayTracer(scene, RayTracerType.GRID);
 
 		cameraBuilder.setLocation(new Point(0, 0, 1000)) //
 				.setDirection(Point.ZERO, Vector.AXIS_Y) //
@@ -330,5 +330,52 @@ class GrigTest {
 				.build() //
 				.renderImage() //
 				.writeToImage("reflectionTwoSpheresMirrored333");
+	}
+
+	@Test
+	public void trianglesLights() {
+		Scene scene2 = new Scene("Test scene").setAmbientLight(new AmbientLight(new Color(38, 38, 38)));
+		Color trianglesLightColor = new Color(800, 500, 250);
+		Point trianglesLightPosition = new Point(30, 10, -100);
+		/** Light direction (directional and spot) in tests with triangles */
+		Vector trianglesLightDirection = new Vector(-2, -2, -2);
+		Point[] vertices = {
+				// the shared left-bottom:
+				new Point(-110, -110, -150),
+				// the shared right-top:
+				new Point(95, 100, -150),
+				// the right-bottom
+				new Point(110, -110, -150),
+				// the left-top
+				new Point(-75, 78, 100) };
+		/** Diffusion attenuation factor for some of the geometries in the tests */
+		Double3 KD3 = new Double3(0.2, 0.6, 0.4);
+
+		/** Specular attenuation factor for some of the geometries in the tests */
+		Double3 KS3 = new Double3(0.2, 0.4, 0.3);
+
+		/** Material for some of the geometries in the tests */
+		Material material = new Material().setKD(KD3).setKS(KS3).setShininess(301);
+		/** The first triangle in appropriate tests */
+		Geometry triangle1 = new Triangle(vertices[0], vertices[1], vertices[2]).setMaterial(material);
+		/** The first triangle in appropriate tests */
+		Geometry triangle2 = new Triangle(vertices[0], vertices[1], vertices[3]).setMaterial(material);
+
+		scene2.geometries.add(triangle1, triangle2);
+
+		scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
+				.setKl(0.001).setKq(0.0001));
+		scene2.lights.add(new PointLight(new Color(250, 2, 250), new Point(80, 80, 60)).setKl(0.0003).setKq(0.00003));
+		scene2.lights.add(new DirectionalLight(new Color(50, 100, 200), new Vector(0, 1, 0)));
+		/** Second camera builder for some of tests */
+		Camera.Builder camera2 = Camera.getBuilder() //
+				.setRayTracer(scene2, RayTracerType.GRID) //
+				.setLocation(new Point(0, 0, 1000)) //
+				.setDirection(Point.ZERO, Vector.AXIS_Y) //
+				.setVpSize(200, 200).setVpDistance(1000);
+		camera2.setResolution(500, 500) //
+				.build() //
+				.renderImage() //
+				.writeToImage("Triangles lights11");
 	}
 }
