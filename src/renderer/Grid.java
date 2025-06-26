@@ -32,21 +32,28 @@ public class Grid {
 	 * @param geometries the scene geometries
 	 * @param density    number of voxels along each axis
 	 */
-	public Grid(Geometries geometries, int density) {
+	public Grid(Geometries geometries) {
 		// initialize fields
-		var edges = geometries.edges;
+		// calculate density
+		double density = cbrt(geometries.getGeometries().size()) * 2;
+		var edges = geometries.getEdges();
 		this.gridMin = edges.get(0);
 		this.gridMax = edges.get(1);
+		System.out.println("min: " + gridMin + ", max: " + gridMax);
 		double dx = alignZero((gridMax.d1() - gridMin.d1()) / density);
 		double dy = alignZero((gridMax.d2() - gridMin.d2()) / density);
 		double dz = alignZero((gridMax.d3() - gridMin.d3()) / density);
+
 		this.voxelSize = new Double3(dx, dy, dz);
+		System.out.println("Voxel size: " + voxelSize);
 		this.grid = new HashMap<>();
 		this.infinityGeometries = new Geometries();
 
 		// classify each geometry
 		for (Intersectable geo : geometries.getGeometries()) {
-			var e = geo.edges;
+			var e = geo.getEdges();
+			System.out.println("geo: " + geo);
+			System.out.println("edges: " + e.get(0) + ", " + e.get(1));
 			// infinite bounds → collect separately
 			if (e.get(0).d1() == Double.POSITIVE_INFINITY || e.get(0).d2() == Double.POSITIVE_INFINITY
 					|| e.get(0).d3() == Double.POSITIVE_INFINITY || e.get(1).d1() == Double.NEGATIVE_INFINITY
@@ -71,7 +78,7 @@ public class Grid {
 				}
 			}
 		}
-		System.out.print(""); // TODO to remove
+
 	}
 
 	/**

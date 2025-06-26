@@ -648,7 +648,7 @@ public class Camera implements Cloneable {
 			if (camera.antiAlasingNumOfRays > 1)
 				camera.antiAlasingSize = min(camera.rX, camera.rY);
 			if (rayTracerType == RayTracerType.GRID)
-				camera.rayTracer = new GridRayTracer(scene, 10);
+				camera.rayTracer = new GridRayTracer(scene);
 
 			else
 				camera.rayTracer = new SimpleRayTracer(scene);

@@ -23,9 +23,9 @@ public class GridRayTracer extends SimpleRayTracer {
 	 * @param density
 	 */
 
-	public GridRayTracer(Scene scene, int density) {
+	public GridRayTracer(Scene scene) {
 		super(scene);
-		grid = new Grid(scene.geometries, density);
+		grid = new Grid(scene.geometries);
 	}
 
 	@Override

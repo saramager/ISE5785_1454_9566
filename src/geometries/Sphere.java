@@ -26,13 +26,16 @@ public class Sphere extends RadialGeometry {
 		super(radius);
 		this.center = p;
 
-		Double3 radiusVector = new Double3(radius);
-		Double3 min = center.subtract(radiusVector);
-		Double3 max = center.add(radiusVector);
-		this.edges = List.of(min, max);
 	}
 
 	@Override
+	public List<Double3> getEdges() {
+		Double3 radiusVector = new Double3(radius);
+		Double3 min = center.subtract(radiusVector);
+		Double3 max = center.add(radiusVector);
+		return List.of(min, max);
+	}
+
 	public Vector getNormal(Point p) {
 		return p.subtract(center).normalize();
 	}

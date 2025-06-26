@@ -17,7 +17,6 @@ public abstract class Intersectable {
 	 * positive and negative infinity to ensure that any point will be within the
 	 * bounds
 	 */
-	public List<Double3> edges = List.of(new Double3(Double.POSITIVE_INFINITY), new Double3(Double.NEGATIVE_INFINITY));
 
 	/**
 	 * inner class to help with the intersection
@@ -127,5 +126,14 @@ public abstract class Intersectable {
 	 * @return list of Intersections that intersection
 	 */
 	protected abstract List<Intersection> calculateIntersectionsHelper(Ray ray, double maxDistance);
+
+	/**
+	 * get the bounding box of the geometry
+	 * 
+	 * @return list of edges of the geometry
+	 */
+	public List<Double3> getEdges() {
+		return List.of(new Double3(Double.POSITIVE_INFINITY), new Double3(Double.NEGATIVE_INFINITY));
+	}
 
 }

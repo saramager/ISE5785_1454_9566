@@ -45,15 +45,6 @@ public class Polygon extends Geometry {
 		if (vertices.length < 3)
 			throw new IllegalArgumentException("A polygon can't have less than 3 vertices");
 		this.vertices = List.of(vertices);
-		Double3 min = Double3.POSITIVE_INFINITY;
-		Double3 max = Double3.NEGATIVE_INFINITY;
-		for (Point p : vertices) {
-			min = p.min(min); // Find the minimum coordinates of all vertices
-			max = p.max(max); // Find the maximum coordinates of all vertices
-		}
-		min = min.subtract(Double3.DELTA); // Add a small value to avoid
-		max = max.add(Double3.DELTA); // floating point errors
-		edges = List.of(min, max);
 
 		size = vertices.length;
 
@@ -88,6 +79,19 @@ public class Polygon extends Geometry {
 			if (positive != (edge1.crossProduct(edge2).dotProduct(n) > 0))
 				throw new IllegalArgumentException("All vertices must be ordered and the polygon must be convex");
 		}
+	}
+
+	@Override
+	public List<Double3> getEdges() {
+		Double3 min = Double3.POSITIVE_INFINITY;
+		Double3 max = Double3.NEGATIVE_INFINITY;
+		for (Point p : vertices) {
+			min = p.min(min); // Find the minimum coordinates of all vertices
+			max = p.max(max); // Find the maximum coordinates of all vertices
+		}
+		min = min.subtract(Double3.DELTA); // Add a small value to avoid
+		max = max.add(Double3.DELTA); // floating point errors
+		return List.of(min, max);
 	}
 
 	@Override
