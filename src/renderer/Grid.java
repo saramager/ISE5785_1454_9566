@@ -24,6 +24,10 @@ public class Grid {
 	private final Geometries infinityGeometries;
 	private final HashMap<Double3, Geometries> grid;
 
+	private final int numVoxelsX;
+	private final int numVoxelsY;
+	private final int numVoxelsZ;
+
 	/**
 	 * Constructs a grid by subdividing the bounding box of the given geometries
 	 * into a density×density×density grid, and classifying each geometry into the
@@ -45,7 +49,12 @@ public class Grid {
 		double dz = alignZero((gridMax.d3() - gridMin.d3()) / density);
 
 		this.voxelSize = new Double3(dx, dy, dz);
+
 		System.out.println("Voxel size: " + voxelSize);
+		this.numVoxelsX = (int) ceil((gridMax.d1() - gridMin.d1()) / dx);
+		this.numVoxelsY = (int) ceil((gridMax.d2() - gridMin.d2()) / dy);
+		this.numVoxelsZ = (int) ceil((gridMax.d3() - gridMin.d3()) / dz);
+
 		this.grid = new HashMap<>();
 		this.infinityGeometries = new Geometries();
 
@@ -161,10 +170,6 @@ public class Grid {
 
 	}
 
-	public List<Intersection> traverse(Ray inputRay) {
-		return traverse(inputRay, Double.POSITIVE_INFINITY);
-	}
-
 	/**
 	 * Traverses the grid via 3D DDA, collecting intersections with contained
 	 * geometries.
@@ -176,7 +181,6 @@ public class Grid {
 	 */
 
 	public List<Intersection> traverse(Ray inputRay, double maxDistance) {
-
 		List<Intersection> allIntersections = new LinkedList<>();
 
 		Set<Intersectable> geometriesProcessedForThisRay = new HashSet<>();

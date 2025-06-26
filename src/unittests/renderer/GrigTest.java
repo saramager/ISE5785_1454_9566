@@ -24,7 +24,7 @@ class GrigTest {
 	public void testBlurryGlassWithout2() {
 
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2)));
-		for (int i = -4; i < -3; i += 4) {
+		for (int i = -4; i < 6; i += 4) {
 			scene.geometries.add(
 					// Red sphere - closest to camera, lowest height
 					new Sphere(new Point(5 * i, -8, -9), 3.0).setEmission(new Color(255, 0, 0).reduce(2))
