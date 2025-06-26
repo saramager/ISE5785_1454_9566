@@ -20,9 +20,12 @@ class complexRegularGridTest {
 	 * Creates a checkerboard floor with hundreds of small cubes and spheres above
 	 * This test showcases the efficiency gain when using spatial partitioning
 	 */
-	private final Camera.Builder camera = Camera.getBuilder().setLocation(new Point(0, 50, 100)) // מעל הסצנה ומעט קדימה
-			.setDirection(new Point(0, -60, -200), Vector.AXIS_Y) // מסתכל מעט למטה ואחורה
-			.setVpDistance(1000).setVpSize(500, 500);
+//	private final Camera.Builder camera = Camera.getBuilder().setLocation(new Point(0, 50, 100)) // מעל הסצנה ומעט קדימה
+//			.setDirection(new Point(0, -60, -200), Vector.AXIS_Y) // מסתכל מעט למטה ואחורה
+//			.setVpDistance(1000).setVpSize(500, 500);
+	private final Camera.Builder camera = Camera.getBuilder().setLocation(new Point(0, 20, 50)) // יותר קרוב לסצנה
+			.setDirection(new Point(0, -80, -200), Vector.AXIS_Y) // מסתכל למטה לכיוון מרכז הרצפה
+			.setVpDistance(500).setVpSize(500, 500);
 
 	@Test
 	public void RegularGridTest() {
@@ -91,8 +94,8 @@ class complexRegularGridTest {
 
 		// Render with high resolution to stress test the grid
 		camera.setRayTracer(scene, RayTracerType.GRID) // Use REGULAR_GRID instead of SIMPLE
-				.setResolution(800, 800).setMultithreading(-1).setAntiAliasingRays(300).setDebugPrint(0.1).build()
-				.renderImage().writeToImage("Complex Regular Grid Performance Test");
+				.setResolution(800, 800).setMultithreading(-1).setDebugPrint(0.1).build().renderImage()
+				.writeToImage("Complex Regular Grid Performance Test");
 	}
 
 	/**
