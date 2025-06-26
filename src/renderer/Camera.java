@@ -639,6 +639,11 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, RESOLUTIONY_FIELD);
 
 			camera.imageWriter = new ImageWriter(camera.nX, camera.nY);
+			if (rayTracerType == RayTracerType.GRID)
+				camera.rayTracer = new GridRayTracer(scene);
+
+			else
+				camera.rayTracer = new SimpleRayTracer(scene);
 
 			if (diffusiveNumOfRays > 1)
 				camera.rayTracer.glossyAndDiffuseSetRays(diffusiveNumOfRays);
@@ -647,11 +652,6 @@ public class Camera implements Cloneable {
 
 			if (camera.antiAlasingNumOfRays > 1)
 				camera.antiAlasingSize = min(camera.rX, camera.rY);
-			if (rayTracerType == RayTracerType.GRID)
-				camera.rayTracer = new GridRayTracer(scene);
-
-			else
-				camera.rayTracer = new SimpleRayTracer(scene);
 
 			// Return a copy of the camera object
 			try {

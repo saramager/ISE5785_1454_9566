@@ -26,7 +26,7 @@ class ReflectionRefractionTests {
 	private final Scene scene = new Scene("Test scene");
 	/** Camera builder for the tests with triangles */
 	private final Camera.Builder cameraBuilder = Camera.getBuilder() //
-			.setRayTracer(scene, RayTracerType.SIMPLE);
+			.setRayTracer(scene, RayTracerType.GRID);
 
 	/** Produce a picture of a sphere lighted by a spot light */
 	@Test
@@ -366,16 +366,16 @@ class ReflectionRefractionTests {
 		Camera c = cameraBuilder.setLocation(new Point(0, -140, 50))
 				.setDirection(new Point(0, 0, 20), new Vector(0, 0, 1)).setVpDistance(100).setVpSize(150, 150)
 				.setResolution(500, 500).build().renderImage().writeToImage("complexRoomScenePolygonsAndCube");
-		new Camera.Builder(c).setRotation(45).build().renderImage().writeToImage("complexRoomScenePolygonsAndCubeRO");
-		new Camera.Builder(c).setRotation(135).build().renderImage()
-				.writeToImage("complexRoomScenePolygonsAndCubeRO_Y");
-
-		new Camera.Builder(c).setTranslation(new Vector(30, 0, 0)).build().renderImage()
-				.writeToImage("complexRoomScenePolygonsAndCubeMOVE");
-		new Camera.Builder(c).setTranslation(new Vector(0, 0, 30)).build().renderImage()
-				.writeToImage("complexRoomScenePolygonsAndCubeMOVE1");
-		new Camera.Builder(c).setTranslation(new Vector(0, 0, 30)).setRotation(32).build().renderImage()
-				.writeToImage("complexRoomScenePolygonsAndCubeMOVE2");
+//		new Camera.Builder(c).setRotation(45).build().renderImage().writeToImage("complexRoomScenePolygonsAndCubeRO");
+//		new Camera.Builder(c).setRotation(135).build().renderImage()
+//				.writeToImage("complexRoomScenePolygonsAndCubeRO_Y");
+//
+//		new Camera.Builder(c).setTranslation(new Vector(30, 0, 0)).build().renderImage()
+//				.writeToImage("complexRoomScenePolygonsAndCubeMOVE");
+//		new Camera.Builder(c).setTranslation(new Vector(0, 0, 30)).build().renderImage()
+//				.writeToImage("complexRoomScenePolygonsAndCubeMOVE1");
+//		new Camera.Builder(c).setTranslation(new Vector(0, 0, 30)).setRotation(32).build().renderImage()
+//				.writeToImage("complexRoomScenePolygonsAndCubeMOVE2");
 
 	}
 

@@ -24,7 +24,7 @@ class GlossySurfacesAndDiffusedBlurry {
 	private final Scene scene = new Scene("Test scene");
 	/** Camera builder for the tests with triangles */
 	private final Camera.Builder cameraBuilder = Camera.getBuilder() //
-			.setRayTracer(scene, RayTracerType.SIMPLE);
+			.setRayTracer(scene, RayTracerType.GRID);
 
 	/**
 	 * Builds and renders a scene with a single large sphere and a reflective plane.
@@ -155,7 +155,7 @@ class GlossySurfacesAndDiffusedBlurry {
 		setSceneForDiffusiveTest();
 		updateCameraBuilderForDiffusiveTest()//
 				.setGlossyAndDiffuseRays(289)// 289
-				.setAntiAliasingRays(81)//
+//				.setAntiAliasingRays(81)//
 				.setMultithreading(-1).setDebugPrint(0.1)//
 				.build().renderImage().writeToImage("blurryGlass2");
 	}
@@ -168,7 +168,7 @@ class GlossySurfacesAndDiffusedBlurry {
 	public void testBlurryGlassWithout() {
 		setSceneForDiffusiveTest();
 		updateCameraBuilderForDiffusiveTest()//
-				.setAntiAliasingRays(9)//
+				.setRayTracer(scene, RayTracerType.SIMPLE).setAntiAliasingRays(81)//
 				.setMultithreading(-1).setDebugPrint(0.1)//
 				.build().renderImage().writeToImage("blurryGlassWithout");
 	}

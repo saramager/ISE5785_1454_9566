@@ -110,7 +110,9 @@ public class Grid {
 	 * @return true if inside or on boundary
 	 */
 	public boolean inGrid(Point p) {
-		return (p.lowerThan(new Point(gridMax)) || p.equals(new Point(gridMax))) && !p.lowerThan(new Point(gridMin));
+		return (p.getX() >= gridMin.d1() && p.getX() <= gridMax.d1())
+				&& (p.getY() >= gridMin.d2() && p.getY() <= gridMax.d2())
+				&& (p.getZ() >= gridMin.d3() && p.getZ() <= gridMax.d3());
 	}
 
 	/**
@@ -274,14 +276,13 @@ public class Grid {
 	private boolean voxelOutOfBounds(int index, int axis) {
 		switch (axis) {
 		case 0:
-			return index < 0 || gridMin.d1() + index * voxelSize.d1() > gridMax.d1();
+			return index < 0 || index >= numVoxelsX;
 		case 1:
-			return index < 0 || gridMin.d2() + index * voxelSize.d2() > gridMax.d2();
+			return index < 0 || index >= numVoxelsY;
 		case 2:
-			return index < 0 || gridMin.d3() + index * voxelSize.d3() > gridMax.d3();
+			return index < 0 || index >= numVoxelsZ;
 		default:
-			return true;
+			return true; // invalid axis
 		}
 	}
-
 }

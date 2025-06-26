@@ -67,8 +67,8 @@ class GrigTest {
 
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
 
-//		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
-//				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(5)));
+		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
+				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(5)));
 
 		scene.geometries.add(new Sphere(new Point(0, 0, 25), 25d).setEmission(new Color(0, 100, 200))
 				.setMaterial(new Material().setKD(0.2).setKS(0.8).setShininess(150).setKR(0.9)));
@@ -81,7 +81,7 @@ class GrigTest {
 		Camera.Builder cameraBuilder = Camera.getBuilder() //
 				.setRayTracer(scene, RayTracerType.GRID);
 		cameraBuilder.setLocation(new Point(0, -120, 40)).setDirection(new Point(0, 0, 25), new Vector(0, 0, 1))
-				.setVpDistance(500).setVpSize(150, 150).setResolution(500, 500).setMultithreading(-1).setDebugPrint(0.1)
+				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setMultithreading(-1).setDebugPrint(0.1)
 				.build().renderImage().writeToImage("grigShpere");
 	}
 
