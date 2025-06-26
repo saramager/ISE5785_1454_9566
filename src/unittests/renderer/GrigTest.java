@@ -11,7 +11,6 @@ import geometries.*;
 import lighting.*;
 import primitives.*;
 import renderer.Camera;
-import renderer.Camera.Builder;
 import renderer.RayTracerType;
 import scene.Scene;
 
@@ -19,26 +18,11 @@ import scene.Scene;
  * 
  */
 class GrigTest {
-	/** Scene for the tests */
 	private final Scene scene = new Scene("Test scene");
-	private final Camera.Builder cameraBuilder = Camera.getBuilder();
-
-	@Test
-	public void testBlurryGlassWithout() {
-		setSceneForDiffusiveTest();
-		updateCameraBuilderForDiffusiveTest()//
-				// .setAntiAliasingRays(9)//
-				// .setMultithreading(-1)
-				.setDebugPrint(0.1)//
-				.build().renderImage().writeToImage("grid");
-	}
 
 	@Test
 	public void testBlurryGlassWithout2() {
-		Scene scene = new Scene("Test scene");
-		Camera.Builder camera2 = Camera.getBuilder().setLocation(new Point(0, -1000, 0))//
-				.setDirection(new Point(0, 0, -12), Vector.AXIS_Z)//
-				.setVpDistance(1000).setVpSize(70, 50);//
+
 		// .setRayTracer(scene, RayTracerType.GRID)
 
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2)));
@@ -67,72 +51,40 @@ class GrigTest {
 							.setKl(0.1).setKc(0.1));
 
 			scene.lights.add(new PointLight(new Color(200, 200, 255), new Point(0, -5, -15)).setKl(0.08).setKq(0.015));
-
-			camera2.setRayTracer(scene, RayTracerType.GRID).setResolution(500, 500).build().renderImage()
-					.writeToImage("grid");
+			Camera.Builder cameraBuilder = Camera.getBuilder() //
+					.setRayTracer(scene, RayTracerType.GRID);
+			cameraBuilder//
+					.setResolution(500, 500)//
+					.setLocation(new Point(0, -1000, 0))//
+					.setDirection(new Point(0, 0, -12), Vector.AXIS_Z)//
+					.setVpDistance(1000).setVpSize(70, 50)//
+					.setResolution(700, 500).setAntiAliasingRays(9)//
+					.setMultithreading(-1).setDebugPrint(0.1)//
+					.build().renderImage().writeToImage("blurryGlassWithout");
 		}
 	}
 
-	private void setSceneForDiffusiveTest() {
-		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2)));
+	@Test
+	public void renderSingleSphereReflectionWith() {
 
-		for (int i = -4; i < 6; i += 4) {
-			scene.geometries.add(
-					// Red sphere - closest to camera, lowest height
-					new Sphere(new Point(5 * i, -8, -9), 3.0).setEmission(new Color(255, 0, 0).reduce(2))
-							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0.4)),
+		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30)));
 
-					// Green sphere - behind polygon, middle height
-					new Sphere(new Point(5 * i, 0, -3), 3.0).setEmission(new Color(0, 255, 0).reduce(4).reduce(2))
-							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0)),
+		scene.geometries.add(new Plane(new Point(0, 0, 0), new Vector(0, 0, 1)).setEmission(new Color(30, 30, 30))
+				.setMaterial(new Material().setKD(0.1).setKS(0.8).setShininess(100).setKR(0.7).setRAngle(5)));
 
-					// Blue sphere - furthest from camera, highest
-					new Sphere(new Point(5 * i, 5, 3), 3.0).setEmission(new Color(0, 0, 255).reduce(2))
-							.setMaterial(new Material().setKD(0.2).setKS(1).setShininess(80).setKT(0)));
+		scene.geometries.add(new Sphere(new Point(0, 0, 25), 25d).setEmission(new Color(0, 100, 200))
+				.setMaterial(new Material().setKD(0.2).setKS(0.8).setShininess(150).setKR(0.9)));
 
-//					// Polygon remains at Y = -5
-//					new Polygon(new Point(5 * i - 4, -5, -12), new Point(5 * i - 4, -5, 6), new Point(5 * i + 4, -5, 6),
-//							new Point(5 * i + 4, -5, -12)).setEmission(new Color(230, 250, 215).reduce(2))
-//							.setMaterial(new Material().setKD(0.001).setKS(0.002).setShininess(1).setKT(0.98)
-//									.setTAngle(i * 5 + 20)));
-		}
+		scene.lights.add(new PointLight(new Color(600, 400, 0), new Point(0, -50, 70)).setKl(0.0008).setKq(0.00008));
 
-//		scene.geometries.add(//
-//				// The wall
-//				new Plane(new Point(0, 10, 0), Vector.AXIS_Y)//
-//						.setEmission(Color.BLACK)//
-//						.setMaterial(new Material().setKD(0.2).setKT(0d)),
-//				// The floor
-//				new Plane(new Point(0, -5, -12.1), new Vector(0, -0.5, 1))//
-//						.setEmission(new Color(100, 100, 100))//
-//						.setMaterial(new Material().setKD(0.5).setKS(0.3).setShininess(20)));
-//				// the mirror
-//				new Polygon(new Point(-12, -55, -37), new Point(12, -55, -37), //
-//						new Point(12, -5, -12), new Point(-12, -5, -12))//
-//						.setEmission(new Color(50, 50, 50))
-//						.setMaterial(new Material().setKD(0.1).setKS(1).setShininess(100).setKR(0.8).setRAngle(10)));
-
-		scene.lights.add(new DirectionalLight(new Color(255, 255, 255).reduce(1), new Vector(-0.4, 1, 0)));
-
-		scene.lights.add(new PointLight(new Color(255, 200, 200), new Point(20, -5, 8)).setKl(0.05).setKq(0.01));
-
-		scene.lights.add(new PointLight(new Color(200, 255, 200), new Point(-20, -5, 8)).setKl(0.05).setKq(0.01));
-
-		scene.lights.add(new SpotLight(new Color(255, 255, 255).reduce(2), new Point(0, 15, 0), new Vector(0, -1, 0))
-				.setKl(0.1).setKc(0.1));
-
-		scene.lights.add(new PointLight(new Color(200, 200, 255), new Point(0, -5, -15)).setKl(0.08).setKq(0.015));
-	}
-
-	/** Camera builder for the tests with triangles */
-
-	private Builder updateCameraBuilderForDiffusiveTest() {
-		return cameraBuilder//
-				.setLocation(new Point(0, -1000, 0))//
-				.setDirection(new Point(0, 0, -12), Vector.AXIS_Z)//
-				.setVpDistance(1000).setVpSize(70, 50)//
-				.setResolution(70, 50)//
+		scene.lights.add(new DirectionalLight(new Color(150, 150, 150), new Vector(0.5, -1, -0.7)));
+		scene.lights.add(new SpotLight(new Color(250, 100, 100), new Point(40, 40, 40), new Vector(-0.5, -0.5, -0.8))
+				.setKl(0.0005).setKq(0.00005).setNarrowBeam(15));
+		Camera.Builder cameraBuilder = Camera.getBuilder() //
 				.setRayTracer(scene, RayTracerType.GRID);
+		cameraBuilder.setLocation(new Point(0, -120, 40)).setDirection(new Point(0, 0, 20), new Vector(0, 0, 1))
+				.setVpDistance(100).setVpSize(150, 150).setResolution(500, 500).setMultithreading(-1).setDebugPrint(0.1)
+				.build().renderImage().writeToImage("grigShpere");
 	}
 
 	@Test
