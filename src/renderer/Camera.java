@@ -294,6 +294,16 @@ public class Camera implements Cloneable {
 		private int diffusiveNumOfRays = 1;
 
 		/**
+		 * The type of ray tracer to use for rendering.
+		 */
+		private RayTracerType rayTracerType;
+
+		/**
+		 * The scene associated with the camera, used for ray tracing.
+		 */
+		private Scene scene = null;
+
+		/**
 		 * Creates a new Builder instance for constructing a Camera.
 		 */
 		public Builder() {
@@ -530,9 +540,10 @@ public class Camera implements Cloneable {
 
 		public Builder setRayTracer(Scene scene, RayTracerType type) {
 			if (type == RayTracerType.SIMPLE)
-				camera.rayTracer = new SimpleRayTracer(scene);
+				rayTracerType = RayTracerType.SIMPLE;
 			if (type == RayTracerType.GRID)
-				camera.rayTracer = new GridRayTracer(scene, 10);
+				rayTracerType = RayTracerType.GRID;
+			this.scene = scene;
 			return this;
 		}
 
@@ -628,18 +639,19 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException(GENERAL_MSG, CLASS_NAME, RESOLUTIONY_FIELD);
 
 			camera.imageWriter = new ImageWriter(camera.nX, camera.nY);
-			if (camera.rayTracer == null)
-				setRayTracer(null, RayTracerType.SIMPLE);
 
 			if (diffusiveNumOfRays > 1)
 				camera.rayTracer.glossyAndDiffuseSetRays(diffusiveNumOfRays);
 			camera.rX = camera.width / camera.nX;
 			camera.rY = camera.height / camera.nY;
 
-			if (camera.antiAlasingNumOfRays > 1) {
+			if (camera.antiAlasingNumOfRays > 1)
 				camera.antiAlasingSize = min(camera.rX, camera.rY);
+			if (rayTracerType == RayTracerType.GRID)
+				camera.rayTracer = new GridRayTracer(scene, 10);
 
-			}
+			else
+				camera.rayTracer = new SimpleRayTracer(scene);
 
 			// Return a copy of the camera object
 			try {
