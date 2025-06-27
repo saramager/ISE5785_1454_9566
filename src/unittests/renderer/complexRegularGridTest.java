@@ -13,6 +13,12 @@ import renderer.Camera;
 import renderer.RayTracerType;
 import scene.Scene;
 
+/**
+ * * Test class for complex regular grid performance improvement in rendering
+ * scenes with multiple geometries and light sources. This test creates a
+ * complex scene with a checkerboard floor and various geometries to demonstrate
+ * the efficiency of the REGULAR GRID ray tracer.
+ */
 class complexRegularGridTest {
 
 	/**
@@ -27,6 +33,10 @@ class complexRegularGridTest {
 			.setDirection(new Point(0, -80, -200), Vector.AXIS_Y) // מסתכל למטה לכיוון מרכז הרצפה
 			.setVpDistance(500).setVpSize(500, 500);
 
+	/**
+	 * Test method to create a complex regular grid scene with various geometries
+	 * and light sources.
+	 */
 	@Test
 	public void RegularGridTest() {
 		Scene scene = new Scene("Complex Regular Grid Test").setBackground(new Color(25, 25, 40))
@@ -99,7 +109,14 @@ class complexRegularGridTest {
 	}
 
 	/**
-	 * Helper method to create a cube using 6 polygons
+	 * Helper method to create a cube in the scene at a specified center point with
+	 * a given size, color, and material.
+	 *
+	 * @param scene    the scene to add the cube to
+	 * @param center   the center point of the cube
+	 * @param size     the size of the cube
+	 * @param color    the color of the cube
+	 * @param material the material of the cube
 	 */
 	private void createCube(Scene scene, Point center, double size, Color color, Material material) {
 		double half = size / 2;

@@ -14,6 +14,12 @@ import renderer.Camera;
 import renderer.RayTracerType;
 import scene.Scene;
 
+/**
+ * ParkPicture class contains a complex park scene to demonstrate REGULAR GRID
+ * performance Features: trees, grass, hexagonal lake, benches, flowers, and
+ * paths This scene contains hundreds of small geometric elements
+ * 
+ */
 class ParkPicture {
 
 	/**
@@ -97,7 +103,12 @@ class ParkPicture {
 	}
 
 	/**
-	 * Creates a hexagonal lake
+	 * Creates a hexagonal lake at the specified center with a given radius
+	 * 
+	 * @param scene         the scene to add the lake to
+	 * @param center        the center point of the lake
+	 * @param radius        the radius of the hexagon
+	 * @param waterMaterial the material for the water surface
 	 */
 	private void createHexagonalLake(Scene scene, Point center, double radius, Material waterMaterial) {
 		double x = center.getX();
@@ -120,9 +131,19 @@ class ParkPicture {
 	}
 
 	/**
-	 * Creates a tree with trunk (cube) and crown (sphere or triangles)
+	 * Creates a tree with a trunk and a crown
+	 * 
+	 * @param scene         the scene to add the tree to
+	 * @param basePoint     the base point of the tree trunk
+	 * @param trunkWidth    the width of the trunk
+	 * @param trunkHeight   the height of the trunk
+	 * @param trunkMaterial the material for the trunk
+	 * @param leafMaterial  the material for the leaves
+	 * @param mixedCrown    if true, creates a mixed crown (sphere + triangles), if
+	 *                      false, creates a sphere crown only
 	 */
 	private void createTree(Scene scene, Point basePoint, double trunkWidth, double trunkHeight, Material trunkMaterial,
+			// TODO בשניייה בלי כתר
 			Material leafMaterial, boolean mixedCrown) {
 		double x = basePoint.getX();
 		double y = basePoint.getY();
@@ -155,7 +176,11 @@ class ParkPicture {
 	}
 
 	/**
-	 * Creates scattered grass patches using small polygons
+	 * ` Creates random grass patches in the park area
+	 * 
+	 * @param scene         the scene to add the grass patches to
+	 * @param count         number of grass patches to create
+	 * @param grassMaterial material for the grass patches
 	 */
 	private void createGrassPatches(Scene scene, int count, Material grassMaterial) {
 		Random random = new Random(42); // Fixed seed for reproducible results
@@ -177,7 +202,11 @@ class ParkPicture {
 	}
 
 	/**
-	 * Creates a park bench
+	 * Creates a park bench at the specified position
+	 * 
+	 * @param scene         the scene to add the bench to
+	 * @param position      the position of the bench
+	 * @param benchMaterial material for the bench
 	 */
 	private void createBench(Scene scene, Point position, Material benchMaterial) {
 		double x = position.getX();
@@ -198,7 +227,12 @@ class ParkPicture {
 	}
 
 	/**
-	 * Creates a flower bed with multiple small flowers
+	 * Creates a flower bed with random flowers around a center point
+	 * 
+	 * @param scene          the scene to add the flower bed to
+	 * @param center         the center point of the flower bed
+	 * @param flowerCount    number of flowers in the bed
+	 * @param flowerMaterial material for the flowers
 	 */
 	private void createFlowerBed(Scene scene, Point center, int flowerCount, Material flowerMaterial) {
 		Random random = new Random(center.hashCode()); // Different seed per flower bed
@@ -226,8 +260,12 @@ class ParkPicture {
 	}
 
 	/**
-	 * Creates a winding path through the park
+	 * Creates a winding path using rectangles as segments
+	 * 
+	 * @param scene        the scene to add the path to
+	 * @param pathMaterial the material for the path segments
 	 */
+
 	private void createPath(Scene scene, Material pathMaterial) {
 		// Path segments as rectangles
 		Point[] pathPoints = { new Point(-150, -99.5, -80), new Point(-100, -99.5, -120), new Point(-50, -99.5, -140),
@@ -252,8 +290,17 @@ class ParkPicture {
 	}
 
 	/**
-	 * Helper method to create a cube with custom dimensions
+	 * Creates a cube with specified width, height, and depth
+	 * 
+	 * @param scene    the scene to add the cube to
+	 * @param center   the center point of the cube
+	 * @param width    the width of the cube
+	 * @param height   the height of the cube
+	 * @param depth    the depth of the cube
+	 * @param color    the color of the cube
+	 * @param material the material of the cube
 	 */
+
 	private void createCube(Scene scene, Point center, double width, double height, double depth, Color color,
 			Material material) {
 		double halfW = width / 2;
@@ -292,7 +339,13 @@ class ParkPicture {
 	}
 
 	/**
-	 * Overloaded method for cubic cubes
+	 * Creates a cube with equal width, height, and depth
+	 * 
+	 * @param scene    the scene to add the cube to
+	 * @param center   the center point of the cube
+	 * @param size     the size of the cube (width = height = depth)
+	 * @param color    the color of the cube
+	 * @param material the material of the cube
 	 */
 	private void createCube(Scene scene, Point center, double size, Color color, Material material) {
 		createCube(scene, center, size, size, size, color, material);

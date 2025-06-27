@@ -43,6 +43,13 @@ public class SimpleRayTracer extends RayTracerBase {
 		return intersections == null ? scene.background : calcColor(intersections, ray);
 	}
 
+	/**
+	 * Finds the closest intersection point for a given ray.
+	 * 
+	 * @param ray the ray to be traced
+	 * @return the closest intersection point, or null if no intersection is found
+	 */
+
 	protected Intersection findClosestIntersection(Ray ray) {
 		return ray.findClosestIntersection(calculateIntersections(ray, Double.POSITIVE_INFINITY));
 	}
@@ -276,6 +283,14 @@ public class SimpleRayTracer extends RayTracerBase {
 			color = color.add(calcGlobalEffect(rT, level, k, kX));
 		return color.reduce(size);
 	}
+
+	/**
+	 * Calculates the intersections of a ray with the geometries in the scene.
+	 * 
+	 * @param ray      the ray to be traced
+	 * @param distance the maximum distance to search for intersections
+	 * @return a list of intersections, or null if no intersections are found
+	 */
 
 	protected List<Intersection> calculateIntersections(Ray ray, double distance) {
 		return scene.geometries.calculateIntersections(ray, distance);

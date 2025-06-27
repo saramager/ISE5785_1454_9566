@@ -18,14 +18,25 @@ import primitives.Vector;
  * traversing only the voxels a ray passes through (3D DDA).
  */
 public class Grid {
+	/** the size of each voxel in the grid */
 	private final Double3 voxelSize;
+	/** the minimum coordinates of the grid bounding box */
 	private final Double3 gridMin;
+	/** the maximum coordinates of the grid bounding box */
 	private final Double3 gridMax;
+	/** geometries with infinite bounds are collected separately */
 	private final Geometries infinityGeometries;
+	/**
+	 * the grid is a map from voxel indices to the geometries contained in that
+	 * voxel
+	 */
 	private final HashMap<Double3, Geometries> grid;
 
+	/** number of voxels along each axis */
 	private final int numVoxelsX;
+	/** number of voxels along each axis */
 	private final int numVoxelsY;
+	/** number of voxels along each axis */
 	private final int numVoxelsZ;
 
 	/**
@@ -34,7 +45,6 @@ public class Grid {
 	 * voxels it overlaps. Geometries with infinite bounds are collected separately.
 	 *
 	 * @param geometries the scene geometries
-	 * @param density    number of voxels along each axis
 	 */
 	public Grid(Geometries geometries) {
 		// initialize fields
@@ -176,9 +186,8 @@ public class Grid {
 	 * Traverses the grid via 3D DDA, collecting intersections with contained
 	 * geometries.
 	 *
-	 * @param inputRay             the original ray
-	 * @param multipleIntersection if false, stops at first hit; if true, finds all
-	 *                             along the path
+	 * @param inputRay    the original ray
+	 * @param maxDistance maximum distance to search for intersections
 	 * @return list of GeoPoints where the ray intersects geometries
 	 */
 

@@ -96,7 +96,15 @@ public class Camera implements Cloneable {
 	 * location, direction, and distance to the view plane.
 	 */
 	private Point centerViewPlane;
+	/**
+	 * The x-coordinate of the ray tracing resolution, calculated as width divided
+	 * by nX.
+	 */
 	public double rX;
+	/**
+	 * The y-coordinate of the ray tracing resolution, calculated as height divided
+	 * by nY.
+	 */
 	public double rY;
 	/**
 	 * The number of rays used for anti-aliasing in the ray tracing.
@@ -255,6 +263,13 @@ public class Camera implements Cloneable {
 
 	}
 
+	/**
+	 * Casts a beam ray for anti-aliasing by constructing a grid of rays and tracing
+	 * each one, then averaging the results.
+	 * 
+	 * @param ray the ray to cast
+	 * @return the averaged color from the traced rays
+	 */
 	private Color CastBeamRay(Ray ray) {
 		List<Ray> rays = new Blackboard(ray, antiAlasingSize / 10, antiAlasingNumOfRays).constructRayBeamGrid();
 		int size = rays.size();

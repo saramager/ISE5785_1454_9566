@@ -80,8 +80,10 @@ class GlossySurfacesAndDiffusedBlurry {
 	}
 
 	/**
-	 * 
+	 * Builds and renders a scene with multiple spheres and a polygon, with a
+	 * reflective plane.
 	 */
+
 	private void setSceneForDiffusiveTest() {
 		scene.setAmbientLight(new AmbientLight(new Color(30, 30, 30).reduce(2)));
 
@@ -134,7 +136,9 @@ class GlossySurfacesAndDiffusedBlurry {
 	}
 
 	/**
-	 * @return
+	 * Updates the camera builder for the diffusive test with specific parameters.
+	 * 
+	 * @return the updated camera builder
 	 */
 	private Builder updateCameraBuilderForDiffusiveTest() {
 		return cameraBuilder//

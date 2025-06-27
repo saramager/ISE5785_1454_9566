@@ -15,11 +15,16 @@ import renderer.RayTracerType;
 import scene.Scene;
 
 /**
- * 
+ * Tests for rendering scenes with glossy surfaces and diffused blurry
+ * reflections. This class contains tests for rendering scenes with spheres,
+ * planes, and polygons, focusing on glossy surfaces and diffused blurry
+ * reflections.
  */
 class GrigTest {
+	/** The scene to be rendered */
 	private final Scene scene = new Scene("Test scene");
 
+	/** Test for blurry glass effect with */
 	@Test
 	public void testBlurryGlassWithout2() {
 
@@ -62,6 +67,8 @@ class GrigTest {
 		}
 	}
 
+	/** Test for blurry glass effect with */
+
 	@Test
 	public void renderSingleSphereReflectionWith() {
 
@@ -85,6 +92,7 @@ class GrigTest {
 				.build().renderImage().writeToImage("grigShpere");
 	}
 
+	/** Produce a picture of a sphere lighted by a spot light */
 	@Test
 	void sphereDirectional() {
 		/** First scene for some of tests */
@@ -115,6 +123,7 @@ class GrigTest {
 
 	}
 
+	/** Produce a picture of a sphere lighted by a spot light */
 	@Test
 	void trianglesSpotSharp() {
 
@@ -286,6 +295,7 @@ class GrigTest {
 				.writeToImage("reflectionTwoSpheresMirrored333");
 	}
 
+	/** Produce a picture of a sphere lighted by a spot light */
 	@Test
 	public void trianglesLights() {
 		Scene scene2 = new Scene("Test scene").setAmbientLight(new AmbientLight(new Color(38, 38, 38)));

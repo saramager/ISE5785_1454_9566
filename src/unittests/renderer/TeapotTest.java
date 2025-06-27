@@ -25,6 +25,7 @@ class TeapotTest {
 	TeapotTest() {
 		/* to satisfy JavaDoc generator */ }
 
+	/** the scene */
 	Scene scene;
 
 	/**

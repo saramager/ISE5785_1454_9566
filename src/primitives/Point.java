@@ -24,19 +24,20 @@ public class Point {
 	}
 
 	/**
-	 * Constructs a point with given x, y, and z coordinates.
-	 *
-	 * @param other to find minimum
+	 * Finds the minimum of this point and another point in all dimensions.
 	 * 
+	 * @param other to find minimum
+	 * @return the minimum of this point and another point in all dimensions.
 	 */
 	public Double3 min(Double3 other) {
 		return xyz.min(other);
 	}
 
 	/**
+	 * Finds the maximum of this point and another point in all dimensions.
 	 * 
-	 * @param other
-	 * @return
+	 * @param other to find maximum
+	 * @return the maximum of this point and another point in all dimensions.
 	 */
 	public Double3 max(Double3 other) {
 		return xyz.max(other);
@@ -133,17 +134,42 @@ public class Point {
 
 	}
 
+	/**
+	 * Checks if this point is lower than another point in all dimensions.
+	 *
+	 * @param other the other point to compare with
+	 * @return true if this point is lower than the other point in all dimensions,
+	 *         false otherwise
+	 */
+
 	public boolean lowerThan(Point other) {
 		return xyz.lowerThan(other.xyz);
 	}
 
+	/**
+	 * Returns the x-coordinate of this point.
+	 * 
+	 * @return the x-coordinate.
+	 */
 	public double getX() {
 		return xyz.d1();
 	}
 
+	/**
+	 * Returns the y-coordinate of this point.
+	 *
+	 * @return the y-coordinate
+	 */
+
 	public double getY() {
 		return xyz.d2();
 	}
+
+	/**
+	 * Returns the z-coordinate of this point.
+	 *
+	 * @return the z-coordinate
+	 */
 
 	public double getZ() {
 		return xyz.d3();

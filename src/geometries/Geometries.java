@@ -87,6 +87,12 @@ public class Geometries extends Intersectable {
 		return intersections;
 	}
 
+	/**
+	 * Returns the list of geometries in this collection.
+	 *
+	 * @return A list of Intersectable objects representing the geometries.
+	 */
+
 	public List<Intersectable> getGeometries() {
 		return geometries;
 	}

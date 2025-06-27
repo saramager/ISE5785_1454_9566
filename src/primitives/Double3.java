@@ -47,16 +47,22 @@ public record Double3(double d1, double d2, double d3) {
 	}
 
 	/**
-	 * Constructor to initialize Double3 based object with two numbers and the third
-	 * one is zero
+	 * Constructor to initialize Double3 based object with three number values
 	 * 
-	 * @param d1 first number
-	 * @param d2 second number
+	 * @param other another Double3 object to copy values from
+	 *
+	 * @return a new Double3 object with the same values as the other
 	 */
 	public Double3 min(Double3 other) {
 		return new Double3(Math.min(d1, other.d1), Math.min(d2, other.d2), Math.min(d3, other.d3));
 	}
 
+	/**
+	 * Finds the maximum of this Double3 and another Double3 object`
+	 * 
+	 * @param other another Double3 object to compare with
+	 * @return a new Double3 object with the maximum of each corresponding
+	 */
 	public Double3 max(Double3 other) {
 		return new Double3(Math.max(d1, other.d1), Math.max(d2, other.d2), Math.max(d3, other.d3));
 	}
