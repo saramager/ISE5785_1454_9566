@@ -158,16 +158,16 @@ class ParkPicture {
 			scene.geometries.add(new Sphere(new Point(x, y + trunkHeight + 8, z), 12d)
 					.setEmission(new Color(34, 139, 34)).setMaterial(leafMaterial));
 
-			// Add some triangular leaves
-			for (int i = 0; i < 8; i++) {
-				double angle = i * Math.PI / 4;
-				double leafX = x + 15 * Math.cos(angle);
-				double leafZ = z + 15 * Math.sin(angle);
-				scene.geometries.add(new Triangle(new Point(leafX, y + trunkHeight + 5, leafZ),
-						new Point(leafX + 3, y + trunkHeight + 12, leafZ + 3),
-						new Point(leafX - 3, y + trunkHeight + 12, leafZ - 3)).setEmission(new Color(50, 150, 50))
-						.setMaterial(leafMaterial));
-			}
+//			// Add some triangular leaves
+//			for (int i = 0; i < 8; i++) {
+//				double angle = i * Math.PI / 4;
+//				double leafX = x + 15 * Math.cos(angle);
+//				double leafZ = z + 15 * Math.sin(angle);
+//				scene.geometries.add(new Triangle(new Point(leafX, y + trunkHeight + 5, leafZ),
+//						new Point(leafX + 3, y + trunkHeight + 12, leafZ + 3),
+//						new Point(leafX - 3, y + trunkHeight + 12, leafZ - 3)).setEmission(new Color(50, 150, 50))
+//						.setMaterial(leafMaterial));
+//			}
 		} else {
 			// Sphere crown only
 			scene.geometries.add(new Sphere(new Point(x, y + trunkHeight + 10, z), 15d)

@@ -53,14 +53,12 @@ public class Grid {
 		var edges = geometries.getEdges();
 		this.gridMin = edges.get(0);
 		this.gridMax = edges.get(1);
-		System.out.println("min: " + gridMin + ", max: " + gridMax);
 		double dx = alignZero((gridMax.d1() - gridMin.d1()) / density);
 		double dy = alignZero((gridMax.d2() - gridMin.d2()) / density);
 		double dz = alignZero((gridMax.d3() - gridMin.d3()) / density);
 
 		this.voxelSize = new Double3(dx, dy, dz);
 
-		System.out.println("Voxel size: " + voxelSize);
 		this.numVoxelsX = (int) ceil((gridMax.d1() - gridMin.d1()) / dx);
 		this.numVoxelsY = (int) ceil((gridMax.d2() - gridMin.d2()) / dy);
 		this.numVoxelsZ = (int) ceil((gridMax.d3() - gridMin.d3()) / dz);
@@ -71,8 +69,6 @@ public class Grid {
 		// classify each geometry
 		for (Intersectable geo : geometries.getGeometries()) {
 			var e = geo.getEdges();
-			System.out.println("geo: " + geo);
-			System.out.println("edges: " + e.get(0) + ", " + e.get(1));
 			// infinite bounds → collect separately
 			if (e.get(0).d1() == Double.POSITIVE_INFINITY || e.get(0).d2() == Double.POSITIVE_INFINITY
 					|| e.get(0).d3() == Double.POSITIVE_INFINITY || e.get(1).d1() == Double.NEGATIVE_INFINITY
