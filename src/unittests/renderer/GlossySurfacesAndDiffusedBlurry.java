@@ -142,7 +142,6 @@ class GlossySurfacesAndDiffusedBlurry {
 	 */
 	private Builder updateCameraBuilderForDiffusiveTest() {
 		return cameraBuilder//
-				.setResolution(500, 500)//
 				.setLocation(new Point(0, -1000, 0))//
 				.setDirection(new Point(0, 0, -12), Vector.AXIS_Z)//
 				.setVpDistance(1000).setVpSize(70, 50)//
