@@ -162,7 +162,10 @@ public class Camera implements Cloneable {
 	 * @return the camera object itself
 	 */
 	private Camera renderImageStream() {
-		IntStream.range(0, nY).parallel().forEach(i -> IntStream.range(0, nX).parallel().forEach(j -> castRay(j, i)));
+		IntStream.range(0, nY).parallel()//
+				.forEach(i -> IntStream.range(0, nX).parallel()//
+						.forEach(j -> castRay(j, i))//
+				);
 		return this;
 	}
 

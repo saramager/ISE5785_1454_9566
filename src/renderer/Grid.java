@@ -25,7 +25,7 @@ public class Grid {
 	/** the maximum coordinates of the grid bounding box */
 	private final Double3 gridMax;
 	/** geometries with infinite bounds are collected separately */
-	private final Geometries infinityGeometries;
+	private final Geometries infiniteGeometries;
 	/**
 	 * the grid is a map from voxel indices to the geometries contained in that
 	 * voxel
@@ -64,7 +64,7 @@ public class Grid {
 		this.numVoxelsZ = (int) ceil((gridMax.d3() - gridMin.d3()) / dz);
 
 		this.grid = new HashMap<>();
-		this.infinityGeometries = new Geometries();
+		this.infiniteGeometries = new Geometries();
 
 		// classify each geometry
 		for (Intersectable geo : geometries.getGeometries()) {
@@ -73,7 +73,7 @@ public class Grid {
 			if (e.get(0).d1() == Double.POSITIVE_INFINITY || e.get(0).d2() == Double.POSITIVE_INFINITY
 					|| e.get(0).d3() == Double.POSITIVE_INFINITY || e.get(1).d1() == Double.NEGATIVE_INFINITY
 					|| e.get(1).d2() == Double.NEGATIVE_INFINITY || e.get(1).d3() == Double.NEGATIVE_INFINITY) {
-				infinityGeometries.add(geo);
+				infiniteGeometries.add(geo);
 				continue;
 			}
 			// compute voxel index ranges
@@ -188,18 +188,15 @@ public class Grid {
 	 */
 
 	public List<Intersection> traverse(Ray inputRay, double maxDistance) {
-		List<Intersection> allIntersections = new LinkedList<>();
-
-		Set<Intersectable> geometriesProcessedForThisRay = new HashSet<>();
-
-		var infinityIntersections = infinityGeometries.calculateIntersections(inputRay, maxDistance);
-		if (infinityIntersections != null)
-			allIntersections.addAll(infinityIntersections);
+		var infinityIntersections = infiniteGeometries.calculateIntersections(inputRay, maxDistance);
 
 		Point entry = gridEntryPoint(inputRay);
-		if (entry == null) {
-			return allIntersections;
-		}
+		if (entry == null)
+			return infinityIntersections;
+
+		Set<Intersectable> geometriesProcessedForThisRay = new HashSet<>();
+		List<Intersection> allIntersections = new LinkedList<>(
+				infinityIntersections != null ? infinityIntersections : Collections.emptyList());
 
 		Vector dir = inputRay.getDir();
 		double dx = dir.getX(), dy = dir.getY(), dz = dir.getZ();
@@ -227,24 +224,18 @@ public class Grid {
 		double tDeltaZ = dz != 0 ? voxelSize.d3() / abs(dz) : Double.POSITIVE_INFINITY;
 
 		while (true) {
-
-			if (min(tMaxX, min(tMaxY, tMaxZ)) > maxDistance) {
+			if (min(tMaxX, min(tMaxY, tMaxZ)) > maxDistance)
 				break;
-			}
-			Double3 idx = new Double3(ix, iy, iz);
-			if (grid.containsKey(idx)) {
-				Geometries geometriesInVoxel = grid.get(idx);
 
+			Double3 idx = new Double3(ix, iy, iz);
+			Geometries geometriesInVoxel = grid.get(idx);
+			if (geometriesInVoxel != null) {
 				for (Intersectable geo : geometriesInVoxel.getGeometries()) {
 					if (!geometriesProcessedForThisRay.contains(geo)) {
-
-						var hits = geo.calculateIntersections(inputRay, maxDistance);
-
-						if (hits != null) {
-							allIntersections.addAll(hits);
-						}
-
 						geometriesProcessedForThisRay.add(geo);
+						var hits = geo.calculateIntersections(inputRay, maxDistance);
+						if (hits != null)
+							allIntersections.addAll(hits);
 					}
 				}
 			}
@@ -268,7 +259,6 @@ public class Grid {
 		}
 
 		return allIntersections;
-
 	}
 
 	/**

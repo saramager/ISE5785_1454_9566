@@ -295,7 +295,7 @@ class SnowTest {
 	@Test
 	public void SnowGlobeSceneTest() {
 		Scene scene = buildSnowGlobeScene();
-		camera.setRayTracer(scene, RayTracerType.GRID).setResolution(800, 800).setGlossyAndDiffuseRays(81)
+		camera.setRayTracer(scene, RayTracerType.GRID).setResolution(800, 800).setGlossyAndDiffuseRays(9)
 				.setMultithreading(-2).setDebugPrint(0.1).build().renderImage()
 				.writeToImage("Snow Globe Scene with Regular Grid");
 	}
@@ -303,7 +303,7 @@ class SnowTest {
 	@Test
 	public void SnowGlobeSceneSimpleThreadTest() {
 		Scene scene = buildSnowGlobeScene();
-		camera.setRayTracer(scene, RayTracerType.SIMPLE).setResolution(800, 800).setGlossyAndDiffuseRays(81)
+		camera.setRayTracer(scene, RayTracerType.SIMPLE).setResolution(800, 800).setGlossyAndDiffuseRays(9)
 				.setMultithreading(-2).setDebugPrint(0.1).build().renderImage()
 				.writeToImage("Snow Globe Scene with SIMPLE + threadths ");
 	}
@@ -311,7 +311,7 @@ class SnowTest {
 	@Test
 	public void SnowGlobeSceneGridest() {
 		Scene scene = buildSnowGlobeScene();
-		camera.setRayTracer(scene, RayTracerType.GRID).setResolution(800, 800).setGlossyAndDiffuseRays(81)
+		camera.setRayTracer(scene, RayTracerType.GRID).setResolution(800, 800).setGlossyAndDiffuseRays(9)
 				.setDebugPrint(0.1).build().renderImage()
 				.writeToImage("Snow Globe Scene with Regular Grid No threads ");
 	}
@@ -319,7 +319,7 @@ class SnowTest {
 	@Test
 	public void SnowGlobeSceneSimpleNOThreadTest() {
 		Scene scene = buildSnowGlobeScene();
-		camera.setRayTracer(scene, RayTracerType.SIMPLE).setResolution(800, 800).setGlossyAndDiffuseRays(81)
+		camera.setRayTracer(scene, RayTracerType.SIMPLE).setResolution(800, 800).setGlossyAndDiffuseRays(9)
 				.setDebugPrint(0.1).build().renderImage().writeToImage("Snow Globe Scene with SIMPLE ");
 	}
 }
