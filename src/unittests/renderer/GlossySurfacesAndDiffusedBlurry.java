@@ -171,7 +171,7 @@ class GlossySurfacesAndDiffusedBlurry {
 	public void testBlurryGlassWithout() {
 		setSceneForDiffusiveTest();
 		updateCameraBuilderForDiffusiveTest()//
-				.setRayTracer(scene, RayTracerType.SIMPLE).setAntiAliasingRays(81)//
+				.setRayTracer(scene, RayTracerType.GRID).setAntiAliasingRays(81)//
 				.setMultithreading(-1).setDebugPrint(0.1)//
 				.build().renderImage().writeToImage("blurryGlassWithout");
 	}

@@ -50,14 +50,14 @@ class ParkPicture {
 		createHexagonalLake(scene, new Point(0, -99, -200), 40, waterMaterial);
 
 		// Create trees around the park
-		createTree(scene, new Point(-80, -100, -120), 8, 12, trunkMaterial, leafMaterial, true); // Mixed tree
-		createTree(scene, new Point(70, -100, -150), 6, 10, trunkMaterial, leafMaterial, false); // Sphere crown
-		createTree(scene, new Point(-60, -100, -280), 7, 11, trunkMaterial, leafMaterial, true); // Mixed tree
-		createTree(scene, new Point(90, -100, -300), 5, 9, trunkMaterial, leafMaterial, false); // Sphere crown
-		createTree(scene, new Point(-120, -100, -200), 9, 14, trunkMaterial, leafMaterial, true); // Mixed tree
-		createTree(scene, new Point(100, -100, -100), 6, 8, trunkMaterial, leafMaterial, false); // Sphere crown
-		createTree(scene, new Point(-30, -100, -80), 4, 7, trunkMaterial, leafMaterial, true); // Mixed tree
-		createTree(scene, new Point(40, -100, -350), 8, 13, trunkMaterial, leafMaterial, false); // Sphere crown
+		createTree(scene, new Point(-80, -100, -120), 8, 12, trunkMaterial, leafMaterial); // Mixed tree
+		createTree(scene, new Point(70, -100, -150), 6, 10, trunkMaterial, leafMaterial); // Sphere crown
+		createTree(scene, new Point(-60, -100, -280), 7, 11, trunkMaterial, leafMaterial); // Mixed tree
+		createTree(scene, new Point(90, -100, -300), 5, 9, trunkMaterial, leafMaterial); // Sphere crown
+		createTree(scene, new Point(-120, -100, -200), 9, 14, trunkMaterial, leafMaterial); // Mixed tree
+		createTree(scene, new Point(100, -100, -100), 6, 8, trunkMaterial, leafMaterial); // Sphere crown
+		createTree(scene, new Point(-30, -100, -80), 4, 7, trunkMaterial, leafMaterial); // Mixed tree
+		createTree(scene, new Point(40, -100, -350), 8, 13, trunkMaterial, leafMaterial);// Sphere crown
 
 		// Create detailed grass patches (small polygons)
 		createGrassPatches(scene, 150, grassMaterial);
@@ -96,10 +96,10 @@ class ParkPicture {
 
 		// Camera positioned as a park visitor
 		Camera.Builder camera = Camera.getBuilder().setLocation(new Point(-150, -50, 0))
-				.setDirection(new Point(50, -80, -200), Vector.AXIS_Y).setVpDistance(750).setVpSize(500, 500);
+				.setDirection(new Point(40, -80, -200), Vector.AXIS_Y).setVpDistance(750).setVpSize(500, 500);
 
-		camera.setRayTracer(scene, RayTracerType.GRID).setMultithreading(-1).setDebugPrint(0.1).setResolution(800, 800)
-				.build().renderImage().writeToImage("Park Scene Regular Grid Test");
+		camera.setRayTracer(scene, RayTracerType.GRID).setAntiAliasingRays(81).setMultithreading(-1).setDebugPrint(0.1)
+				.setResolution(800, 800).build().renderImage().writeToImage("Park Scene Regular Grid Test");
 	}
 
 	/**
@@ -143,8 +143,7 @@ class ParkPicture {
 	 *                      false, creates a sphere crown only
 	 */
 	private void createTree(Scene scene, Point basePoint, double trunkWidth, double trunkHeight, Material trunkMaterial,
-			// TODO בשניייה בלי כתר
-			Material leafMaterial, boolean mixedCrown) {
+			Material leafMaterial) {
 		double x = basePoint.getX();
 		double y = basePoint.getY();
 		double z = basePoint.getZ();
@@ -153,26 +152,10 @@ class ParkPicture {
 		createCube(scene, new Point(x, y + trunkHeight / 2, z), trunkWidth, new Color(101, 67, 33), trunkMaterial);
 
 		// Create crown
-		if (mixedCrown) {
-			// Mixed crown: sphere + triangles
-			scene.geometries.add(new Sphere(new Point(x, y + trunkHeight + 8, z), 12d)
-					.setEmission(new Color(34, 139, 34)).setMaterial(leafMaterial));
 
-//			// Add some triangular leaves
-//			for (int i = 0; i < 8; i++) {
-//				double angle = i * Math.PI / 4;
-//				double leafX = x + 15 * Math.cos(angle);
-//				double leafZ = z + 15 * Math.sin(angle);
-//				scene.geometries.add(new Triangle(new Point(leafX, y + trunkHeight + 5, leafZ),
-//						new Point(leafX + 3, y + trunkHeight + 12, leafZ + 3),
-//						new Point(leafX - 3, y + trunkHeight + 12, leafZ - 3)).setEmission(new Color(50, 150, 50))
-//						.setMaterial(leafMaterial));
-//			}
-		} else {
-			// Sphere crown only
-			scene.geometries.add(new Sphere(new Point(x, y + trunkHeight + 10, z), 15d)
-					.setEmission(new Color(34, 139, 34)).setMaterial(leafMaterial));
-		}
+		// Sphere crown only
+		scene.geometries.add(new Sphere(new Point(x, y + trunkHeight + 10, z), 15d).setEmission(new Color(34, 139, 34))
+				.setMaterial(leafMaterial));
 	}
 
 	/**
