@@ -32,8 +32,7 @@ class complexRegularGridTest {
 	 * Test method to create a complex regular grid scene with various geometries
 	 * and light sources, including transparency and reflectivity.
 	 */
-	@Test
-	public void RegularGridTest() {
+	private static Scene sceneBuild() {
 		Scene scene = new Scene("Complex Regular Grid Test").setBackground(new Color(10, 20, 50)) // Subtle
 																									// gradient-like
 																									// dark blue
@@ -115,10 +114,7 @@ class complexRegularGridTest {
 				.setKl(0.0001).setKq(0.00001).setNarrowBeam(10));
 		scene.lights.add(new PointLight(new Color(10, 20, 10), new Point(80, 20, -150)).setKl(0.0001).setKq(0.00001));
 
-		// Render with higher resolution to stress test the grid
-		camera.setRayTracer(scene, RayTracerType.GRID).setResolution(1000, 1000) // Increased for sharper output
-				.setMultithreading(-1).setDebugPrint(0.1).build().renderImage()
-				.writeToImage("Complex Regular Grid Performance Test Enhanced");
+		return scene;
 	}
 
 	/**
@@ -131,7 +127,7 @@ class complexRegularGridTest {
 	 * @param color    the color of the cube
 	 * @param material the material of the cube
 	 */
-	private void createCube(Scene scene, Point center, double size, Color color, Material material) {
+	private static void createCube(Scene scene, Point center, double size, Color color, Material material) {
 		double half = size / 2;
 		double x = center.getX();
 		double y = center.getY();
@@ -173,4 +169,35 @@ class complexRegularGridTest {
 						new Point(x + half, y + half, z - half), new Point(x + half, y + half, z + half))
 						.setEmission(color).setMaterial(material));
 	}
+
+	@Test
+	public void complexGridTest() {
+		Scene scene = sceneBuild();
+		camera.setRayTracer(scene, RayTracerType.GRID).setResolution(1000, 1000).setMultithreading(-2)
+				.setDebugPrint(0.1).build().renderImage().writeToImage("Complex Regular g&m Performance Test Enhanced");
+	}
+
+	@Test
+	public void complexSimpleThreadTest() {
+		Scene scene = sceneBuild();
+		// Render with higher resolution to stress test the grid
+		camera.setRayTracer(scene, RayTracerType.SIMPLE).setResolution(1000, 1000) // Increased for sharper output
+				.setMultithreading(-2).setDebugPrint(0.1).build().renderImage()
+				.writeToImage("Complex Regular s&m Performance Test Enhanced");
+	}
+
+	@Test
+	public void complexeGridest() {
+		Scene scene = sceneBuild();
+		camera.setRayTracer(scene, RayTracerType.GRID).setResolution(1000, 1000).setDebugPrint(0.1).build()
+				.renderImage().writeToImage("Complex Regular g Performance Test Enhanced ");
+	}
+
+	@Test
+	public void complexSimpleNOThreadTest() {
+		Scene scene = sceneBuild();
+		camera.setRayTracer(scene, RayTracerType.SIMPLE).setResolution(800, 800).setDebugPrint(0.1).build()
+				.renderImage().writeToImage("Complex Regular no Performance Test Enhanced ");
+	}
+
 }
