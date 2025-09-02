@@ -1,8 +1,9 @@
 # ISE5785_1454_9566
 # 3D Ray Tracing Scene Renderer
-![images 1](images_git/Complex Regular Grid Performance Test.png)
-![images 1](images_git/Park Scene Regular Grid Test.png)
-![images 1](images_git/home.png)
+![images 1](images_git/Complex%20Regular%20Grid%20Performance%20Test.png)
+![images 2](images_git/Park%20Scene%20Regular%20Grid%20Test.png)
+![images 3](images_git/home.png)
+
 
 This project was developed as part of the *Introduction to Software Engineering* course.  
 It simulates and renders a **realistic 3D graphical scene** using ray tracing, incorporating many physical effects such as:
